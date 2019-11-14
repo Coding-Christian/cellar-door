@@ -6,6 +6,12 @@ class App extends React.Component {
     super(props);
     this.state = { grades: [], error: '' };
   }
+  componentDidMount() {
+    fetch('/api/grades')
+      .then(response => response.json())
+      .then(grades => this.setState({ grades }))
+      .catch(error => this.setState({ error }));
+  }
   render() {
     return (<Header title='Student Grade Table'/>);
   }
