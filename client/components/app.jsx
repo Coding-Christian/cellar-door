@@ -9,6 +9,7 @@ class App extends React.Component {
   }
   getAverageGrade() {
     const grades = this.state.grades;
+    if (grades.length === 0) { return 0; }
     let total = 0;
     for (let grade of grades) {
       total += grade.grade;
