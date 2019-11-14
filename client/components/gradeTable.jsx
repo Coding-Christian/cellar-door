@@ -14,7 +14,9 @@ function GradeTable(props) {
           <th>Grade</th>
         </tr>
       </thead>
-      {grades}
+      <tbody>
+        {grades}
+      </tbody>
     </table>
   );
 }

@@ -7,6 +7,14 @@ class App extends React.Component {
     super(props);
     this.state = { grades: [], error: '' };
   }
+  getAverageGrade() {
+    const grades = this.state.grades;
+    let total = 0;
+    for (let grade of grades) {
+      total += grade.grade;
+    }
+    return Math.round(total / grades.length);
+  }
   componentDidMount() {
     fetch('/api/grades')
       .then(response => response.json())
