@@ -25,7 +25,7 @@ class App extends React.Component {
     const grades = this.state.grades;
     return (
       <div className="sgt">
-        <Header title='Student Grade Table'/>
+        <Header title='Student Grade Table' averageGrade={this.getAverageGrade()}/>
         <GradeTable grades={grades}/>
       </div>
     );
