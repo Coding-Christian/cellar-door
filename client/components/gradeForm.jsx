@@ -12,6 +12,7 @@ class GradeForm extends React.Component {
     this.onSubmit = props.onSubmit;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClear = this.handleClear.bind(this);
   }
   handleChange(event) {
     const field = event.target.id;
@@ -38,6 +39,9 @@ class GradeForm extends React.Component {
       this.setState({ name: '', course: '', grade: '' });
     }
   }
+  handleClear(event) {
+    this.setState({ name: '', course: '', grade: '' });
+  }
   render() {
     return (
       <form onSubmit={this.handleSubmit} className='order-1 order-md-2 mb-4 col-xs-12 col-md-4'>
@@ -54,7 +58,7 @@ class GradeForm extends React.Component {
           <input onChange={this.handleChange} value={this.state.grade} className='col-8' type='number' min={0} max={200} id='grade'/>
         </div>
         <button className='btn btn-primary col-3 offset-5' type='submit'>Submit</button>
-        <button className='btn btn-secondary col-3 offset-1'>Cancel</button>
+        <button onClick={this.handleClear} className='btn btn-secondary col-3 offset-1' type='button'>Cancel</button>
       </form>
     );
   }
