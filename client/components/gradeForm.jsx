@@ -49,7 +49,7 @@ class GradeForm extends React.Component {
     let errorClass = '';
     if (error === '') { errorClass = ' d-none'; }
     return (
-      <form onSubmit={this.handleSubmit} className='order-1 order-md-2 mb-4 col-xs-12 col-md-4'>
+      <form onSubmit={this.handleSubmit} className='order-1 order-md-2 mb-4 col-xs-12 col-md-3'>
         <div className="form-group">
           <div className='input-group mb-2'>
             <div className="input-group-prepend">
@@ -70,8 +70,8 @@ class GradeForm extends React.Component {
             <input onChange={this.handleChange} placeholder='Grade' value={this.state.grade} className='form-control' type='text' id='grade'/>
           </div>
         </div>
-        <button className='btn btn-primary col-3 offset-5' type='submit'>Submit</button>
-        <button onClick={this.handleClear} className='btn btn-secondary col-3 offset-1' type='button'>Cancel</button>
+        <button className='btn btn-primary col-4 offset-3' type='submit'>Submit</button>
+        <button onClick={this.handleClear} className='btn btn-secondary col-4 offset-1' type='button'>Cancel</button>
         <div className={'alert alert-danger mt-4' + errorClass}>{this.state.error}</div>
       </form>
     );
