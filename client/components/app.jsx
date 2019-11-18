@@ -8,6 +8,7 @@ class App extends React.Component {
     super(props);
     this.state = { grades: [], error: '' };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.deleteGrade = this.deleteGrade.bind(this);
   }
   addNewGrade(grade) {
     fetch('/api/grades', {
@@ -31,6 +32,14 @@ class App extends React.Component {
     }
     return Math.round(total / grades.length);
   }
+  deleteGrade(gradeId) {
+    fetch(`/api/grades/${gradeId}`, { method: 'DELETE' })
+      .then(() => {
+        const grades = this.state.grades.filter(grade => !(grade.id === gradeId));
+        this.setState({ grades });
+      })
+      .catch(error => this.setState({ error }));
+  }
   componentDidMount() {
     fetch('/api/grades')
       .then(response => response.json())
@@ -38,12 +47,11 @@ class App extends React.Component {
       .catch(error => this.setState({ error }));
   }
   render() {
-    const grades = this.state.grades;
     return (
       <div className="sgt container mt-2">
         <Header title='Student Grade Table' averageGrade={this.getAverageGrade()}/>
         <div className="row">
-          <GradeTable grades={grades}/>
+          <GradeTable onDelete={this.deleteGrade} grades={this.state.grades}/>
           <GradeForm onSubmit={this.handleSubmit}/>
         </div>
       </div>
