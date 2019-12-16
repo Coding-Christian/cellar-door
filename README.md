@@ -25,11 +25,11 @@ A Full-Stack, React/PHP based web application for teachers who want to manage st
 #### Getting Started
 1. Clone this repository into the desired directory
 ```
-git clone https://github.com/Coding-Christian/memory-match-game
+git clone https://github.com/Coding-Christian/student-grade-table
 ```
 2. Navigate to the root of the cloned repository
 ```
-cd memory-match-game
+cd sutdent-grade-table
 ```
 3. Install required dependencies with npm
 ```
