@@ -18,6 +18,12 @@ A Full-Stack, React/PHP based web application for teachers who want to manage st
 - Teachers can add a grade record to the database
 - Teachers can remove a grade record from the database
 
+## Previews
+#### Adding a Grade
+![Adding a Grade](features/adding-a-grade.gif)
+#### Deleting a Grade
+![Adding a Grade](features/deleting-a-grade.gif)
+
 ## Installation
 #### System Requirements
 - Node.js
