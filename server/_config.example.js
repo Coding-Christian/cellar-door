@@ -1,8 +1,8 @@
-const dbcredentials = {
+const credentials = {
   'host': 'host',
   'user': 'user',
   'password': 'pass',
   'database': 'database'
 };
 
-export default dbcredentials;
+exports.credentials = credentials;
