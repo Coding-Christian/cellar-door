@@ -10,13 +10,21 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGrade = this.deleteGrade.bind(this);
   }
+  getAllGrades() {
+    fetch('/api/grades')
+      .then(response => response.json())
+      .then(grades => this.setState({ grades }))
+      .catch(error => this.setState({ error }));
+  }
   addNewGrade(grade) {
     fetch('/api/grades', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(grade)
     }).then(response => response.json())
-      .then(grade => this.setState({ grades: this.state.grades.concat(grade) }))
+      .then(grade => {
+        this.setState({ grades: this.state.grades.concat(grade) }, this.getAllGrades);
+      })
       .catch(error => this.setState({ error }));
   }
   handleSubmit(name, course, grade) {
@@ -36,15 +44,12 @@ class App extends React.Component {
     fetch(`/api/grades/${gradeId}`, { method: 'DELETE' })
       .then(() => {
         const grades = this.state.grades.filter(grade => !(grade.id === gradeId));
-        this.setState({ grades });
+        this.setState({ grades }, this.getAllGrades);
       })
       .catch(error => this.setState({ error }));
   }
   componentDidMount() {
-    fetch('/api/grades')
-      .then(response => response.json())
-      .then(grades => this.setState({ grades }))
-      .catch(error => this.setState({ error }));
+    this.getAllGrades();
   }
   render() {
     return (
