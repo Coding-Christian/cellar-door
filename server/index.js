@@ -53,7 +53,7 @@ server.post('/api/grades', async (req, res) => {
   sql = mysql.format(sql, inserts);
   const results = await makeQuery(sql)
     .catch(() => { res.status(500).send('An Error occurred while connecting to the database'); });
-  res.status(200).send({ 'id': results.insertId });
+  res.status(200).send({ 'id': results.insertId, 'name': name, 'course': course, 'grade': grade });
 });
 
 server.listen(3001, () => {
