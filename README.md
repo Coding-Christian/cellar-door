@@ -5,6 +5,8 @@ A Full-Stack, React/PHP based web application for teachers who want to manage st
 - React.js
 - Express.js
 - MySQL
+- AWS EC2
+- Apache2
 - HTML5
 - Bootstrap 4
 - CSS3
