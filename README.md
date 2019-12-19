@@ -3,7 +3,8 @@ A Full-Stack, React/PHP based web application for teachers who want to manage st
 
 ## Technologies Utilized
 - React.js
-- JSONServer
+- Express.js
+- MySQL
 - HTML5
 - Bootstrap 4
 - CSS3
@@ -22,7 +23,9 @@ A Full-Stack, React/PHP based web application for teachers who want to manage st
 #### Adding a Grade
 ![Adding a Grade](features/adding-a-grade.gif)
 #### Deleting a Grade
-![Adding a Grade](features/deleting-a-grade.gif)
+![Deleting a Grade](features/deleting-a-grade.gif)
+#### Mobile View
+![Mobile View](features/mobile-view.png)
 
 ## Installation
 #### System Requirements
