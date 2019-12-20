@@ -70,8 +70,19 @@ class GradeForm extends React.Component {
             <input onChange={this.handleChange} placeholder='Grade' value={this.state.grade} className='form-control' type='text' id='grade'/>
           </div>
         </div>
-        <button className='btn btn-primary col-4 offset-3' type='submit'>Submit</button>
-        <button onClick={this.handleClear} className='btn btn-secondary col-4 offset-1' type='button'>Cancel</button>
+        <button
+          className='btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2'
+          type='submit'
+        >
+          Submit
+        </button>
+        <button
+          onClick={this.handleClear}
+          className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'
+          type='button'
+        >
+          Cancel
+        </button>
         <div className={'alert alert-danger mt-4' + errorClass}>{this.state.error}</div>
       </form>
     );
