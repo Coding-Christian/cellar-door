@@ -17,19 +17,25 @@ class App extends React.Component {
       .catch(error => this.setState({ error }));
   }
   addNewGrade(grade) {
-    fetch('/api/grades', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(grade)
-    }).then(response => response.json())
-      .then(grade => {
-        this.setState({ grades: this.state.grades.concat(grade) }, this.getAllGrades);
+    return new Promise((resolve, reject) => {
+      fetch('/api/grades', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(grade)
       })
-      .catch(error => this.setState({ error }));
+        .then(response => {
+          resolve(response.status);
+          return response.json();
+        })
+        .then(grade => {
+          this.setState({ grades: this.state.grades.concat(grade) }, this.getAllGrades);
+        })
+        .catch(error => this.setState({ error }));
+    });
   }
   handleSubmit(name, course, grade) {
     const newGrade = { name, course, grade };
-    this.addNewGrade(newGrade);
+    return this.addNewGrade(newGrade);
   }
   getAverageGrade() {
     const grades = this.state.grades;
