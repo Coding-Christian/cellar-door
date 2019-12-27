@@ -3,7 +3,10 @@ A Full-Stack, React/PHP based web application for teachers who want to manage st
 
 ## Technologies Utilized
 - React.js
-- JSONServer
+- Express.js
+- MySQL
+- AWS EC2
+- Apache2
 - HTML5
 - Bootstrap 4
 - CSS3
@@ -18,6 +21,14 @@ A Full-Stack, React/PHP based web application for teachers who want to manage st
 - Teachers can add a grade record to the database
 - Teachers can remove a grade record from the database
 
+## Previews
+#### Adding a Grade
+![Adding a Grade](features/adding-a-grade.gif)
+#### Deleting a Grade
+![Deleting a Grade](features/deleting-a-grade.gif)
+#### Mobile View
+![Mobile View](features/mobile-view.png)
+
 ## Installation
 #### System Requirements
 - Node.js
@@ -25,11 +36,11 @@ A Full-Stack, React/PHP based web application for teachers who want to manage st
 #### Getting Started
 1. Clone this repository into the desired directory
 ```
-git clone https://github.com/Coding-Christian/memory-match-game
+git clone https://github.com/Coding-Christian/student-grade-table
 ```
 2. Navigate to the root of the cloned repository
 ```
-cd memory-match-game
+cd sutdent-grade-table
 ```
 3. Install required dependencies with npm
 ```
