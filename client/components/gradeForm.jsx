@@ -25,7 +25,7 @@ class GradeForm extends React.Component {
       this.setState({ grade: value });
     }
   }
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     const wordPatt = /\w*[!@#$%^&*()]+\w*/g;
     const { name, course } = this.state;
@@ -37,8 +37,12 @@ class GradeForm extends React.Component {
     } else if (isNaN(grade) || grade < 0 || grade > 200) {
       this.setState({ error: 'Please enter a valid grade' });
     } else {
-      this.onSubmit(name, course, Number(grade));
-      this.setState({ name: '', course: '', grade: '', error: '' });
+      const status = await this.onSubmit(name, course, Number(grade));
+      if (status <= 300) {
+        this.setState({ name: '', course: '', grade: '', error: '' });
+      } else {
+        this.setState({ error: 'Could not reach server. Please try again.' });
+      }
     }
   }
   handleClear(event) {
