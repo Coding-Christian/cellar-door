@@ -30,7 +30,10 @@ class App extends React.Component {
         .then(grade => {
           this.setState({ grades: this.state.grades.concat(grade) }, this.getAllGrades);
         })
-        .catch(error => this.setState({ error }));
+        .catch(error => {
+          reject(error);
+          this.setState({ error });
+        });
     });
   }
   handleSubmit(name, course, grade) {

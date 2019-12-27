@@ -37,7 +37,8 @@ class GradeForm extends React.Component {
     } else if (isNaN(grade) || grade < 0 || grade > 200) {
       this.setState({ error: 'Please enter a valid grade' });
     } else {
-      const status = await this.onSubmit(name, course, Number(grade));
+      const status = await this.onSubmit(name, course, Number(grade))
+        .catch(() => this.setState({ error: 'Could not reach server. Please try again.' }));
       if (status <= 300) {
         this.setState({ name: '', course: '', grade: '', error: '' });
       } else {
