@@ -31,15 +31,14 @@ class GradeForm extends React.Component {
     const { name, course } = this.state;
     const grade = Number(this.state.grade);
     if (name.match(wordPatt) || name.length < 2 || name.length > 60) {
-      this.setState({ error: 'Name can be no longer than 60 characters and may not contain any special symbols' });
+      this.setState({ error: 'Name must be 2 to 60 characters and may not contain any special symbols' });
     } else if (course.match(wordPatt) || course.length < 2 || course.length > 60) {
-      this.setState({ error: 'Course can be no longer than 30 characters and may not contain any special symbols' });
+      this.setState({ error: 'Course must be 2 to 60 characters and may not contain any special symbols' });
     } else if (isNaN(grade) || grade < 0 || grade > 200) {
       this.setState({ error: 'Please enter a valid grade' });
     } else {
-      const status = await this.onSubmit(name, course, Number(grade))
-        .catch(() => this.setState({ error: 'Could not reach server. Please try again.' }));
-      if (status <= 300) {
+      const status = await this.onSubmit(name, course, Number(grade));
+      if (status < 300) {
         this.setState({ name: '', course: '', grade: '', error: '' });
       } else {
         this.setState({ error: 'Could not reach server. Please try again.' });
