@@ -56,6 +56,31 @@ server.post('/api/grades', async (req, res) => {
   res.status(200).send({ 'id': results.insertId, 'name': name, 'course': course, 'grade': grade });
 });
 
+server.patch('/api/grades/:id', async (req, res) => {
+  if (!req.params.id) {
+    res.status(400).send('Student ID required');
+  } else {
+    const reqProps = ['name', 'course', 'grade'];
+    for (let prop in reqProps) {
+      if (!req.body[reqProps[prop]]) {
+        res.status(400).send(`Student ${reqProps[prop]} required`);
+        return;
+      }
+    }
+    const { name, course, grade } = req.body;
+    let sql = `UPDATE grades SET name = ?, course = ?, grade = ? WHERE id = ?`;
+    const inserts = [name, course, grade, req.params.id];
+    sql = mysql.format(sql, inserts);
+    const results = await makeQuery(sql)
+      .catch(() => { res.status(500).send('An Error occurred while connecting to the database'); });
+    if (!results.affectedRows) {
+      res.status(404).send(`Student with ID ${req.params.id} not found`);
+    } else {
+      res.status(200).send({ 'id': req.params.id, 'name': name, 'course': course, 'grade': grade });
+    }
+  }
+});
+
 server.listen(3001, () => {
   // eslint-disable-next-line no-console
   console.log('Express Server listening on port 3001\n');
