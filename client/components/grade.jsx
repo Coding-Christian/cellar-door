@@ -15,9 +15,15 @@ class Grade extends React.Component {
     this.initialInfo = { ...this.state.info };
     this.onDelete = props.onDelete;
     this.resetInfo = this.resetInfo.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   resetInfo() {
     this.setState({ editing: false, info: this.initialInfo });
+  }
+  handleChange(event) {
+    let info = { ...this.state.info };
+    info[event.target.id] = event.target.value;
+    this.setState({ info });
   }
   render() {
     let infoElems, btnElems;
@@ -27,9 +33,15 @@ class Grade extends React.Component {
         <button onClick={this.resetInfo} key='cancel' className='btn btn-secondary mr-1'>Cancel</button>
       ];
       infoElems = [
-        <td key='name'>{this.state.info.name}</td>,
-        <td key='course'>{this.state.info.course}</td>,
-        <td key='grade'>{this.state.info.grade}</td>
+        <td key='name'>
+          <input onChange={this.handleChange} type="text" value={this.state.info.name} id='name'/>
+        </td>,
+        <td key='course'>
+          <input onChange={this.handleChange} type="text" value={this.state.info.course} id='course' />
+        </td>,
+        <td key='grade'>
+          <input onChange={this.handleChange} type="text" value={this.state.info.grade} id='grade' />
+        </td>
       ];
     } else {
       btnElems = [
