@@ -44,7 +44,7 @@ class Grade extends React.Component {
       if (status >= 300) {
         this.setState({ error: 'Server Error' });
       } else {
-        this.setState({ editing: false });
+        this.setState({ editing: false, error: '' });
       }
     }
   }
