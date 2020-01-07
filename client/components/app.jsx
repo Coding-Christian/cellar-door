@@ -9,6 +9,7 @@ class App extends React.Component {
     this.state = { grades: [], error: '' };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGrade = this.deleteGrade.bind(this);
+    this.updateGrade = this.updateGrade.bind(this);
   }
   getAllGrades() {
     fetch('/api/grades')
@@ -31,18 +32,20 @@ class App extends React.Component {
       return 503;
     }
   }
-  handleSubmit(name, course, grade) {
-    const newGrade = { name, course, grade };
-    return this.addNewGrade(newGrade);
-  }
-  getAverageGrade() {
-    const grades = this.state.grades;
-    if (grades.length === 0) { return 0; }
-    let total = 0;
-    for (let grade of grades) {
-      total += grade.grade;
+  async updateGrade(grade) {
+    const config = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(grade)
+    };
+    try {
+      const response = await fetch(`/api/grades/${grade.id}`, config);
+      this.getAllGrades();
+      return response.status;
+    } catch {
+      this.getAllGrades();
+      return 503;
     }
-    return Math.round(total / grades.length);
   }
   deleteGrade(gradeId) {
     fetch(`/api/grades/${gradeId}`, { method: 'DELETE' })
@@ -52,6 +55,20 @@ class App extends React.Component {
       })
       .catch(error => this.setState({ error }));
   }
+
+  getAverageGrade() {
+    const grades = this.state.grades;
+    if (grades.length === 0) { return 0; }
+    let total = 0;
+    for (let grade of grades) {
+      total += grade.grade;
+    }
+    return Math.round(total / grades.length);
+  }
+  handleSubmit(name, course, grade) {
+    const newGrade = { name, course, grade };
+    return this.addNewGrade(newGrade);
+  }
   componentDidMount() {
     this.getAllGrades();
   }
@@ -60,7 +77,7 @@ class App extends React.Component {
       <div className="sgt container mt-2">
         <Header title='Student Grade Table' averageGrade={this.getAverageGrade()}/>
         <div className="row">
-          <GradeTable onDelete={this.deleteGrade} grades={this.state.grades}/>
+          <GradeTable onDelete={this.deleteGrade} onUpdate={this.updateGrade} grades={this.state.grades}/>
           <GradeForm onSubmit={this.handleSubmit}/>
         </div>
       </div>

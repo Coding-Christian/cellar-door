@@ -6,6 +6,7 @@ class Grade extends React.Component {
     this.state = {
       editing: false,
       info: {
+        id: props.id,
         name: props.name,
         course: props.course,
         grade: props.grade
@@ -15,21 +16,22 @@ class Grade extends React.Component {
     this.id = props.id;
     this.initialInfo = { ...this.state.info };
     this.onDelete = props.onDelete;
+    this.onUpdate = props.onUpdate;
     this.resetInfo = this.resetInfo.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   resetInfo() {
-    this.setState({ editing: false, info: this.initialInfo });
+    this.setState({ editing: false, info: this.initialInfo, error: '' });
   }
   handleChange(event) {
     let info = { ...this.state.info };
     info[event.target.id] = event.target.value;
     this.setState({ info });
   }
-  handleSubmit() {
+  async handleSubmit() {
     const wordPatt = /\w*[!@#$%^&*()]+\w*/g;
-    const { name, course } = this.state.info;
+    const { id, name, course } = this.state.info;
     const grade = Number(this.state.info.grade);
     if (name.match(wordPatt) || name.length < 2 || name.length > 60) {
       this.setState({ error: 'Invalid Name' });
@@ -38,7 +40,12 @@ class Grade extends React.Component {
     } else if (isNaN(grade) || grade < 0 || grade > 200) {
       this.setState({ error: 'Invalid Grade' });
     } else {
-      this.setState({ editing: false, error: '' });
+      const status = await this.onUpdate({ id, name, course, grade });
+      if (status >= 300) {
+        this.setState({ error: 'Server Error' });
+      } else {
+        this.setState({ editing: false });
+      }
     }
   }
   render() {
