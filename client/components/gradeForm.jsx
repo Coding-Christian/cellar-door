@@ -1,4 +1,5 @@
 import React from 'react';
+import InputField from './inputField';
 
 class GradeForm extends React.Component {
   constructor(props) {
@@ -28,16 +29,15 @@ class GradeForm extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     const wordPatt = /\w*[!@#$%^&*()]+\w*/g;
-    const { name, course } = this.state;
-    const grade = Number(this.state.grade);
+    const { name, course, grade } = this.state;
     if (name.match(wordPatt) || name.length < 2 || name.length > 60) {
       this.setState({ error: 'Name must be 2 to 60 characters and may not contain any special symbols' });
     } else if (course.match(wordPatt) || course.length < 2 || course.length > 60) {
       this.setState({ error: 'Course must be 2 to 60 characters and may not contain any special symbols' });
-    } else if (isNaN(grade) || grade < 0 || grade > 200) {
+    } else if (grade.length < 1 || isNaN(Number(grade)) || Number(grade) < 0 || Number(grade) > 200) {
       this.setState({ error: 'Please enter a valid grade' });
     } else {
-      const status = await this.onSubmit(name, course, Number(grade));
+      const status = await this.onSubmit(name, course, this.state.grade);
       if (status < 300) {
         this.setState({ name: '', course: '', grade: '', error: '' });
       } else {
@@ -55,38 +55,12 @@ class GradeForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit} className='order-1 order-md-2 mb-4 col-xs-12 col-md-3'>
         <div className="form-group">
-          <div className='input-group mb-2'>
-            <div className="input-group-prepend">
-              <div className="input-group-text"><i className='fas fa-user-graduate'></i></div>
-            </div>
-            <input onChange={this.handleChange} placeholder='Name' value={this.state.name} className='form-control' type='text' id='name'/>
-          </div>
-          <div className='input-group mb-2'>
-            <div className="input-group-prepend">
-              <div className="input-group-text"><i className='fas fa-book'></i></div>
-            </div>
-            <input onChange={this.handleChange} placeholder='Course' value={this.state.course} className='form-control' type='text' id='course'/>
-          </div>
-          <div className='input-group mb-2'>
-            <div className="input-group-prepend">
-              <div className="input-group-text"><i className='fas fa-percent'></i></div>
-            </div>
-            <input onChange={this.handleChange} placeholder='Grade' value={this.state.grade} className='form-control' type='text' id='grade'/>
-          </div>
+          <InputField handleChange={this.handleChange} placeholder='Name' value={this.state.name} id='name' faClass='fas fa-user-graduate'/>
+          <InputField handleChange={this.handleChange} placeholder='Course' value={this.state.course} id='course' faClass='fas fa-book'/>
+          <InputField handleChange={this.handleChange} placeholder='Grade' value={this.state.grade} id='grade' faClass='fas fa-percent'/>
         </div>
-        <button
-          className='btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2'
-          type='submit'
-        >
-          Submit
-        </button>
-        <button
-          onClick={this.handleClear}
-          className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'
-          type='button'
-        >
-          Cancel
-        </button>
+        <button className='btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2' type='submit'>Submit</button>
+        <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Cancel</button>
         <div className={'alert alert-danger mt-4' + errorClass}>{this.state.error}</div>
       </form>
     );
