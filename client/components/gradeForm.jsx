@@ -8,7 +8,9 @@ class GradeForm extends React.Component {
       name: '',
       course: '',
       grade: '',
-      error: ''
+      validName: false,
+      validCourse: false,
+      validGrade: false
     };
     this.onSubmit = props.onSubmit;
     this.handleChange = this.handleChange.bind(this);
@@ -16,28 +18,21 @@ class GradeForm extends React.Component {
     this.handleClear = this.handleClear.bind(this);
   }
   handleChange(event) {
-    const field = event.target.id;
-    const value = event.target.value;
-    if (field === 'name') {
-      this.setState({ name: value });
-    } else if (field === 'course') {
-      this.setState({ course: value });
-    } else {
-      this.setState({ grade: value });
-    }
+    this.setState({ [event.target.id]: event.target.value }, this.validateForm);
+  }
+  validateForm() {
+    const wordPatt = /[^\w\s]/g;
+    const { name, course, grade } = this.state;
+    this.setState({
+      validName: !(wordPatt.test(name) || name.length < 2 || name.length > 60),
+      validCourse: !(wordPatt.test(course) || course.length < 2 || course.length > 60),
+      validGrade: !(grade.length < 1 || isNaN(Number(grade)) || Number(grade) < 0 || Number(grade) > 200)
+    });
   }
   async handleSubmit(event) {
     event.preventDefault();
-    const wordPatt = /\w*[!@#$%^&*()]+\w*/g;
-    const { name, course, grade } = this.state;
-    if (name.match(wordPatt) || name.length < 2 || name.length > 60) {
-      this.setState({ error: 'Name must be 2 to 60 characters and may not contain any special symbols' });
-    } else if (course.match(wordPatt) || course.length < 2 || course.length > 60) {
-      this.setState({ error: 'Course must be 2 to 60 characters and may not contain any special symbols' });
-    } else if (grade.length < 1 || isNaN(Number(grade)) || Number(grade) < 0 || Number(grade) > 200) {
-      this.setState({ error: 'Please enter a valid grade' });
-    } else {
-      const status = await this.onSubmit(name, course, this.state.grade);
+    if (this.state.validName && this.state.validCourse && this.state.validGrade) {
+      const status = await this.onSubmit(this.state.name, this.state.course, this.state.grade);
       if (status < 300) {
         this.setState({ name: '', course: '', grade: '', error: '' });
       } else {
@@ -46,22 +41,25 @@ class GradeForm extends React.Component {
     }
   }
   handleClear(event) {
-    this.setState({ name: '', course: '', grade: '', error: '' });
+    this.setState({ name: '', course: '', grade: '', validName: false, validCourse: false, validGrade: false });
   }
   render() {
-    const { error } = this.state;
-    let errorClass = '';
-    if (error === '') { errorClass = ' d-none'; }
+    let disabledClass = '';
+    if (!this.state.validName || !this.state.validCourse || !this.state.validGrade) {
+      disabledClass = 'disabled';
+    }
     return (
       <form onSubmit={this.handleSubmit} className='order-1 order-md-2 mb-4 col-xs-12 col-md-3'>
         <div className="form-group">
-          <InputField handleChange={this.handleChange} placeholder='Name' value={this.state.name} id='name' faClass='fas fa-user-graduate'/>
-          <InputField handleChange={this.handleChange} placeholder='Course' value={this.state.course} id='course' faClass='fas fa-book'/>
-          <InputField handleChange={this.handleChange} placeholder='Grade' value={this.state.grade} id='grade' faClass='fas fa-percent'/>
+          <InputField handleChange={this.handleChange} placeholder='Name' value={this.state.name} isValid={this.state.validName} id='name' faClass='fas fa-user-graduate'/>
+          <div className='invalid-feedback'>Name must be between 2 and 60, alphanumeric characters</div>
+          <InputField handleChange={this.handleChange} placeholder='Course' value={this.state.course} isValid={this.state.validCourse} id='course' faClass='fas fa-book'/>
+          <div className='invalid-feedback'>Name must be between 2 and 60, alphanumeric characters</div>
+          <InputField handleChange={this.handleChange} placeholder='Grade' value={this.state.grade} isValid={this.state.validGrade} id='grade' faClass='fas fa-percent'/>
+          <div className='invalid-feedback'>Please enter a valid number for grade</div>
         </div>
-        <button className='btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2' type='submit'>Submit</button>
+        <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
         <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Cancel</button>
-        <div className={'alert alert-danger mt-4' + errorClass}>{this.state.error}</div>
       </form>
     );
   }
