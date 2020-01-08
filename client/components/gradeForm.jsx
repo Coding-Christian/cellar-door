@@ -1,13 +1,28 @@
 import React from 'react';
+import InputField from './inputField';
 
 class GradeForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      course: '',
-      grade: '',
-      error: ''
+      name: {
+        title: 'Name',
+        value: '',
+        isValid: false,
+        error: 'Name must be between 2 and 60 alphanumeric characters'
+      },
+      course: {
+        title: 'Course',
+        value: '',
+        isValid: false,
+        error: 'Name must be between 2 and 60 alphanumeric characters'
+      },
+      grade: {
+        title: 'Grade',
+        value: '',
+        isValid: false,
+        error: 'Please enter a valid number for the grade'
+      }
     };
     this.onSubmit = props.onSubmit;
     this.handleChange = this.handleChange.bind(this);
@@ -15,29 +30,24 @@ class GradeForm extends React.Component {
     this.handleClear = this.handleClear.bind(this);
   }
   handleChange(event) {
-    const field = event.target.id;
-    const value = event.target.value;
-    if (field === 'name') {
-      this.setState({ name: value });
-    } else if (field === 'course') {
-      this.setState({ course: value });
-    } else {
-      this.setState({ grade: value });
-    }
+    let newFieldState = Object.assign(this.state[event.target.id]);
+    newFieldState.value = event.target.value;
+    this.setState({ newFieldState }, this.validateForm);
+  }
+  validateForm() {
+    const wordPatt = /[^\w\s]/g;
+    let name = Object.assign(this.state.name);
+    let course = Object.assign(this.state.course);
+    let grade = Object.assign(this.state.grade);
+    name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
+    course.isValid = !(wordPatt.test(course.value) || course.value.length < 2 || course.value.length > 60);
+    grade.isValid = !(grade.value.length < 1 || isNaN(Number(grade.value)) || Number(grade.value) < 0 || Number(grade.value) > 200);
+    this.setState({ name, course, grade });
   }
   async handleSubmit(event) {
     event.preventDefault();
-    const wordPatt = /\w*[!@#$%^&*()]+\w*/g;
-    const { name, course } = this.state;
-    const grade = Number(this.state.grade);
-    if (name.match(wordPatt) || name.length < 2 || name.length > 60) {
-      this.setState({ error: 'Name must be 2 to 60 characters and may not contain any special symbols' });
-    } else if (course.match(wordPatt) || course.length < 2 || course.length > 60) {
-      this.setState({ error: 'Course must be 2 to 60 characters and may not contain any special symbols' });
-    } else if (isNaN(grade) || grade < 0 || grade > 200) {
-      this.setState({ error: 'Please enter a valid grade' });
-    } else {
-      const status = await this.onSubmit(name, course, Number(grade));
+    if (this.state.name.isValid && this.state.course.isValid && this.state.grade.isValid) {
+      const status = await this.onSubmit(this.state.name.value, this.state.course.value, this.state.grade.value);
       if (status < 300) {
         this.setState({ name: '', course: '', grade: '', error: '' });
       } else {
@@ -46,48 +56,31 @@ class GradeForm extends React.Component {
     }
   }
   handleClear(event) {
-    this.setState({ name: '', course: '', grade: '', error: '' });
+    let newState = {
+      name: Object.assign(this.state.name),
+      course: Object.assign(this.state.course),
+      grade: Object.assign(this.state.grade)
+    };
+    for (const field of newState) {
+      field.value = '';
+      field.isValid = false;
+    }
+    this.setState({ newState });
   }
   render() {
-    const { error } = this.state;
-    let errorClass = '';
-    if (error === '') { errorClass = ' d-none'; }
+    let disabledClass = '';
+    if (!this.state.name.isValid || !this.state.course.isValid || !this.state.grade.isValid) {
+      disabledClass = 'disabled';
+    }
     return (
       <form onSubmit={this.handleSubmit} className='order-1 order-md-2 mb-4 col-xs-12 col-md-3'>
         <div className="form-group">
-          <div className='input-group mb-2'>
-            <div className="input-group-prepend">
-              <div className="input-group-text"><i className='fas fa-user-graduate'></i></div>
-            </div>
-            <input onChange={this.handleChange} placeholder='Name' value={this.state.name} className='form-control' type='text' id='name'/>
-          </div>
-          <div className='input-group mb-2'>
-            <div className="input-group-prepend">
-              <div className="input-group-text"><i className='fas fa-book'></i></div>
-            </div>
-            <input onChange={this.handleChange} placeholder='Course' value={this.state.course} className='form-control' type='text' id='course'/>
-          </div>
-          <div className='input-group mb-2'>
-            <div className="input-group-prepend">
-              <div className="input-group-text"><i className='fas fa-percent'></i></div>
-            </div>
-            <input onChange={this.handleChange} placeholder='Grade' value={this.state.grade} className='form-control' type='text' id='grade'/>
-          </div>
+          <InputField handleChange={this.handleChange} id='name' field={this.state.name} faClass='fas fa-user-graduate'/>
+          <InputField handleChange={this.handleChange} id='course' field={this.state.course} faClass='fas fa-book'/>
+          <InputField handleChange={this.handleChange} id='grade' field={this.state.grade} faClass='fas fa-percent'/>
         </div>
-        <button
-          className='btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2'
-          type='submit'
-        >
-          Submit
-        </button>
-        <button
-          onClick={this.handleClear}
-          className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'
-          type='button'
-        >
-          Cancel
-        </button>
-        <div className={'alert alert-danger mt-4' + errorClass}>{this.state.error}</div>
+        <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
+        <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Cancel</button>
       </form>
     );
   }
