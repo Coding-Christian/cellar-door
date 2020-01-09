@@ -1,4 +1,5 @@
 import React from 'react';
+import UpdateField from './updateField';
 
 class Grade extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Grade extends React.Component {
     this.setState({ editing: false, info: this.initialInfo, error: '' });
   }
   handleChange(event) {
-    let info = { ...this.state.info };
+    let info = Object.assign(this.state.info);
     info[event.target.id] = event.target.value;
     this.setState({ info });
   }
@@ -59,15 +60,9 @@ class Grade extends React.Component {
         <button onClick={this.resetInfo} key='cancel' className='btn btn-secondary mr-1'>Cancel</button>
       ];
       infoElems = [
-        <td key='name'>
-          <input onChange={this.handleChange} type="text" value={this.state.info.name} id='name'/>
-        </td>,
-        <td key='course'>
-          <input onChange={this.handleChange} type="text" value={this.state.info.course} id='course' />
-        </td>,
-        <td key='grade'>
-          <input onChange={this.handleChange} type="text" value={this.state.info.grade} id='grade' />
-        </td>
+        <UpdateField key='name' id='name' handleChange={this.handleChange} value={this.state.info.name}/>,
+        <UpdateField key='course' id='course' handleChange={this.handleChange} value={this.state.info.course}/>,
+        <UpdateField key='grade' id='grade' handleChange={this.handleChange} value={this.state.info.grade}/>
       ];
     } else {
       btnElems = [
