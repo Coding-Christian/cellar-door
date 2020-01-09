@@ -50,7 +50,7 @@ class GradeForm extends React.Component {
     if (this.state.name.isValid && this.state.course.isValid && this.state.grade.isValid) {
       const status = await this.onSubmit(this.state.name.value, this.state.course.value, this.state.grade.value);
       if (status < 300) {
-        this.setState({ name: '', course: '', grade: '', error: '' });
+        this.handleClear();
       } else {
         this.setState({ error: 'Could not reach server. Please try again.' });
       }
@@ -62,9 +62,9 @@ class GradeForm extends React.Component {
       course: Object.assign(this.state.course),
       grade: Object.assign(this.state.grade)
     };
-    for (const field of newState) {
-      field.value = '';
-      field.isValid = false;
+    for (const field in newState) {
+      newState[field].value = '';
+      newState[field].isValid = false;
     }
     this.setState({ newState });
   }
