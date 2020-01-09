@@ -32,7 +32,7 @@ class Grade extends React.Component {
         continue;
       }
       newState[field].value = this.initialInfo[field];
-      newState[field].isValid = false;
+      newState[field].isValid = true;
     }
     this.setState(newState);
   }
@@ -77,19 +77,26 @@ class Grade extends React.Component {
     }
   }
   render() {
-    let infoElems, btnElems, errorClass;
+    let infoElems, btnElems, errorClass, disabledClass;
     if (this.state.error === '') {
       errorClass = 'd-none';
-    } else errorClass = '';
+    } else {
+      errorClass = '';
+    }
+    if (!this.state.name.isValid || !this.state.course.isValid || !this.state.grade.isValid) {
+      disabledClass = 'disabled';
+    } else {
+      disabledClass = '';
+    }
     if (this.state.editing) {
       btnElems = [
-        <button onClick={ this.handleSubmit } key='confirm' className='btn btn-success mr-1'>Confirm</button>,
+        <button onClick={ this.handleSubmit } key='confirm' className={`btn btn-success mr-1 ${disabledClass}`}>Confirm</button>,
         <button onClick={this.resetInfo} key='cancel' className='btn btn-secondary mr-1'>Cancel</button>
       ];
       infoElems = [
-        <UpdateField key='name' id='name' handleChange={this.handleChange} value={this.state.name.value}/>,
-        <UpdateField key='course' id='course' handleChange={this.handleChange} value={this.state.course.value}/>,
-        <UpdateField key='grade' id='grade' handleChange={this.handleChange} value={this.state.grade.value}/>
+        <UpdateField key='name' id='name' handleChange={this.handleChange} field={this.state.name}/>,
+        <UpdateField key='course' id='course' handleChange={this.handleChange} field={this.state.course}/>,
+        <UpdateField key='grade' id='grade' handleChange={this.handleChange} field={this.state.grade}/>
       ];
     } else {
       btnElems = [

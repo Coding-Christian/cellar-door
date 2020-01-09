@@ -32,7 +32,7 @@ class GradeForm extends React.Component {
   handleChange(event) {
     let newFieldState = Object.assign(this.state[event.target.id]);
     newFieldState.value = event.target.value;
-    this.setState({ newFieldState }, this.validateForm);
+    this.setState({ [event.target.id]: newFieldState }, this.validateForm);
   }
   validateForm() {
     const wordPatt = /[^\w\s]/g;
@@ -66,7 +66,7 @@ class GradeForm extends React.Component {
       newState[field].value = '';
       newState[field].isValid = false;
     }
-    this.setState({ newState });
+    this.setState(newState);
   }
   render() {
     let disabledClass = '';
