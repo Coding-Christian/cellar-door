@@ -15,7 +15,7 @@ class GradeForm extends React.Component {
         title: 'Course',
         value: '',
         isValid: false,
-        error: 'Name must be between 2 and 60 alphanumeric characters'
+        error: 'Course must be between 2 and 60 alphanumeric characters'
       },
       grade: {
         title: 'Grade',
@@ -32,16 +32,17 @@ class GradeForm extends React.Component {
   handleChange(event) {
     let newFieldState = Object.assign(this.state[event.target.id]);
     newFieldState.value = event.target.value;
-    this.setState({ newFieldState }, this.validateForm);
+    this.setState({ [event.target.id]: newFieldState }, this.validateForm);
   }
   validateForm() {
     const wordPatt = /[^\w\s]/g;
+    const numPatt = /[^\d.]/g;
     let name = Object.assign(this.state.name);
     let course = Object.assign(this.state.course);
     let grade = Object.assign(this.state.grade);
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
     course.isValid = !(wordPatt.test(course.value) || course.value.length < 2 || course.value.length > 60);
-    grade.isValid = !(grade.value.length < 1 || isNaN(Number(grade.value)) || Number(grade.value) < 0 || Number(grade.value) > 200);
+    grade.isValid = !(numPatt.test(grade.value) || isNaN(Number(grade.value)) || Number(grade.value) < 0 || Number(grade.value) > 200);
     this.setState({ name, course, grade });
   }
   async handleSubmit(event) {
@@ -49,7 +50,7 @@ class GradeForm extends React.Component {
     if (this.state.name.isValid && this.state.course.isValid && this.state.grade.isValid) {
       const status = await this.onSubmit(this.state.name.value, this.state.course.value, this.state.grade.value);
       if (status < 300) {
-        this.setState({ name: '', course: '', grade: '', error: '' });
+        this.handleClear();
       } else {
         this.setState({ error: 'Could not reach server. Please try again.' });
       }
@@ -61,11 +62,11 @@ class GradeForm extends React.Component {
       course: Object.assign(this.state.course),
       grade: Object.assign(this.state.grade)
     };
-    for (const field of newState) {
-      field.value = '';
-      field.isValid = false;
+    for (const field in newState) {
+      newState[field].value = '';
+      newState[field].isValid = false;
     }
-    this.setState({ newState });
+    this.setState(newState);
   }
   render() {
     let disabledClass = '';

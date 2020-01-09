@@ -22,6 +22,7 @@ function InputField(props) {
           className={`form-control ${validClass}`}
           type='text'
           id={props.id}
+          required
         />
       </div>
       <small className={`text-danger ${errorClass}`}>{props.field.error}</small>
