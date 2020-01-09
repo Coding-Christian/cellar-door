@@ -15,7 +15,7 @@ class GradeForm extends React.Component {
         title: 'Course',
         value: '',
         isValid: false,
-        error: 'Name must be between 2 and 60 alphanumeric characters'
+        error: 'Course must be between 2 and 60 alphanumeric characters'
       },
       grade: {
         title: 'Grade',
@@ -36,12 +36,13 @@ class GradeForm extends React.Component {
   }
   validateForm() {
     const wordPatt = /[^\w\s]/g;
+    const numPatt = /[^\d.]/g;
     let name = Object.assign(this.state.name);
     let course = Object.assign(this.state.course);
     let grade = Object.assign(this.state.grade);
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
     course.isValid = !(wordPatt.test(course.value) || course.value.length < 2 || course.value.length > 60);
-    grade.isValid = !(grade.value.length < 1 || isNaN(Number(grade.value)) || Number(grade.value) < 0 || Number(grade.value) > 200);
+    grade.isValid = !(numPatt.test(grade.value) || isNaN(Number(grade.value)) || Number(grade.value) < 0 || Number(grade.value) > 200);
     this.setState({ name, course, grade });
   }
   async handleSubmit(event) {
