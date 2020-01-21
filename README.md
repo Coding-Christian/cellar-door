@@ -1,5 +1,5 @@
 # Student Grade Table
-A Full-Stack, React/PHP based web application for teachers who want to manage student grade data
+A Full-Stack, React/Node based web application for teachers who want to manage student grade data
 
 ## Technologies Utilized
 - React.js
