@@ -70,6 +70,31 @@ server.get('/api/groceries/:id', async (req, res) => {
   }
 });
 
+server.get('/api/locations', async (req, res) => {
+  const sql =
+  'SELECT * ' +
+  'FROM storageLocations';
+  const results = await makeQuery(sql)
+    .catch(() => res.status(500).send('An error occurred while connecting to the database'));
+  res.status(200).send(results);
+});
+
+server.get('/api/locations/:id', async (req, res) => {
+  if (!req.params.id) {
+    res.status(400).send('Location ID required');
+  } else {
+    const sql =
+    'SELECT groceryItems.id AS id, itemName, remainingAmount, unitName ' +
+    'FROM groceryItems ' +
+    'JOIN amountUnits ' +
+      'ON amountUnitid = amountUnits.id ' +
+    `WHERE locationId = ${mysql.escape(req.params.id)}`;
+    const results = await makeQuery(sql)
+      .catch(() => res.status(500).send('An error occurred while connecting to the database'));
+    res.status(200).send(results);
+  }
+});
+
 server.delete('/api/grades/:id', async (req, res) => {
   if (!req.params.id) {
     res.status(400).send('Student ID required');
