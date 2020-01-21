@@ -17,10 +17,16 @@ function makeQuery(sql) {
   return sqlPromise;
 }
 
-server.get('/api/grades', async (req, res) => {
-  const sql = 'SELECT * FROM grades';
+server.get('/api/groceries', async (req, res) => {
+  const sql =
+    'SELECT groceryItems.id AS id, groceryItems.name AS name, remainingAmount, amountUnits.name AS amountUnit, storageLocations.name AS location ' +
+    'FROM groceryItems ' +
+    'JOIN amountUnits ' +
+      'ON amountUnitid = amountUnits.id ' +
+    'JOIN storageLocations ' +
+      'ON locationId = storageLocations.id';
   const results = await makeQuery(sql)
-    .catch(() => { res.status(500).send('An error occurred while connecting to the database'); });
+    .catch(() => res.status(500).send('An error occurred while connecting to the database'));
   res.status(200).send(results);
 });
 
