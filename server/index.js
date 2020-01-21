@@ -95,6 +95,15 @@ server.get('/api/locations/:id', async (req, res) => {
   }
 });
 
+server.get('/api/categories', async (req, res) => {
+  const sql =
+    'SELECT * ' +
+    'FROM groceryCategories';
+  const results = await makeQuery(sql)
+    .catch(() => res.status(500).send('An error occurred while connecting to the database'));
+  res.status(200).send(results);
+});
+
 server.delete('/api/grades/:id', async (req, res) => {
   if (!req.params.id) {
     res.status(400).send('Student ID required');
