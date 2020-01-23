@@ -1,4 +1,5 @@
 import React from 'react';
+import GroceryDetails from './groceryDetails';
 // import UpdateField from './updateField';
 
 class Grade extends React.Component {
@@ -101,7 +102,7 @@ class Grade extends React.Component {
     // } else {
     if (this.state.details) {
       btnElem = (<button onClick={() => this.setState({ details: false })} key='details' className='btn btn-primary mr-1'>v Details</button>);
-      infoElems = (<td colSpan="3">Details</td>);
+      infoElems = (<GroceryDetails id={this.id}/>);
     } else {
       btnElem = (<button onClick={() => this.setState({ details: true }) } className='btn btn-primary mr-1'>^ Details</button>);
       infoElems = [
@@ -114,10 +115,12 @@ class Grade extends React.Component {
     return (
       <tr>
         {infoElems}
-        <td className='d-flex flex-wrap justify-content-end'>
-          {/* <div className={'alert alert-danger w-100 ' + errorClass}>{this.state.error}</div> */}
-          {btnElem}
-          <button onClick={() => {} } key='delete' className='btn btn-danger'>X</button>
+        <td>
+          <div className='d-flex flex-wrap justify-content-end'>
+            {/* <div className={'alert alert-danger w-100 ' + errorClass}>{this.state.error}</div> */}
+            {btnElem}
+            <button onClick={() => {} } key='delete' className='btn btn-danger'>X</button>
+          </div>
         </td>
       </tr>
     );
