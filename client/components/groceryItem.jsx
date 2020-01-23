@@ -6,6 +6,7 @@ class Grade extends React.Component {
     super(props);
     this.state = {
       // editing: false,
+      details: false,
       name: props.name,
       amount: `${props.amount} ${props.unit}`,
       location: props.location
@@ -76,7 +77,7 @@ class Grade extends React.Component {
   //   }
   // }
   render() {
-    let infoElems, btnElems;
+    let infoElems, btnElem;
     // if (this.state.error === '') {
     //   errorClass = 'd-none';
     // } else {
@@ -98,22 +99,25 @@ class Grade extends React.Component {
     //     <UpdateField key='grade' id='grade' handleChange={this.handleChange} field={this.state.grade}/>
     //   ];
     // } else {
-    btnElems = [
-      <button onClick={() => {} } key='edit' className='btn btn-primary mr-1'>Edit</button>,
-      <button onClick={() => {} } key='delete' className='btn btn-danger'>X</button>
-    ];
-    infoElems = [
-      <td key='name'>{this.state.name}</td>,
-      <td key='amount'>{this.state.amount}</td>,
-      <td key='location'>{this.state.location}</td>
-    ];
+    if (this.state.details) {
+      btnElem = (<button onClick={() => this.setState({ details: false })} key='details' className='btn btn-primary mr-1'>v Details</button>);
+      infoElems = (<td colSpan="3">Details</td>);
+    } else {
+      btnElem = (<button onClick={() => this.setState({ details: true }) } className='btn btn-primary mr-1'>^ Details</button>);
+      infoElems = [
+        <td key='name'>{this.state.name}</td>,
+        <td key='amount'>{this.state.amount}</td>,
+        <td key='location'>{this.state.location}</td>
+      ];
+    }
     // }
     return (
       <tr>
         {infoElems}
         <td className='d-flex flex-wrap justify-content-end'>
           {/* <div className={'alert alert-danger w-100 ' + errorClass}>{this.state.error}</div> */}
-          {btnElems}
+          {btnElem}
+          <button onClick={() => {} } key='delete' className='btn btn-danger'>X</button>
         </td>
       </tr>
     );
