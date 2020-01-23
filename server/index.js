@@ -181,7 +181,7 @@ server.patch('/api/groceries', async (req, res) => {
   if (!results.affectedRows) {
     res.status(404).send(`Item with ID ${req.params.id} not found`);
   } else {
-    res.status(200).send(req.body);
+    res.status(200).send({ 'id': Number(req.body.id) });
   }
 });
 
@@ -202,8 +202,30 @@ server.patch('/api/locations', async (req, res) => {
   if (!results.affectedRows) {
     res.status(404).send(`Location with ID ${req.params.id} not found`);
   } else {
-    res.status(200).send(req.body);
+    res.status(200).send({ 'id': Number(req.body.id) });
   }
+});
+
+server.post('/api/groceries', async (req, res) => {
+  const reqProps = ['name', 'category', 'amount', 'amountRemaining', 'unit', 'purchaseDate', 'expirationDate', 'location', 'notes'];
+  for (const prop in reqProps) {
+    if (!req.body[reqProps[prop]]) {
+      res.status(400).send(`Item ${reqProps[prop]} required.`);
+      return;
+    }
+  }
+  const {
+    name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes
+  } = req.body;
+  let sql =
+    'INSERT INTO groceryItems ' +
+    '(id, itemName, categoryId, amount, remainingAmount, amountUnitId, purchaseDate, expirationDate, locationId, notes) ' +
+    'VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  const inserts = [name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes];
+  sql = mysql.format(sql, inserts);
+  const results = await makeQuery(sql)
+    .catch(() => { res.status(500).send('An Error occurred while connecting to the database'); });
+  res.status(200).send({ 'id': results.insertId });
 });
 
 server.post('/api/locations', async (req, res) => {
@@ -220,7 +242,7 @@ server.post('/api/locations', async (req, res) => {
   sql = mysql.format(sql, inserts);
   const results = await makeQuery(sql)
     .catch(() => { res.status(500).send('An Error occurred while connecting to the database'); });
-  res.status(200).send({ 'id': results.insertId, 'name': name, 'description': description });
+  res.status(200).send({ 'id': results.insertId });
 });
 
 server.delete('/api/grades/:id', async (req, res) => {
