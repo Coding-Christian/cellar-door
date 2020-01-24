@@ -14,7 +14,7 @@ class Grade extends React.Component {
     };
     // this.initialInfo = { name: props.name, course: props.course, grade: props.grade };
     this.id = props.id;
-    // this.onDelete = props.onDelete;
+    this.onDelete = props.onDelete;
     // this.onUpdate = props.onUpdate;
     // this.resetInfo = this.resetInfo.bind(this);
     // this.handleChange = this.handleChange.bind(this);
@@ -119,7 +119,7 @@ class Grade extends React.Component {
           <div className='d-flex flex-wrap justify-content-end'>
             {/* <div className={'alert alert-danger w-100 ' + errorClass}>{this.state.error}</div> */}
             {btnElem}
-            <button onClick={() => {} } key='delete' className='btn btn-danger'>X</button>
+            <button onClick={() => this.onDelete(this.id) } key='delete' className='btn btn-danger'>X</button>
           </div>
         </td>
       </tr>
