@@ -78,7 +78,7 @@ class Grade extends React.Component {
   //   }
   // }
   render() {
-    let infoElems, btnElem;
+    let infoElems;
     // if (this.state.error === '') {
     //   errorClass = 'd-none';
     // } else {
@@ -101,10 +101,8 @@ class Grade extends React.Component {
     //   ];
     // } else {
     if (this.state.details) {
-      btnElem = (<button onClick={() => this.setState({ details: false })} key='details' className='btn btn-primary mr-1'>v Details</button>);
       infoElems = (<GroceryDetails id={this.id}/>);
     } else {
-      btnElem = (<button onClick={() => this.setState({ details: true }) } className='btn btn-primary mr-1'>^ Details</button>);
       infoElems = [
         <td key='name'>{this.state.name}</td>,
         <td key='amount'>{this.state.amount}</td>,
@@ -116,10 +114,16 @@ class Grade extends React.Component {
       <tr>
         {infoElems}
         <td>
-          <div className='d-flex flex-wrap justify-content-end'>
+          <div className='row'>
             {/* <div className={'alert alert-danger w-100 ' + errorClass}>{this.state.error}</div> */}
-            {btnElem}
-            <button onClick={() => this.onDelete(this.id) } key='delete' className='btn btn-danger'>X</button>
+            <div className='col-12 col-md-6 my-1'>
+              <button onClick={() => this.setState({ details: !this.state.details })} key='details' className='btn btn-primary w-100'>
+                {this.state.details ? '- Less' : '+ More'}
+              </button>
+            </div>
+            <div className='col-12 col-md-6 my-1'>
+              <button onClick={() => this.onDelete(this.id) } key='delete' className='btn btn-danger w-100'>X</button>
+            </div>
           </div>
         </td>
       </tr>

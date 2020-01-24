@@ -31,20 +31,44 @@ class GroceryDetails extends React.Component {
     return (
       <td colSpan="3" className='text-center'>
         <div className="row py-1">
-          <span className="col-4">Name: {this.state.groceryItem.name}</span>
-          <span className="col-4">Category: {this.state.groceryItem.category}</span>
-          <span title={this.state.groceryItem.location.description} className="col-4">Location: {this.state.groceryItem.location.name}</span>
+          <div className="col-4">
+            <h6>Name:</h6>
+            {this.state.groceryItem.name}
+          </div>
+          <div className="col-4">
+            <h6>Initial Amount:</h6>
+            {this.state.groceryItem.amount.initial} {unit}
+          </div>
+          <div className="col-4">
+            <h6>Remaining Amount:</h6>
+            {this.state.groceryItem.amount.quantity} {unit}
+          </div>
         </div>
         <hr/>
         <div className="row py-1">
-          <span className="col-6 text-center">Initial Amount: {this.state.groceryItem.amount.initial} {unit}</span>
-          <span className="col-6 text-center">Remaining Amount: {this.state.groceryItem.amount.quantity} {unit}</span>
+          <div className="col-4">
+            <h6>Category:</h6>
+            {this.state.groceryItem.category}
+          </div>
+          <div className="col-4">
+            <h6>Purchase Date:</h6>
+            {purchaseDate}
+          </div>
+          <div className="col-4">
+            <h6>Expiration Date:</h6>
+            {expirationDate}
+          </div>
         </div>
         <hr/>
         <div className="row py-1">
-          <span className="col-4">Purchase Date: {purchaseDate}</span>
-          <span className="col-4">Expiration Date: {expirationDate}</span>
-          <span className="col-4">Notes: {this.state.groceryItem.notes}</span>
+          <div title={this.state.groceryItem.location.description} className="col-6">
+            <h6>Location:</h6>
+            {this.state.groceryItem.location.name}
+          </div>
+          <div className="col-6">
+            <h6>Notes:</h6>
+            {this.state.groceryItem.notes}
+          </div>
         </div>
       </td>
     );
