@@ -72,13 +72,15 @@ class App extends React.Component {
   }
   render() {
     return (
+      <>
+      <Header title='Cellar Door'/>
       <div className="sgt container mt-2">
-        <Header title='Cellar Door'/>
         <div className="row">
           <GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGrade} groceries={this.state.groceries}/>
           {/* <GradeForm onSubmit={this.handleSubmit}/> */}
         </div>
       </div>
+      </>
     );
   }
 }
