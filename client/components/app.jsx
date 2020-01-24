@@ -8,7 +8,7 @@ class App extends React.Component {
     super(props);
     this.state = { groceries: [] };
     // this.handleSubmit = this.handleSubmit.bind(this);
-    // this.deleteGrade = this.deleteGrade.bind(this);
+    this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     // this.updateGrade = this.updateGrade.bind(this);
   }
   getAllGroceries() {
@@ -46,13 +46,13 @@ class App extends React.Component {
   //     return 503;
   //   }
   // }
-  // deleteGrade(gradeId) {
-  //   fetch(`/api/grades/${gradeId}`, { method: 'DELETE' })
-  //     .then(() => {
-  //       const grades = this.state.grades.filter(grade => !(grade.id === gradeId));
-  //       this.setState({ grades }, this.getAllGrades);
-  //     });
-  // }
+  deleteGroceryItem(groceryItemId) {
+    fetch(`/api/groceries/${groceryItemId}`, { method: 'DELETE' })
+      .then(() => {
+        const groceries = this.state.groceries.filter(grocery => !(grocery.id === groceryItemId));
+        this.setState({ groceries }, this.getAllGroceries);
+      });
+  }
 
   // getAverageGrade() {
   //   const grades = this.state.grades;
@@ -75,7 +75,7 @@ class App extends React.Component {
       <div className="sgt container mt-2">
         <Header title='Cellar Door'/>
         <div className="row">
-          <GroceryTable onDelete={this.deleteGrade} onUpdate={this.updateGrade} groceries={this.state.groceries}/>
+          <GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGrade} groceries={this.state.groceries}/>
           {/* <GradeForm onSubmit={this.handleSubmit}/> */}
         </div>
       </div>
