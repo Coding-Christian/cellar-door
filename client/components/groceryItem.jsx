@@ -116,12 +116,12 @@ class Grade extends React.Component {
         <td>
           <div className='row'>
             {/* <div className={'alert alert-danger w-100 ' + errorClass}>{this.state.error}</div> */}
-            <div className='col-12 col-md-6 my-1'>
+            <div className='col-12 col-lg-6 my-1'>
               <button onClick={() => this.setState({ details: !this.state.details })} key='details' className='btn btn-primary w-100'>
                 {this.state.details ? '- Less' : '+ More'}
               </button>
             </div>
-            <div className='col-12 col-md-6 my-1'>
+            <div className='col-12 col-lg-6 my-1'>
               <button onClick={() => this.onDelete(this.id) } key='delete' className='btn btn-danger w-100'>X</button>
             </div>
           </div>

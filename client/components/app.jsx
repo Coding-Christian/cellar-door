@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './header';
 import GroceryTable from './groceryTable';
-// import GradeForm from './gradeForm';
+import GroceryFormSimple from './groceryFormSimple';
 
 class App extends React.Component {
   constructor(props) {
@@ -77,7 +77,7 @@ class App extends React.Component {
       <div className="sgt container mt-2">
         <div className="row">
           <GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGrade} groceries={this.state.groceries}/>
-          {/* <GradeForm onSubmit={this.handleSubmit}/> */}
+          <GroceryFormSimple onSubmit={this.handleSubmit}/>
         </div>
       </div>
       </>
