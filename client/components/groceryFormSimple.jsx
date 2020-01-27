@@ -1,5 +1,6 @@
 import React from 'react';
 import InputField from './inputField';
+import SelectField from './selectField';
 
 class GradeForm extends React.Component {
   constructor(props) {
@@ -20,12 +21,13 @@ class GradeForm extends React.Component {
       },
       unit: {
         title: 'Unit',
-        value: ''
+        value: '',
+        options: []
       },
       location: {
         title: 'Location',
         value: '',
-        isValid: false
+        options: []
       }
     };
     this.onSubmit = props.onSubmit;
@@ -80,8 +82,10 @@ class GradeForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit} className='order-1 order-md-2 mb-4 col-12 col-md-3'>
         <div className="form-group">
-          <InputField handleChange={this.handleChange} id='name' field={this.state.name} faClass='fas fa-font'/>
-          <InputField handleChange={this.handleChange} id='amount' field={this.state.amount} faClass='fas fa-hashtag'/>
+          <InputField handleChange={this.handleChange} id='name' field={this.state.name} faClass='fas fa-pencil-alt'/>
+          <InputField handleChange={this.handleChange} id='amount' field={this.state.amount} faClass='fas fa-weight'/>
+          <SelectField handleChange={this.handleChange} id='unit' field={this.state.unit} faClass='fas fa-ruler-combined'/>
+          <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
         </div>
         <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
         <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Cancel</button>
