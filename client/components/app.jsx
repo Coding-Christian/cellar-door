@@ -2,14 +2,19 @@ import React from 'react';
 import Header from './header';
 import GroceryTable from './groceryTable';
 import GroceryFormSimple from './groceryFormSimple';
+import GroceryFormAdvanced from './groceryFormAdvanced';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { groceries: [] };
+    this.state = {
+      advancedForm: false,
+      groceries: []
+    };
     // this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     // this.updateGrade = this.updateGrade.bind(this);
+    this.toggleForm = this.toggleForm.bind(this);
   }
   getAllGroceries() {
     fetch('/api/groceries')
@@ -67,6 +72,9 @@ class App extends React.Component {
   //   const newGrade = { name, course, grade };
   //   return this.addNewGrade(newGrade);
   // }
+  toggleForm() {
+    this.setState({ advancedForm: !this.state.advancedForm });
+  }
   componentDidMount() {
     this.getAllGroceries();
   }
@@ -77,7 +85,10 @@ class App extends React.Component {
       <div className="sgt container mt-2">
         <div className="row">
           <GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGrade} groceries={this.state.groceries}/>
-          <GroceryFormSimple onSubmit={this.handleSubmit}/>
+          {this.state.advancedForm
+            ? <GroceryFormAdvanced onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
+            : <GroceryFormSimple onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
+          }
         </div>
       </div>
       </>

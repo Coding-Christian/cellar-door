@@ -1,8 +1,10 @@
 import React from 'react';
 import InputField from './inputField';
 import SelectField from './selectField';
+import DateField from './dateField';
+import TextField from './textField';
 
-class GroceryFormSimple extends React.Component {
+class GroceryFormAdvanced extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,13 +29,33 @@ class GroceryFormSimple extends React.Component {
         title: 'Location',
         value: '1',
         options: []
+      },
+      category: {
+        title: 'Category',
+        value: '1',
+        options: []
+      },
+      purchaseDate: {
+        title: 'Purchase Date',
+        value: this.getCurrentDate()
+      },
+      expirationDate: {
+        title: 'Expiration Date',
+        value: this.getCurrentDate()
+      },
+      notes: {
+        title: 'Notes',
+        value: '',
+        error: 'Notes must be limited to 256 characters'
       }
     };
     this.toggleForm = props.toggleForm;
-    this.onSubmit = props.onSubmit;
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClear = this.handleClear.bind(this);
+  }
+  getCurrentDate() {
+    const date = new Date();
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDay().toString().padStart(2, '0')}`;
+    return formattedDate;
   }
   getAllLocations() {
     fetch('/api/locations')
@@ -44,7 +66,6 @@ class GroceryFormSimple extends React.Component {
         this.setState({ location });
       });
   }
-
   getAllUnits() {
     fetch('/api/units')
       .then(response => response.json())
@@ -54,56 +75,25 @@ class GroceryFormSimple extends React.Component {
         this.setState({ unit });
       });
   }
+  getAllCategories() {
+    fetch('/api/categories')
+      .then(response => response.json())
+      .then(categories => {
+        const category = Object.assign(this.state.category);
+        category.options = categories;
+        this.setState({ category });
+      });
+  }
   handleChange(event) {
     let newFieldState = Object.assign(this.state[event.target.id]);
     newFieldState.value = event.target.value;
     this.setState({ [event.target.id]: newFieldState });
   }
-  validateForm() {
-    // const wordPatt = /[^\w\s]/g;
-    // const numPatt = /[^\d.]/g;
-    // let name = Object.assign(this.state.name);
-    // let course = Object.assign(this.state.course);
-    // let grade = Object.assign(this.state.grade);
-    // name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
-    // course.isValid = !(wordPatt.test(course.value) || course.value.length < 2 || course.value.length > 60);
-    // grade.isValid = !(numPatt.test(grade.value) || isNaN(Number(grade.value)) || Number(grade.value) < 0 || Number(grade.value) > 200);
-    // this.setState({ name, course, grade });
-  }
-  async handleSubmit(event) {
-    // event.preventDefault();
-    // if (this.state.name.isValid && this.state.course.isValid && this.state.grade.isValid) {
-    //   const status = await this.onSubmit(this.state.name.value, this.state.course.value, this.state.grade.value);
-    //   if (status < 300) {
-    //     this.handleClear();
-    //   } else {
-    //     this.setState({ error: 'Could not reach server. Please try again.' });
-    //   }
-    // }
-  }
-  handleClear() {
-    const newState = {
-      name: Object.assign(this.state.name),
-      amount: Object.assign(this.state.amount),
-      unit: Object.assign(this.state.unit),
-      location: Object.assign(this.state.location)
-    };
-    for (const property in newState) {
-      if (property === 'name' || property === 'amount') {
-        newState[property].value = '';
-        newState[property].isValid = false;
-      } else {
-        newState[property].value = '1';
-      }
-    }
-    this.setState(newState, () => {
-      this.getAllLocations();
-      this.getAllUnits();
-    });
-  }
   componentDidMount() {
+    this.getCurrentDate();
     this.getAllLocations();
     this.getAllUnits();
+    this.getAllCategories();
   }
   render() {
     let disabledClass = '';
@@ -117,8 +107,12 @@ class GroceryFormSimple extends React.Component {
           <InputField handleChange={this.handleChange} id='amount' field={this.state.amount} faClass='fas fa-weight'/>
           <SelectField handleChange={this.handleChange} id='unit' field={this.state.unit} faClass='fas fa-ruler-combined'/>
           <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
+          <SelectField handleChange={this.handleChange} id='category' field={this.state.category} faClass='fas fa-list'/>
+          <DateField handleChange={this.handleChange} id='purchaseDate' field={this.state.purchaseDate} faClass='far fa-calendar-alt'/>
+          <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
+          <TextField handleChange={this.handleChange} id='notes' field = {this.state.notes} faClass='fas fa-sticky-note'/>
         </div>
-        <button onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>+ Advanced Options</button>
+        <button onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>- Advanced Options</button>
         <div>
           <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
           <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Clear</button>
@@ -128,4 +122,4 @@ class GroceryFormSimple extends React.Component {
   }
 }
 
-export default GroceryFormSimple;
+export default GroceryFormAdvanced;
