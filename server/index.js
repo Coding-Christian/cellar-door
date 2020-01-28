@@ -122,6 +122,15 @@ server.get('/api/categories/:id', async (req, res) => {
   }
 });
 
+server.get('/api/units', async (req, res) => {
+  const sql =
+    'SELECT id, unitName AS name, abbreviation ' +
+    'FROM amountUnits';
+  const results = await makeQuery(sql)
+    .catch(() => res.status(500).send('An error occurred while connecting to the database'));
+  res.status(200).send(results);
+});
+
 server.delete('/api/groceries/:id', async (req, res) => {
   if (!req.params.id) {
     res.status(400).send('Student ID required');

@@ -6,7 +6,6 @@ class GradeForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      advancedOptions: false,
       name: {
         title: 'Name',
         value: '',
@@ -21,12 +20,12 @@ class GradeForm extends React.Component {
       },
       unit: {
         title: 'Unit',
-        value: '',
+        value: '1',
         options: []
       },
       location: {
         title: 'Location',
-        value: '',
+        value: '1',
         options: []
       }
     };
@@ -44,10 +43,20 @@ class GradeForm extends React.Component {
         this.setState({ location });
       });
   }
+
+  getAllUnits() {
+    fetch('/api/units')
+      .then(response => response.json())
+      .then(units => {
+        const unit = Object.assign(this.state.unit);
+        unit.options = units;
+        this.setState({ unit });
+      });
+  }
   handleChange(event) {
-    // let newFieldState = Object.assign(this.state[event.target.id]);
-    // newFieldState.value = event.target.value;
-    // this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+    let newFieldState = Object.assign(this.state[event.target.id]);
+    newFieldState.value = event.target.value;
+    this.setState({ [event.target.id]: newFieldState });
   }
   validateForm() {
     // const wordPatt = /[^\w\s]/g;
@@ -85,6 +94,7 @@ class GradeForm extends React.Component {
   }
   componentDidMount() {
     this.getAllLocations();
+    this.getAllUnits();
   }
   render() {
     let disabledClass = '';
