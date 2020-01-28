@@ -116,10 +116,10 @@ class GroceryFormSimple extends React.Component {
           <SelectField handleChange={this.handleChange} id='unit' field={this.state.unit} faClass='fas fa-ruler-combined'/>
           <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
         </div>
-        <button onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>+ Advanced Options</button>
+        <button type='button' onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>+ Advanced Options</button>
         <div>
           <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
-          <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Clear</button>
+          <button type='button' onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'>Clear</button>
         </div>
       </form>
     );
