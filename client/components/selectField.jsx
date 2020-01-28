@@ -11,7 +11,12 @@ function selectField(props) {
           <i className={props.faClass}></i>
         </div>
       </div>
-      <select onChange={props.handleChange} value={props.field.value} className={`form-control`} id={props.id}>
+      <select
+        onChange={props.handleChange}
+        value={props.field.value}
+        className={`form-control`}
+        id={props.id}
+      >
         {options}
       </select>
     </div>

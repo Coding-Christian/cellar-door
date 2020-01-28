@@ -57,18 +57,16 @@ class GroceryFormSimple extends React.Component {
   handleChange(event) {
     let newFieldState = Object.assign(this.state[event.target.id]);
     newFieldState.value = event.target.value;
-    this.setState({ [event.target.id]: newFieldState });
+    this.setState({ [event.target.id]: newFieldState }, this.validateForm);
   }
   validateForm() {
-    // const wordPatt = /[^\w\s]/g;
-    // const numPatt = /[^\d.]/g;
-    // let name = Object.assign(this.state.name);
-    // let course = Object.assign(this.state.course);
-    // let grade = Object.assign(this.state.grade);
-    // name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
-    // course.isValid = !(wordPatt.test(course.value) || course.value.length < 2 || course.value.length > 60);
-    // grade.isValid = !(numPatt.test(grade.value) || isNaN(Number(grade.value)) || Number(grade.value) < 0 || Number(grade.value) > 200);
-    // this.setState({ name, course, grade });
+    const wordPatt = /[^\w\s]/g;
+    const numPatt = /[^\d.]/g;
+    let name = Object.assign(this.state.name);
+    let amount = Object.assign(this.state.amount);
+    name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
+    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
+    this.setState({ name, amount });
   }
   async handleSubmit(event) {
     // event.preventDefault();
@@ -107,7 +105,7 @@ class GroceryFormSimple extends React.Component {
   }
   render() {
     let disabledClass = '';
-    if (!this.state.name.isValid || !this.state.amount.isValid || !this.state.location.isValid) {
+    if (!this.state.name.isValid || !this.state.amount.isValid) {
       disabledClass = 'disabled';
     }
     return (
