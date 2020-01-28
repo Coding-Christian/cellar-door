@@ -46,7 +46,7 @@ class GroceryFormAdvanced extends React.Component {
       notes: {
         title: 'Notes',
         value: '',
-        error: 'Notes must be limited to 256 characters'
+        error: 'Notes must be limited to 256 alphanumeric characters'
       }
     };
     this.toggleForm = props.toggleForm;
@@ -54,7 +54,10 @@ class GroceryFormAdvanced extends React.Component {
   }
   getCurrentDate() {
     const date = new Date();
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDay().toString().padStart(2, '0')}`;
+    const formattedDate =
+      `${date.getFullYear()}-` +
+      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
+      `${date.getDate().toString().padStart(2, '0')}`;
     return formattedDate;
   }
   getAllLocations() {
@@ -87,7 +90,18 @@ class GroceryFormAdvanced extends React.Component {
   handleChange(event) {
     let newFieldState = Object.assign(this.state[event.target.id]);
     newFieldState.value = event.target.value;
-    this.setState({ [event.target.id]: newFieldState });
+    this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+  }
+  validateForm() {
+    const wordPatt = /[^\w\s]/g;
+    const numPatt = /[^\d.]/g;
+    let name = Object.assign(this.state.name);
+    let amount = Object.assign(this.state.amount);
+    let notes = Object.assign(this.state.notes);
+    name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
+    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
+    notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
+    this.setState({ name, amount });
   }
   componentDidMount() {
     this.getCurrentDate();
@@ -112,10 +126,10 @@ class GroceryFormAdvanced extends React.Component {
           <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
           <TextField handleChange={this.handleChange} id='notes' field = {this.state.notes} faClass='fas fa-sticky-note'/>
         </div>
-        <button onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>- Advanced Options</button>
+        <button type='button' onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>- Advanced Options</button>
         <div>
           <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
-          <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Clear</button>
+          <button type='button' onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'>Clear</button>
         </div>
       </form>
     );
