@@ -2,7 +2,7 @@ import React from 'react';
 import InputField from './inputField';
 import SelectField from './selectField';
 
-class GradeForm extends React.Component {
+class GroceryFormSimple extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -80,17 +80,25 @@ class GradeForm extends React.Component {
     //   }
     // }
   }
-  handleClear(event) {
-    // let newState = {
-    //   name: Object.assign(this.state.name),
-    //   course: Object.assign(this.state.course),
-    //   grade: Object.assign(this.state.grade)
-    // };
-    // for (const field in newState) {
-    //   newState[field].value = '';
-    //   newState[field].isValid = false;
-    // }
-    // this.setState(newState);
+  handleClear() {
+    const newState = {
+      name: Object.assign(this.state.name),
+      amount: Object.assign(this.state.amount),
+      unit: Object.assign(this.state.unit),
+      location: Object.assign(this.state.location)
+    };
+    for (const property in newState) {
+      if (property === 'name' || property === 'amount') {
+        newState[property].value = '';
+        newState[property].isValid = false;
+      } else {
+        newState[property].value = '1';
+      }
+    }
+    this.setState(newState, () => {
+      this.getAllLocations();
+      this.getAllUnits();
+    });
   }
   componentDidMount() {
     this.getAllLocations();
@@ -110,10 +118,10 @@ class GradeForm extends React.Component {
           <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
         </div>
         <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
-        <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Cancel</button>
+        <button onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2' type='button'>Clear</button>
       </form>
     );
   }
 }
 
-export default GradeForm;
+export default GroceryFormSimple;
