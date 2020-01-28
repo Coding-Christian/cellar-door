@@ -2,6 +2,7 @@ import React from 'react';
 import InputField from './inputField';
 import SelectField from './selectField';
 import DateField from './dateField';
+import TextField from './textField';
 
 class GroceryFormAdvanced extends React.Component {
   constructor(props) {
@@ -53,10 +54,7 @@ class GroceryFormAdvanced extends React.Component {
   }
   getCurrentDate() {
     const date = new Date();
-    const formattedDate = `
-      ${date.getFullYear()}-
-      ${(date.getMonth() + 1).toString().padStart(2, '0')}-
-      ${date.getDay().toString().padStart(2, '0')}`;
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDay().toString().padStart(2, '0')}`;
     return formattedDate;
   }
   getAllLocations() {
@@ -112,6 +110,7 @@ class GroceryFormAdvanced extends React.Component {
           <SelectField handleChange={this.handleChange} id='category' field={this.state.category} faClass='fas fa-list'/>
           <DateField handleChange={this.handleChange} id='purchaseDate' field={this.state.purchaseDate} faClass='far fa-calendar-alt'/>
           <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
+          <TextField handleChange={this.handleChange} id='notes' field = {this.state.notes} faClass='fas fa-sticky-note'/>
         </div>
         <button onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>- Advanced Options</button>
         <div>
