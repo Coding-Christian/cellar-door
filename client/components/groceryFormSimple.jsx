@@ -35,6 +35,15 @@ class GradeForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
   }
+  getAllLocations() {
+    fetch('/api/locations')
+      .then(response => response.json())
+      .then(locations => {
+        const location = Object.assign(this.state.location);
+        location.options = locations;
+        this.setState({ location });
+      });
+  }
   handleChange(event) {
     // let newFieldState = Object.assign(this.state[event.target.id]);
     // newFieldState.value = event.target.value;
@@ -73,6 +82,9 @@ class GradeForm extends React.Component {
     //   newState[field].isValid = false;
     // }
     // this.setState(newState);
+  }
+  componentDidMount() {
+    this.getAllLocations();
   }
   render() {
     let disabledClass = '';

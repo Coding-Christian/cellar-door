@@ -72,7 +72,7 @@ server.get('/api/groceries/:id', async (req, res) => {
 
 server.get('/api/locations', async (req, res) => {
   const sql =
-  'SELECT * ' +
+  'SELECT id, locationName AS name, description ' +
   'FROM storageLocations';
   const results = await makeQuery(sql)
     .catch(() => res.status(500).send('An error occurred while connecting to the database'));

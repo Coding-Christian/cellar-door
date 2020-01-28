@@ -2,7 +2,7 @@ import React from 'react';
 
 function selectField(props) {
   const options = props.field.options.map(option => (
-    <option key={option.id} value={option.id}>{option.unitName}</option>
+    <option key={option.id} value={option.id}>{option.name}</option>
   ));
   return (
     <div className='input-group mb-1'>
