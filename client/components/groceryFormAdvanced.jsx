@@ -1,6 +1,7 @@
 import React from 'react';
 import InputField from './inputField';
 import SelectField from './selectField';
+import DateField from './dateField';
 
 class GroceryFormAdvanced extends React.Component {
   constructor(props) {
@@ -47,17 +48,54 @@ class GroceryFormAdvanced extends React.Component {
         error: 'Notes must be limited to 256 characters'
       }
     };
+    this.toggleForm = props.toggleForm;
+    this.handleChange = this.handleChange.bind(this);
   }
   getCurrentDate() {
     const date = new Date();
     const formattedDate = `
       ${date.getFullYear()}-
-      ${(date.getMonth() + 1).padStart(2, '0')}-
-      ${date.getDay().padStart(2, '0')}`;
+      ${(date.getMonth() + 1).toString().padStart(2, '0')}-
+      ${date.getDay().toString().padStart(2, '0')}`;
     return formattedDate;
+  }
+  getAllLocations() {
+    fetch('/api/locations')
+      .then(response => response.json())
+      .then(locations => {
+        const location = Object.assign(this.state.location);
+        location.options = locations;
+        this.setState({ location });
+      });
+  }
+  getAllUnits() {
+    fetch('/api/units')
+      .then(response => response.json())
+      .then(units => {
+        const unit = Object.assign(this.state.unit);
+        unit.options = units;
+        this.setState({ unit });
+      });
+  }
+  getAllCategories() {
+    fetch('/api/categories')
+      .then(response => response.json())
+      .then(categories => {
+        const category = Object.assign(this.state.category);
+        category.options = categories;
+        this.setState({ category });
+      });
+  }
+  handleChange(event) {
+    let newFieldState = Object.assign(this.state[event.target.id]);
+    newFieldState.value = event.target.value;
+    this.setState({ [event.target.id]: newFieldState });
   }
   componentDidMount() {
     this.getCurrentDate();
+    this.getAllLocations();
+    this.getAllUnits();
+    this.getAllCategories();
   }
   render() {
     let disabledClass = '';
@@ -71,6 +109,9 @@ class GroceryFormAdvanced extends React.Component {
           <InputField handleChange={this.handleChange} id='amount' field={this.state.amount} faClass='fas fa-weight'/>
           <SelectField handleChange={this.handleChange} id='unit' field={this.state.unit} faClass='fas fa-ruler-combined'/>
           <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
+          <SelectField handleChange={this.handleChange} id='category' field={this.state.category} faClass='fas fa-list'/>
+          <DateField handleChange={this.handleChange} id='purchaseDate' field={this.state.purchaseDate} faClass='far fa-calendar-alt'/>
+          <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
         </div>
         <button onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>- Advanced Options</button>
         <div>

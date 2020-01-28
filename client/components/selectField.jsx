@@ -7,7 +7,9 @@ function selectField(props) {
   return (
     <div className='input-group mb-1'>
       <div className="input-group-prepend">
-        <div className="input-group-text"><i className={props.faClass}></i></div>
+        <div className="input-group-text" title={props.field.title}>
+          <i className={props.faClass}></i>
+        </div>
       </div>
       <select onChange={props.handleChange} value={props.field.value} className={`form-control`} id={props.id}>
         {options}

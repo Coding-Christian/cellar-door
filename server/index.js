@@ -97,7 +97,7 @@ server.get('/api/locations/:id', async (req, res) => {
 
 server.get('/api/categories', async (req, res) => {
   const sql =
-    'SELECT * ' +
+    'SELECT id, categoryName AS name ' +
     'FROM groceryCategories';
   const results = await makeQuery(sql)
     .catch(() => res.status(500).send('An error occurred while connecting to the database'));
