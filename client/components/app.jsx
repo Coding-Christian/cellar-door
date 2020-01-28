@@ -86,8 +86,8 @@ class App extends React.Component {
         <div className="row">
           <GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGrade} groceries={this.state.groceries}/>
           {this.state.advancedForm
-            ? <GroceryFormSimple onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
-            : <GroceryFormAdvanced onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
+            ? <GroceryFormAdvanced onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
+            : <GroceryFormSimple onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
           }
         </div>
       </div>
