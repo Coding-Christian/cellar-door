@@ -26,8 +26,8 @@ class GroceryDetails extends React.Component {
   }
   render() {
     const unit = this.state.groceryItem.amount.unit;
-    const purchaseDate = this.state.groceryItem.purchaseDate.substring(0, 9);
-    const expirationDate = this.state.groceryItem.expirationDate.substring(0, 9);
+    const purchaseDate = this.state.groceryItem.purchaseDate.substring(0, 10);
+    const expirationDate = this.state.groceryItem.expirationDate.substring(0, 10);
     return (
       <td colSpan="3" className='text-center'>
         <div className="row py-1">
@@ -52,11 +52,11 @@ class GroceryDetails extends React.Component {
           </div>
           <div className="col-4">
             <h6>Purchase Date:</h6>
-            {purchaseDate}
+            {(purchaseDate === '1900-01-01') ? '' : purchaseDate}
           </div>
           <div className="col-4">
             <h6>Expiration Date:</h6>
-            {expirationDate}
+            {(expirationDate === '1900-01-01') ? '' : expirationDate}
           </div>
         </div>
         <hr/>
