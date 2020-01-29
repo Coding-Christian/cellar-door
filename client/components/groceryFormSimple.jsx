@@ -73,7 +73,7 @@ class GroceryFormSimple extends React.Component {
     if (this.state.name.isValid && this.state.amount.isValid) {
       const status = await this.onSubmit(
         this.state.name.value,
-        '12',
+        '1',
         this.state.amount.value,
         this.state.amount.value,
         this.state.unit.value,

@@ -50,7 +50,10 @@ class GroceryFormAdvanced extends React.Component {
       }
     };
     this.toggleForm = props.toggleForm;
+    this.onSubmit = props.onSubmit;
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClear = this.handleClear.bind(this);
   }
   getCurrentDate() {
     const date = new Date();
@@ -103,6 +106,55 @@ class GroceryFormAdvanced extends React.Component {
     notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
     this.setState({ name, amount });
   }
+  async handleSubmit(event) {
+    event.preventDefault();
+    if (this.state.name.isValid && this.state.amount.isValid) {
+      const status = await this.onSubmit(
+        this.state.name.value,
+        this.state.category.value,
+        this.state.amount.value,
+        this.state.amount.value,
+        this.state.unit.value,
+        this.state.purchaseDate.value,
+        this.state.expirationDate.value,
+        this.state.location.value,
+        this.state.notes.value
+      );
+      if (status < 300) {
+        this.toggleForm();
+      } else {
+        this.setState({ error: 'Could not reach server. Please try again.' });
+      }
+    }
+  }
+  handleClear() {
+    const newState = {
+      name: Object.assign(this.state.name),
+      category: Object.assign(this.state.category),
+      amount: Object.assign(this.state.amount),
+      unit: Object.assign(this.state.unit),
+      purchaseDate: Object.assign(this.state.purchaseDate),
+      expirationDate: Object.assign(this.state.expirationDate),
+      location: Object.assign(this.state.location),
+      notes: Object.assign(this.state.notes)
+    };
+    for (const property in newState) {
+      if (property === 'name' || property === 'amount' || property === 'notes') {
+        newState[property].value = '';
+        newState[property].isValid = false;
+      } else if (property === 'category' || property === 'unit' || property === 'location') {
+        newState[property].value = '1';
+      } else {
+        newState[property].value = this.getCurrentDate();
+      }
+    }
+    this.setState(newState, () => {
+      this.getCurrentDate();
+      this.getAllLocations();
+      this.getAllUnits();
+      this.getAllCategories();
+    });
+  }
   componentDidMount() {
     this.getCurrentDate();
     this.getAllLocations();
@@ -111,7 +163,7 @@ class GroceryFormAdvanced extends React.Component {
   }
   render() {
     let disabledClass = '';
-    if (!this.state.name.isValid || !this.state.amount.isValid || !this.state.location.isValid) {
+    if (!this.state.name.isValid || !this.state.amount.isValid) {
       disabledClass = 'disabled';
     }
     return (
