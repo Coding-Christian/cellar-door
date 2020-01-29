@@ -69,15 +69,25 @@ class GroceryFormSimple extends React.Component {
     this.setState({ name, amount });
   }
   async handleSubmit(event) {
-    // event.preventDefault();
-    // if (this.state.name.isValid && this.state.course.isValid && this.state.grade.isValid) {
-    //   const status = await this.onSubmit(this.state.name.value, this.state.course.value, this.state.grade.value);
-    //   if (status < 300) {
-    //     this.handleClear();
-    //   } else {
-    //     this.setState({ error: 'Could not reach server. Please try again.' });
-    //   }
-    // }
+    event.preventDefault();
+    if (this.state.name.isValid && this.state.amount.isValid) {
+      const status = await this.onSubmit(
+        this.state.name.value,
+        '12',
+        this.state.amount.value,
+        this.state.amount.value,
+        this.state.unit.value,
+        '1900-01-01',
+        '1900-01-01',
+        this.state.location.value,
+        ''
+      );
+      if (status < 300) {
+        this.handleClear();
+      } else {
+        this.setState({ error: 'Could not reach server. Please try again.' });
+      }
+    }
   }
   handleClear() {
     const newState = {

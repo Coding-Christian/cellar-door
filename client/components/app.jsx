@@ -11,7 +11,7 @@ class App extends React.Component {
       advancedForm: false,
       groceries: []
     };
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     // this.updateGrade = this.updateGrade.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
@@ -21,21 +21,21 @@ class App extends React.Component {
       .then(response => response.json())
       .then(groceries => this.setState({ groceries }));
   }
-  // async addNewGrade(grade) {
-  //   const config = {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(grade)
-  //   };
-  //   try {
-  //     const response = await fetch('/api/grades', config);
-  //     this.getAllGrades();
-  //     return response.status;
-  //   } catch {
-  //     this.getAllGrades();
-  //     return 503;
-  //   }
-  // }
+  async addNewGrocery(grocery) {
+    const config = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(grocery)
+    };
+    try {
+      const response = await fetch('/api/groceries', config);
+      this.getAllGroceries();
+      return response.status;
+    } catch {
+      this.getAllGroceries();
+      return 503;
+    }
+  }
   // async updateGrade(grade) {
   //   const config = {
   //     method: 'PATCH',
@@ -58,20 +58,10 @@ class App extends React.Component {
         this.setState({ groceries }, this.getAllGroceries);
       });
   }
-
-  // getAverageGrade() {
-  //   const grades = this.state.grades;
-  //   if (grades.length === 0) { return 0; }
-  //   let total = 0;
-  //   for (let grade of grades) {
-  //     total += grade.grade;
-  //   }
-  //   return Math.round(total / grades.length);
-  // }
-  // handleSubmit(name, course, grade) {
-  //   const newGrade = { name, course, grade };
-  //   return this.addNewGrade(newGrade);
-  // }
+  handleSubmit(name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes) {
+    const newGrocery = { name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes };
+    return this.addNewGrocery(newGrocery);
+  }
   toggleForm() {
     this.setState({ advancedForm: !this.state.advancedForm });
   }

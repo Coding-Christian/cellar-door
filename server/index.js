@@ -218,7 +218,7 @@ server.patch('/api/locations', async (req, res) => {
 server.post('/api/groceries', async (req, res) => {
   const reqProps = ['name', 'category', 'amount', 'amountRemaining', 'unit', 'purchaseDate', 'expirationDate', 'location', 'notes'];
   for (const prop in reqProps) {
-    if (!req.body[reqProps[prop]]) {
+    if (!req.body.hasOwnProperty(reqProps[prop])) {
       res.status(400).send(`Item ${reqProps[prop]} required.`);
       return;
     }
