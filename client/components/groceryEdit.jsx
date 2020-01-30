@@ -146,7 +146,7 @@ class GroceryEdit extends React.Component {
     return (
       <td colSpan="3" className='text-center'>
         <div className="row py-1">
-          <div className="col-4">
+          <div className="col-12 col-lg-4">
             <h6>Name:</h6>
             <input
               onChange={this.handleChange}
@@ -158,7 +158,7 @@ class GroceryEdit extends React.Component {
               required
             />
           </div>
-          <div className="col-4">
+          <div className="col-12 col-lg-4">
             <h6>Initial Amount:</h6>
             <input
               onChange={this.handleChange}
@@ -178,7 +178,7 @@ class GroceryEdit extends React.Component {
               {unitOptions}
             </select>
           </div>
-          <div className="col-4">
+          <div className="col-12 col-lg-4">
             <h6>Remaining Amount:</h6>
             <input
               onChange={this.handleChange}
@@ -193,7 +193,7 @@ class GroceryEdit extends React.Component {
         </div>
         <hr/>
         <div className="row py-1">
-          <div className="col-4">
+          <div className="col-12 col-lg-4">
             <h6>Category:</h6>
             <select
               onChange={this.handleChange}
@@ -204,7 +204,7 @@ class GroceryEdit extends React.Component {
               {categoryOptions}
             </select>
           </div>
-          <div className="col-4">
+          <div className="col-12 col-lg-4">
             <h6>Purchase Date:</h6>
             <input
               type="date"
@@ -214,7 +214,7 @@ class GroceryEdit extends React.Component {
               id='purchaseDate'
             />
           </div>
-          <div className="col-4">
+          <div className="col-12 col-lg-4">
             <h6>Expiration Date:</h6>
             <input
               type="date"
@@ -227,7 +227,7 @@ class GroceryEdit extends React.Component {
         </div>
         <hr/>
         <div className="row py-1">
-          <div title='' className="col-6">
+          <div title='' className="col-12 col-lg-6">
             <h6>Location:</h6>
             <select
               onChange={this.handleChange}
@@ -238,7 +238,7 @@ class GroceryEdit extends React.Component {
               {locationOptions}
             </select>
           </div>
-          <div className="col-6">
+          <div className="col-12 col-lg-6">
             <h6>Notes:</h6>
             <input
               onChange={this.handleChange}
