@@ -58,6 +58,33 @@ class GroceryEdit extends React.Component {
       .then(response => response.json())
       .then(groceryItem => this.setInitialValues(groceryItem));
   }
+  getAllLocations() {
+    fetch('/api/locations')
+      .then(response => response.json())
+      .then(locations => {
+        const location = Object.assign(this.state.location);
+        location.options = locations;
+        this.setState({ location });
+      });
+  }
+  getAllUnits() {
+    fetch('/api/units')
+      .then(response => response.json())
+      .then(units => {
+        const unit = Object.assign(this.state.unit);
+        unit.options = units;
+        this.setState({ unit });
+      });
+  }
+  getAllCategories() {
+    fetch('/api/categories')
+      .then(response => response.json())
+      .then(categories => {
+        const category = Object.assign(this.state.category);
+        category.options = categories;
+        this.setState({ category });
+      });
+  }
   setInitialValues(groceryItem) {
     const newState = {
       name: Object.assign(this.state.name),
@@ -79,9 +106,30 @@ class GroceryEdit extends React.Component {
     newState.expirationDate.value = groceryItem.expirationDate;
     newState.location.value = groceryItem.location.id;
     newState.notes.value = groceryItem.notes;
-    this.setState(newState);
+    this.setState(newState, this.validateForm);
+  }
+  handleChange(event) {
+    let newFieldState = Object.assign(this.state[event.target.id]);
+    newFieldState.value = event.target.value;
+    this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+  }
+  validateForm() {
+    const wordPatt = /[^\w\s]/g;
+    const numPatt = /[^\d.]/g;
+    let name = Object.assign(this.state.name);
+    let amount = Object.assign(this.state.amount);
+    let remainingAmount = Object.assign(this.state.remainingAmount);
+    let notes = Object.assign(this.state.notes);
+    name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
+    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
+    remainingAmount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
+    notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
+    this.setState({ name, amount, remainingAmount, notes });
   }
   componentDidMount() {
+    this.getAllLocations();
+    this.getAllUnits();
+    this.getAllCategories();
     this.getGroceryItemDetails();
   }
   render() {

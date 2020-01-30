@@ -101,7 +101,7 @@ class GroceryFormAdvanced extends React.Component {
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
     amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
     notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
-    this.setState({ name, amount });
+    this.setState({ name, amount, notes });
   }
   async handleSubmit(event) {
     event.preventDefault();
