@@ -1,58 +1,22 @@
 import React from 'react';
 import GroceryDetails from './groceryDetails';
-// import UpdateField from './updateField';
 
 class Grade extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // editing: false,
+      editing: false,
       details: false,
+      prevDetails: false,
       name: props.name,
       amount: `${props.amount} ${props.unit}`,
       location: props.location
     };
-    // this.initialInfo = { name: props.name, course: props.course, grade: props.grade };
     this.id = props.id;
     this.onDelete = props.onDelete;
-    // this.onUpdate = props.onUpdate;
-    // this.resetInfo = this.resetInfo.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleDetails = this.toggleDetails.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
   }
-  // resetInfo() {
-  //   let newState = {
-  //     editing: false,
-  //     name: Object.assign(this.state.name),
-  //     course: Object.assign(this.state.course),
-  //     grade: Object.assign(this.state.grade),
-  //     error: ''
-  //   };
-  //   for (const field in newState) {
-  //     if (field === 'editing' || field === 'error') {
-  //       continue;
-  //     }
-  //     newState[field].value = this.initialInfo[field];
-  //     newState[field].isValid = true;
-  //   }
-  //   this.setState(newState);
-  // }
-  // handleChange(event) {
-  //   let newFieldState = Object.assign(this.state[event.target.id]);
-  //   newFieldState.value = event.target.value;
-  //   this.setState({ newFieldState }, this.validateForm);
-  // }
-  // validateForm() {
-  //   const wordPatt = /[^\w\s]/g;
-  //   const numPatt = /[^\d.]/g;
-  //   let name = Object.assign(this.state.name);
-  //   let course = Object.assign(this.state.course);
-  //   let grade = Object.assign(this.state.grade);
-  //   name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
-  //   course.isValid = !(wordPatt.test(course.value) || course.value.length < 2 || course.value.length > 60);
-  //   grade.isValid = !(numPatt.test(grade.value) || isNaN(Number(grade.value)) || Number(grade.value) < 0 || Number(grade.value) > 200);
-  //   this.setState({ name, course, grade });
-  // }
   // async handleSubmit() {
   //   if (this.state.name.isValid && this.state.course.isValid && this.state.grade.isValid) {
   //     const grade = {
@@ -77,29 +41,20 @@ class Grade extends React.Component {
   //     }
   //   }
   // }
+  toggleDetails() {
+    if (!this.state.editing) {
+      this.setState({ details: !this.state.details });
+    }
+  }
+  toggleEdit() {
+    if (this.state.editing) {
+      this.setState({ editing: false, details: this.state.prevDetails });
+    } else {
+      this.setState({ editing: true, details: true, prevDetails: this.state.details });
+    }
+  }
   render() {
     let infoElems;
-    // if (this.state.error === '') {
-    //   errorClass = 'd-none';
-    // } else {
-    //   errorClass = '';
-    // }
-    // if (!this.state.name.isValid || !this.state.course.isValid || !this.state.grade.isValid) {
-    //   disabledClass = 'disabled';
-    // } else {
-    //   disabledClass = '';
-    // }
-    // if (this.state.editing) {
-    //   btnElems = [
-    //     <button onClick={ this.handleSubmit } key='confirm' className={`btn btn-success mr-1 ${disabledClass}`}>Confirm</button>,
-    //     <button onClick={this.resetInfo} key='cancel' className='btn btn-secondary mr-1'>Cancel</button>
-    //   ];
-    //   infoElems = [
-    //     <UpdateField key='name' id='name' handleChange={this.handleChange} field={this.state.name}/>,
-    //     <UpdateField key='course' id='course' handleChange={this.handleChange} field={this.state.course}/>,
-    //     <UpdateField key='grade' id='grade' handleChange={this.handleChange} field={this.state.grade}/>
-    //   ];
-    // } else {
     if (this.state.details) {
       infoElems = (<GroceryDetails id={this.id}/>);
     } else {
@@ -109,20 +64,26 @@ class Grade extends React.Component {
         <td key='location'>{this.state.location}</td>
       ];
     }
-    // }
     return (
       <tr>
         {infoElems}
         <td>
           <div className='row'>
-            {/* <div className={'alert alert-danger w-100 ' + errorClass}>{this.state.error}</div> */}
-            <div className='col-12 col-lg-6 my-1'>
-              <button onClick={() => this.setState({ details: !this.state.details })} key='details' className='btn btn-primary w-100'>
-                {this.state.details ? '- Less' : '+ More'}
+            <div className='col-12 col-lg-4 my-1'>
+              <button
+                onClick={this.toggleDetails}
+                className={`btn btn-info w-100 ${this.state.editing ? 'disabled' : ''}`}
+              >
+                {this.state.details ? 'Less' : 'More'}
               </button>
             </div>
-            <div className='col-12 col-lg-6 my-1'>
-              <button onClick={() => this.onDelete(this.id) } key='delete' className='btn btn-danger w-100'>X</button>
+            <div className='col-12 col-lg-5 my-1'>
+              <button onClick={this.toggleEdit} className='btn btn-outline-info w-100'>
+                {this.state.editing ? 'Clear' : 'Edit'}
+              </button>
+            </div>
+            <div className='col-12 col-lg-3 my-1'>
+              <button onClick={() => this.onDelete(this.id) } className='btn btn-danger w-100'>X</button>
             </div>
           </div>
         </td>
