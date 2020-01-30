@@ -57,10 +57,7 @@ class GroceryFormAdvanced extends React.Component {
   }
   getCurrentDate() {
     const date = new Date();
-    const formattedDate =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')}`;
+    const formattedDate = date.toISOString().substring(0, 10);
     return formattedDate;
   }
   getAllLocations() {

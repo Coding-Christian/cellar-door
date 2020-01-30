@@ -62,8 +62,8 @@ server.get('/api/groceries/:id', async (req, res) => {
           'unit': results[0].unitName,
           'unitId': results[0].amountUnitId
         },
-        'purchaseDate': results[0].purchaseDate,
-        'expirationDate': results[0].expirationDate,
+        'purchaseDate': results[0].purchaseDate.toISOString().substring(0, 10),
+        'expirationDate': results[0].expirationDate.toISOString().substring(0, 10),
         'location': {
           'id': results[0].locationId,
           'name': results[0].locationName,

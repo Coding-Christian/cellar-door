@@ -85,7 +85,50 @@ class GroceryEdit extends React.Component {
     this.getGroceryItemDetails();
   }
   render() {
-    return null;
+    return (
+      <td colSpan="3" className='text-center'>
+        <div className="row py-1">
+          <div className="col-4">
+            <h6>Name:</h6>
+            {this.state.name.value}
+          </div>
+          <div className="col-4">
+            <h6>Initial Amount:</h6>
+            {this.state.amount.value}
+          </div>
+          <div className="col-4">
+            <h6>Remaining Amount:</h6>
+            {this.state.remainingAmount.value}
+          </div>
+        </div>
+        <hr/>
+        <div className="row py-1">
+          <div className="col-4">
+            <h6>Category:</h6>
+            {this.state.category.value}
+          </div>
+          <div className="col-4">
+            <h6>Purchase Date:</h6>
+            {this.state.purchaseDate.value}
+          </div>
+          <div className="col-4">
+            <h6>Expiration Date:</h6>
+            {this.state.expirationDate.value}
+          </div>
+        </div>
+        <hr/>
+        <div className="row py-1">
+          <div title='' className="col-6">
+            <h6>Location:</h6>
+            {this.state.location.value}
+          </div>
+          <div className="col-6">
+            <h6>Notes:</h6>
+            {this.state.notes.value}
+          </div>
+        </div>
+      </td>
+    );
   }
 }
 

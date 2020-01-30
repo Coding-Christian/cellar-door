@@ -26,8 +26,8 @@ class GroceryDetails extends React.Component {
   }
   render() {
     const unit = this.state.groceryItem.amount.unit;
-    const purchaseDate = this.state.groceryItem.purchaseDate.substring(0, 10);
-    const expirationDate = this.state.groceryItem.expirationDate.substring(0, 10);
+    const purchaseDate = this.state.groceryItem.purchaseDate;
+    const expirationDate = this.state.groceryItem.expirationDate;
     return (
       <td colSpan="3" className='text-center'>
         <div className="row py-1">
