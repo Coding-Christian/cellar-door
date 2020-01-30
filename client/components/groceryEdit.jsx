@@ -71,10 +71,10 @@ class GroceryEdit extends React.Component {
       notes: Object.assign(this.state.notes)
     };
     newState.name.value = groceryItem.name;
-    newState.category.value = groceryItem.category;
+    newState.category.value = groceryItem.category.id;
     newState.amount.value = groceryItem.amount.initial;
     newState.remainingAmount.value = groceryItem.amount.quantity;
-    newState.unit.value = groceryItem.amount.unit;
+    newState.unit.value = groceryItem.amount.unitId;
     newState.purchaseDate.value = groceryItem.purchaseDate;
     newState.expirationDate.value = groceryItem.expirationDate;
     newState.location.value = groceryItem.location.id;

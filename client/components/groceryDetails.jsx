@@ -6,9 +6,9 @@ class GroceryDetails extends React.Component {
     this.state = {
       groceryItem: {
         name: '',
-        category: '',
-        location: { id: '', name: '', description: '' },
-        amount: { initial: '', quantity: '', unit: '' },
+        category: { id: null, name: '' },
+        location: { id: null, name: '', description: '' },
+        amount: { initial: '', quantity: '', unit: '', unitId: null },
         purchaseDate: '',
         expirationDate: '',
         notes: ''
@@ -48,7 +48,7 @@ class GroceryDetails extends React.Component {
         <div className="row py-1">
           <div className="col-4">
             <h6>Category:</h6>
-            {this.state.groceryItem.category}
+            {this.state.groceryItem.category.name}
           </div>
           <div className="col-4">
             <h6>Purchase Date:</h6>
