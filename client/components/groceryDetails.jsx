@@ -7,7 +7,7 @@ class GroceryDetails extends React.Component {
       groceryItem: {
         name: '',
         category: '',
-        location: { name: '', description: '' },
+        location: { id: '', name: '', description: '' },
         amount: { initial: '', quantity: '', unit: '' },
         purchaseDate: '',
         expirationDate: '',

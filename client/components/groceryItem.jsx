@@ -1,5 +1,6 @@
 import React from 'react';
 import GroceryDetails from './groceryDetails';
+import GroceryEdit from './groceryEdit';
 
 class Grade extends React.Component {
   constructor(props) {
@@ -55,7 +56,9 @@ class Grade extends React.Component {
   }
   render() {
     let infoElems;
-    if (this.state.details) {
+    if (this.state.editing) {
+      infoElems = (<GroceryEdit id={this.id}/>);
+    } else if (this.state.details) {
       infoElems = (<GroceryDetails id={this.id}/>);
     } else {
       infoElems = [

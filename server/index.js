@@ -61,6 +61,7 @@ server.get('/api/groceries/:id', async (req, res) => {
         'purchaseDate': results[0].purchaseDate,
         'expirationDate': results[0].expirationDate,
         'location': {
+          'id': results[0].locationId,
           'name': results[0].locationName,
           'description': results[0].description
         },
