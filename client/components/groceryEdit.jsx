@@ -52,6 +52,7 @@ class GroceryEdit extends React.Component {
       }
     };
     this.id = props.id;
+    this.handleChange = this.handleChange.bind(this);
   }
   getGroceryItemDetails() {
     fetch(`/api/groceries/${this.id}`)
@@ -133,46 +134,121 @@ class GroceryEdit extends React.Component {
     this.getGroceryItemDetails();
   }
   render() {
+    const categoryOptions = this.state.category.options.map(option => (
+      <option key={option.id} value={option.id}>{option.name}</option>
+    ));
+    const locationOptions = this.state.location.options.map(option => (
+      <option key={option.id} value={option.id}>{option.name}</option>
+    ));
+    const unitOptions = this.state.unit.options.map(option => (
+      <option key={option.id} value={option.id}>{option.name}</option>
+    ));
     return (
       <td colSpan="3" className='text-center'>
         <div className="row py-1">
           <div className="col-4">
             <h6>Name:</h6>
-            {this.state.name.value}
+            <input
+              onChange={this.handleChange}
+              placeholder={this.state.name.title}
+              value={this.state.name.value}
+              className={`form-control ${this.state.name.isValid ? 'is-valid' : 'is-invalid'}`}
+              type='text'
+              id='name'
+              required
+            />
           </div>
           <div className="col-4">
             <h6>Initial Amount:</h6>
-            {this.state.amount.value}
+            <input
+              onChange={this.handleChange}
+              placeholder={this.state.amount.title}
+              value={this.state.amount.value}
+              className={`form-control ${this.state.amount.isValid ? 'is-valid' : 'is-invalid'}`}
+              type='text'
+              id='amount'
+              required
+            />
+            <select
+              onChange={this.handleChange}
+              value={this.state.unit.value}
+              className={`form-control`}
+              id='unit'
+            >
+              {unitOptions}
+            </select>
           </div>
           <div className="col-4">
             <h6>Remaining Amount:</h6>
-            {this.state.remainingAmount.value}
+            <input
+              onChange={this.handleChange}
+              placeholder={this.state.remainingAmount.title}
+              value={this.state.remainingAmount.value}
+              className={`form-control ${this.state.remainingAmount.isValid ? 'is-valid' : 'is-invalid'}`}
+              type='text'
+              id='remainingAmount'
+              required
+            />
           </div>
         </div>
         <hr/>
         <div className="row py-1">
           <div className="col-4">
             <h6>Category:</h6>
-            {this.state.category.value}
+            <select
+              onChange={this.handleChange}
+              value={this.state.category.value}
+              className={`form-control`}
+              id='category'
+            >
+              {categoryOptions}
+            </select>
           </div>
           <div className="col-4">
             <h6>Purchase Date:</h6>
-            {this.state.purchaseDate.value}
+            <input
+              type="date"
+              onChange={this.handleChange}
+              value={this.state.purchaseDate.value}
+              className={`form-control`}
+              id='purchaseDate'
+            />
           </div>
           <div className="col-4">
             <h6>Expiration Date:</h6>
-            {this.state.expirationDate.value}
+            <input
+              type="date"
+              onChange={this.handleChange}
+              value={this.state.expirationDate.value}
+              className={`form-control`}
+              id='expirationDate'
+            />
           </div>
         </div>
         <hr/>
         <div className="row py-1">
           <div title='' className="col-6">
             <h6>Location:</h6>
-            {this.state.location.value}
+            <select
+              onChange={this.handleChange}
+              value={this.state.location.value}
+              className={`form-control`}
+              id='location'
+            >
+              {locationOptions}
+            </select>
           </div>
           <div className="col-6">
             <h6>Notes:</h6>
-            {this.state.notes.value}
+            <input
+              onChange={this.handleChange}
+              placeholder={this.state.notes.title}
+              value={this.state.notes.value}
+              className={`form-control ${this.state.notes.isValid ? 'is-valid' : 'is-invalid'}`}
+              type='text'
+              id='notes'
+              required
+            />
           </div>
         </div>
       </td>
