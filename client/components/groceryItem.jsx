@@ -68,7 +68,7 @@ class GroceryItem extends React.Component {
         {infoElems}
         <td>
           <div className='row'>
-            <div className='col-12 col-lg-4 my-1'>
+            <div className='col-12 col-xl-4 my-1'>
               <button
                 onClick={this.toggleDetails}
                 className={`btn btn-info w-100 ${this.state.editing ? 'disabled' : ''}`}
@@ -76,12 +76,12 @@ class GroceryItem extends React.Component {
                 {this.state.details ? 'Less' : 'More'}
               </button>
             </div>
-            <div className='col-12 col-lg-4 my-1'>
+            <div className='col-12 col-xl-4 my-1'>
               <button onClick={this.toggleEdit} className='btn btn-outline-info w-100'>
                 {this.state.editing ? 'Cancel' : 'Edit'}
               </button>
             </div>
-            <div className='col-12 col-lg-4 my-1'>
+            <div className='col-12 col-xl-4 my-1'>
               <button onClick={this.handleDelete} className={`btn btn-danger w-100 ${this.state.editing ? 'disabled' : ''}`}>
                 Delete
               </button>
