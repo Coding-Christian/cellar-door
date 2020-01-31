@@ -52,15 +52,20 @@ server.get('/api/groceries/:id', async (req, res) => {
       res.status(200).send({
         'id': results[0].id,
         'name': results[0].itemName,
-        'category': results[0].categoryName,
+        'category': {
+          'id': results[0].categoryId,
+          'name': results[0].categoryName
+        },
         'amount': {
           'initial': results[0].amount,
           'quantity': results[0].remainingAmount,
-          'unit': results[0].unitName
+          'unit': results[0].unitName,
+          'unitId': results[0].amountUnitId
         },
-        'purchaseDate': results[0].purchaseDate,
-        'expirationDate': results[0].expirationDate,
+        'purchaseDate': results[0].purchaseDate.toISOString().substring(0, 10),
+        'expirationDate': results[0].expirationDate.toISOString().substring(0, 10),
         'location': {
+          'id': results[0].locationId,
           'name': results[0].locationName,
           'description': results[0].description
         },

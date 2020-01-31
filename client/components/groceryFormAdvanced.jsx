@@ -46,6 +46,7 @@ class GroceryFormAdvanced extends React.Component {
       notes: {
         title: 'Notes',
         value: '',
+        isValid: true,
         error: 'Notes must be limited to 256 alphanumeric characters'
       }
     };
@@ -57,10 +58,7 @@ class GroceryFormAdvanced extends React.Component {
   }
   getCurrentDate() {
     const date = new Date();
-    const formattedDate =
-      `${date.getFullYear()}-` +
-      `${(date.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${date.getDate().toString().padStart(2, '0')}`;
+    const formattedDate = date.toISOString().substring(0, 10);
     return formattedDate;
   }
   getAllLocations() {
@@ -104,7 +102,7 @@ class GroceryFormAdvanced extends React.Component {
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
     amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
     notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
-    this.setState({ name, amount });
+    this.setState({ name, amount, notes });
   }
   async handleSubmit(event) {
     event.preventDefault();

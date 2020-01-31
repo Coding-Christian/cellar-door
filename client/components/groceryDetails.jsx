@@ -6,9 +6,9 @@ class GroceryDetails extends React.Component {
     this.state = {
       groceryItem: {
         name: '',
-        category: '',
-        location: { name: '', description: '' },
-        amount: { initial: '', quantity: '', unit: '' },
+        category: { id: null, name: '' },
+        location: { id: null, name: '', description: '' },
+        amount: { initial: '', quantity: '', unit: '', unitId: null },
         purchaseDate: '',
         expirationDate: '',
         notes: ''
@@ -26,8 +26,8 @@ class GroceryDetails extends React.Component {
   }
   render() {
     const unit = this.state.groceryItem.amount.unit;
-    const purchaseDate = this.state.groceryItem.purchaseDate.substring(0, 10);
-    const expirationDate = this.state.groceryItem.expirationDate.substring(0, 10);
+    const purchaseDate = this.state.groceryItem.purchaseDate;
+    const expirationDate = this.state.groceryItem.expirationDate;
     return (
       <td colSpan="3" className='text-center'>
         <div className="row py-1">
@@ -48,7 +48,7 @@ class GroceryDetails extends React.Component {
         <div className="row py-1">
           <div className="col-4">
             <h6>Category:</h6>
-            {this.state.groceryItem.category}
+            {this.state.groceryItem.category.name}
           </div>
           <div className="col-4">
             <h6>Purchase Date:</h6>

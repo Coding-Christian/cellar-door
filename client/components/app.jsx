@@ -13,7 +13,7 @@ class App extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
-    // this.updateGrade = this.updateGrade.bind(this);
+    this.updateGroceryItem = this.updateGroceryItem.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
   }
   getAllGroceries() {
@@ -36,21 +36,19 @@ class App extends React.Component {
       return 503;
     }
   }
-  // async updateGrade(grade) {
-  //   const config = {
-  //     method: 'PATCH',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(grade)
-  //   };
-  //   try {
-  //     const response = await fetch(`/api/grades/${grade.id}`, config);
-  //     this.getAllGrades();
-  //     return response.status;
-  //   } catch {
-  //     this.getAllGrades();
-  //     return 503;
-  //   }
-  // }
+  async updateGroceryItem(groceryItem) {
+    const config = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(groceryItem)
+    };
+    try {
+      const response = await fetch(`/api/groceries`, config);
+      return response.status;
+    } catch {
+      return 503;
+    }
+  }
   deleteGroceryItem(groceryItemId) {
     fetch(`/api/groceries/${groceryItemId}`, { method: 'DELETE' })
       .then(() => {
@@ -74,7 +72,11 @@ class App extends React.Component {
       <Header title='Cellar Door'/>
       <div className="sgt container mt-2">
         <div className="row">
-          <GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGrade} groceries={this.state.groceries}/>
+          <GroceryTable
+            onDelete={this.deleteGroceryItem}
+            onUpdate={this.updateGroceryItem}
+            groceries={this.state.groceries}
+          />
           {this.state.advancedForm
             ? <GroceryFormAdvanced onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
             : <GroceryFormSimple onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
