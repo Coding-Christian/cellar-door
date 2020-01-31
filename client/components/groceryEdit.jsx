@@ -48,11 +48,15 @@ class GroceryEdit extends React.Component {
       notes: {
         title: 'Notes',
         value: '',
+        isValid: true,
         error: 'Notes must be limited to 256 alphanumeric characters'
       }
     };
     this.id = props.id;
+    this.onUpdate = props.onUpdate;
+    this.updateInfo = props.updateInfo;
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   getGroceryItemDetails() {
     fetch(`/api/groceries/${this.id}`)
@@ -126,6 +130,29 @@ class GroceryEdit extends React.Component {
     remainingAmount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
     notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
     this.setState({ name, amount, remainingAmount, notes });
+  }
+  async handleSubmit() {
+    if (this.state.name.isValid && this.state.amount.isValid && this.state.remainingAmount.isValid && this.state.notes.isValid) {
+      const groceryItem = {
+        id: this.id,
+        name: this.state.name.value,
+        category: this.state.category.value,
+        amount: this.state.amount.value,
+        amountRemaining: this.state.remainingAmount.value,
+        unit: this.state.unit.value,
+        purchaseDate: this.state.purchaseDate.value,
+        expirationDate: this.state.expirationDate.value,
+        location: this.state.location.value,
+        notes: this.state.notes.value
+      };
+      const status = await this.onUpdate(groceryItem);
+      if (status < 300) {
+        const location = this.state.location.options.find(option => option.id === this.state.location.value);
+        this.updateInfo(this.state.name.value, this.state.remainingAmount.value, location.name);
+      } else {
+        this.setState({ error: 'Could not reach server. Please try again.' });
+      }
+    }
   }
   componentDidMount() {
     this.getAllLocations();
@@ -227,7 +254,7 @@ class GroceryEdit extends React.Component {
         </div>
         <hr/>
         <div className="row py-1">
-          <div title='' className="col-12 col-lg-6">
+          <div title='' className="col-12 col-lg-4">
             <h6>Location:</h6>
             <select
               onChange={this.handleChange}
@@ -238,7 +265,7 @@ class GroceryEdit extends React.Component {
               {locationOptions}
             </select>
           </div>
-          <div className="col-12 col-lg-6">
+          <div className="col-12 col-lg-4">
             <h6>Notes:</h6>
             <input
               onChange={this.handleChange}
@@ -249,6 +276,9 @@ class GroceryEdit extends React.Component {
               id='notes'
               required
             />
+          </div>
+          <div className='col-12 col-lg-4'>
+            <button onClick={this.handleSubmit} className='btn btn-success w-100'>Update</button>
           </div>
         </div>
       </td>

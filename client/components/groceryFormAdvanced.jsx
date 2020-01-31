@@ -46,6 +46,7 @@ class GroceryFormAdvanced extends React.Component {
       notes: {
         title: 'Notes',
         value: '',
+        isValid: true,
         error: 'Notes must be limited to 256 alphanumeric characters'
       }
     };
