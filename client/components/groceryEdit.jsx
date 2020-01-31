@@ -147,7 +147,7 @@ class GroceryEdit extends React.Component {
       };
       const status = await this.onUpdate(groceryItem);
       if (status < 300) {
-        const location = this.state.location.options.find(option => option.id === this.state.location.value);
+        const location = this.state.location.options.find(option => option.id === Number(this.state.location.value));
         this.updateInfo(this.state.name.value, this.state.remainingAmount.value, location.name);
       } else {
         this.setState({ error: 'Could not reach server. Please try again.' });
