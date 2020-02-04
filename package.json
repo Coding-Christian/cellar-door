@@ -1,5 +1,5 @@
 {
-  "name": "sgt-react",
+  "name": "cellar-door",
   "version": "1.0.0",
   "description": "The Student Grade Table: Written in React",
   "main": "server/index.js",
