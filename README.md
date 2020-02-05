@@ -1,4 +1,4 @@
-`# Cellar Door
+# Cellar Door
 A Full-Stack, React/Node based web application for shoppers who want to keep track of their groceries
 
 ## Technologies Utilized
