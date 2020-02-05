@@ -125,6 +125,7 @@ class GroceryFormSimple extends React.Component {
   componentDidMount() {
     this.getAllLocations();
     this.getAllUnits();
+    this.validateForm();
   }
   render() {
     let disabledClass = '';
