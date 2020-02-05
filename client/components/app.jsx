@@ -9,12 +9,24 @@ class App extends React.Component {
     super(props);
     this.state = {
       advancedForm: false,
-      groceries: []
+      groceries: [],
+      formValues: {
+        name: '',
+        amount: '',
+        unit: 1,
+        location: 1,
+        category: 1,
+        purchaseDate: '1900-01-01',
+        expirationDate: '1900-01-01',
+        notes: ''
+      },
+      formIsValid: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
+    this.changeFormStatus = this.changeFormStatus.bind(this);
   }
   getAllGroceries() {
     fetch('/api/groceries')
@@ -60,8 +72,14 @@ class App extends React.Component {
     const newGrocery = { name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes };
     return this.addNewGrocery(newGrocery);
   }
-  toggleForm() {
-    this.setState({ advancedForm: !this.state.advancedForm });
+  toggleForm(formValues) {
+    this.setState(
+      { formValues },
+      this.setState({ advancedForm: !this.state.advancedForm })
+    );
+  }
+  changeFormStatus(status) {
+    this.setState({ formIsValid: status });
   }
   componentDidMount() {
     this.getAllGroceries();
@@ -78,8 +96,18 @@ class App extends React.Component {
             groceries={this.state.groceries}
           />
           {this.state.advancedForm
-            ? <GroceryFormAdvanced onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
-            : <GroceryFormSimple onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
+            ? <GroceryFormAdvanced
+              onSubmit={this.handleSubmit}
+              toggleForm={this.toggleForm}
+              formValues={this.state.formValues}
+              changeFormStatus={this.changeFormStatus}
+            />
+            : <GroceryFormSimple
+              onSubmit={this.handleSubmit}
+              toggleForm={this.toggleForm}
+              formValues={this.state.formValues}
+              changeFormStatus={this.changeFormStatus}
+            />
           }
         </div>
       </div>

@@ -8,32 +8,38 @@ class GroceryFormSimple extends React.Component {
     this.state = {
       name: {
         title: 'Name',
-        value: '',
+        value: props.formValues.name,
         isValid: false,
         error: 'Name must be between 2 and 60 alphanumeric characters'
       },
       amount: {
         title: 'Amount',
-        value: '',
+        value: props.formValues.amount,
         isValid: false,
         error: 'Please enter a valid number for the amount'
       },
       unit: {
         title: 'Unit',
-        value: '1',
+        value: props.formValues.unit,
         options: []
       },
       location: {
         title: 'Location',
-        value: '1',
+        value: props.formValues.location,
         options: []
-      }
+      },
+      category: { value: props.formValues.category },
+      purchaseDate: { value: props.formValues.purchaseDate },
+      expirationDate: { value: props.formValues.expirationDate },
+      notes: { value: props.formValues.notes }
     };
     this.toggleForm = props.toggleForm;
     this.onSubmit = props.onSubmit;
+    this.changeFormStatus = props.changeFormStatus;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
   }
   getAllLocations() {
     fetch('/api/locations')
@@ -65,8 +71,10 @@ class GroceryFormSimple extends React.Component {
     let name = Object.assign(this.state.name);
     let amount = Object.assign(this.state.amount);
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
-    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
-    this.setState({ name, amount });
+    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) <= 0);
+    this.setState({ name, amount }, () => {
+      this.changeFormStatus(this.state.name.isValid && this.state.amount.isValid);
+    });
   }
   async handleSubmit(event) {
     event.preventDefault();
@@ -107,11 +115,20 @@ class GroceryFormSimple extends React.Component {
     this.setState(newState, () => {
       this.getAllLocations();
       this.getAllUnits();
+      this.validateForm();
     });
+  }
+  handleToggle() {
+    let formValues = {};
+    for (const field in this.state) {
+      formValues[field] = this.state[field].value;
+    }
+    this.toggleForm(formValues);
   }
   componentDidMount() {
     this.getAllLocations();
     this.getAllUnits();
+    this.validateForm();
   }
   render() {
     let disabledClass = '';
@@ -126,7 +143,7 @@ class GroceryFormSimple extends React.Component {
           <SelectField handleChange={this.handleChange} id='unit' field={this.state.unit} faClass='fas fa-ruler-combined'/>
           <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
         </div>
-        <button type='button' onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>+ Advanced Options</button>
+        <button type='button' onClick={this.handleToggle} className='btn btn-link align-self-end px-0 mb-1'>+ Advanced Options</button>
         <div>
           <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
           <button type='button' onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'>Clear</button>

@@ -10,51 +10,51 @@ class GroceryFormAdvanced extends React.Component {
     this.state = {
       name: {
         title: 'Name',
-        value: '',
+        value: props.formValues.name,
         isValid: false,
         error: 'Name must be between 2 and 60 alphanumeric characters'
       },
       amount: {
         title: 'Amount',
-        value: '',
+        value: props.formValues.amount,
         isValid: false,
         error: 'Please enter a valid number for the amount'
       },
       unit: {
         title: 'Unit',
-        value: '1',
+        value: props.formValues.unit,
         options: []
       },
       location: {
         title: 'Location',
-        value: '1',
+        value: props.formValues.location,
         options: []
       },
       category: {
         title: 'Category',
-        value: '1',
+        value: props.formValues.category,
         options: []
       },
       purchaseDate: {
         title: 'Purchase Date',
-        value: this.getCurrentDate()
+        value: (props.formValues.purchaseDate.length ? props.formValues.purchaseDate : this.getCurrentDate())
       },
       expirationDate: {
         title: 'Expiration Date',
-        value: this.getCurrentDate()
+        value: (props.formValues.expirationDate.length ? props.formValues.expirationDate : this.getCurrentDate())
       },
       notes: {
         title: 'Notes',
-        value: '',
-        isValid: true,
-        error: 'Notes must be limited to 256 alphanumeric characters'
+        value: props.formValues.notes
       }
     };
     this.toggleForm = props.toggleForm;
     this.onSubmit = props.onSubmit;
+    this.changeFormStatus = props.changeFormStatus;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
   }
   getCurrentDate() {
     const date = new Date();
@@ -100,9 +100,10 @@ class GroceryFormAdvanced extends React.Component {
     let amount = Object.assign(this.state.amount);
     let notes = Object.assign(this.state.notes);
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
-    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
-    notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
-    this.setState({ name, amount, notes });
+    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) <= 0);
+    this.setState({ name, amount, notes }, () => {
+      this.changeFormStatus(this.state.name.isValid && this.state.amount.isValid);
+    });
   }
   async handleSubmit(event) {
     event.preventDefault();
@@ -153,11 +154,18 @@ class GroceryFormAdvanced extends React.Component {
       this.getAllCategories();
     });
   }
+  handleToggle() {
+    const formValues = {};
+    for (const field in this.state) {
+      formValues[field] = this.state[field].value;
+    }
+    this.toggleForm(formValues);
+  }
   componentDidMount() {
-    this.getCurrentDate();
     this.getAllLocations();
     this.getAllUnits();
     this.getAllCategories();
+    this.validateForm();
   }
   render() {
     let disabledClass = '';
@@ -176,7 +184,7 @@ class GroceryFormAdvanced extends React.Component {
           <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
           <TextField handleChange={this.handleChange} id='notes' field = {this.state.notes} faClass='fas fa-sticky-note'/>
         </div>
-        <button type='button' onClick={this.toggleForm} className='btn btn-link align-self-end px-0 mb-1'>- Advanced Options</button>
+        <button type='button' onClick={this.handleToggle} className='btn btn-link align-self-end px-0 mb-1'>- Advanced Options</button>
         <div>
           <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
           <button type='button' onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'>Clear</button>
