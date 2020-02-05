@@ -4,7 +4,7 @@ import SelectField from './selectField';
 import DateField from './dateField';
 import TextField from './textField';
 
-class GroceryFormAdvanced extends React.Component {
+class GroceryForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,12 +45,11 @@ class GroceryFormAdvanced extends React.Component {
       },
       notes: {
         title: 'Notes',
-        value: props.formValues.notes
+        value: ''
       },
       advancedView: false
     };
     this.onSubmit = props.onSubmit;
-    this.changeFormStatus = props.changeFormStatus;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
@@ -101,9 +100,7 @@ class GroceryFormAdvanced extends React.Component {
     let notes = Object.assign(this.state.notes);
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
     amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) <= 0);
-    this.setState({ name, amount, notes }, () => {
-      this.changeFormStatus(this.state.name.isValid && this.state.amount.isValid);
-    });
+    this.setState({ name, amount, notes });
   }
   async handleSubmit(event) {
     event.preventDefault();
@@ -120,7 +117,8 @@ class GroceryFormAdvanced extends React.Component {
         this.state.notes.value
       );
       if (status < 300) {
-        this.toggleForm();
+        this.handleClear();
+        this.handleToggle();
       } else {
         this.setState({ error: 'Could not reach server. Please try again.' });
       }
@@ -144,8 +142,8 @@ class GroceryFormAdvanced extends React.Component {
         newState[property].isValid = false;
       } else if (property === 'category' || property === 'unit' || property === 'location') {
         newState[property].value = '1';
-      } else if (property === 'pruchaseDate' || property === 'expirationDate') {
-        newState[property].value = '';
+      } else if (property === 'purchaseDate' || property === 'expirationDate') {
+        newState[property].value = this.getCurrentDate();
       }
     }
     this.setState(newState, () => {
@@ -195,4 +193,4 @@ class GroceryFormAdvanced extends React.Component {
   }
 }
 
-export default GroceryFormAdvanced;
+export default GroceryForm;

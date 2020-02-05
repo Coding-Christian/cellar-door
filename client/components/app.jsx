@@ -1,29 +1,15 @@
 import React from 'react';
 import Header from './header';
 import GroceryTable from './groceryTable';
-import GroceryFormAdvanced from './groceryFormAdvanced';
+import GroceryForm from './groceryForm';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      groceries: [],
-      formValues: {
-        name: '',
-        amount: '',
-        unit: 1,
-        location: 1,
-        category: 1,
-        purchaseDate: '1900-01-01',
-        expirationDate: '1900-01-01',
-        notes: ''
-      },
-      formIsValid: false
-    };
+    this.state = { groceries: [] };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
-    this.changeFormStatus = this.changeFormStatus.bind(this);
   }
   getAllGroceries() {
     fetch('/api/groceries')
@@ -69,9 +55,6 @@ class App extends React.Component {
     const newGrocery = { name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes };
     return this.addNewGrocery(newGrocery);
   }
-  changeFormStatus(status) {
-    this.setState({ formIsValid: status });
-  }
   componentDidMount() {
     this.getAllGroceries();
   }
@@ -86,7 +69,7 @@ class App extends React.Component {
             onUpdate={this.updateGroceryItem}
             groceries={this.state.groceries}
           />
-          <GroceryFormAdvanced
+          <GroceryForm
             onSubmit={this.handleSubmit}
             toggleForm={this.toggleForm}
             formValues={this.state.formValues}
