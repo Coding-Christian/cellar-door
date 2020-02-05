@@ -1,86 +1,83 @@
 import React from 'react';
 import Header from './header';
-import GradeTable from './gradeTable';
-import GradeForm from './gradeForm';
+import GroceryTable from './groceryTable';
+import GroceryForm from './groceryForm';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { grades: [], error: '' };
+    this.state = { groceries: [] };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.deleteGrade = this.deleteGrade.bind(this);
-    this.updateGrade = this.updateGrade.bind(this);
+    this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
+    this.updateGroceryItem = this.updateGroceryItem.bind(this);
   }
-  getAllGrades() {
-    fetch('/api/grades')
+  getAllGroceries() {
+    fetch('/api/groceries')
       .then(response => response.json())
-      .then(grades => this.setState({ grades }))
-      .catch(error => this.setState({ error }));
+      .then(groceries => this.setState({ groceries }));
   }
-  async addNewGrade(grade) {
+  async addNewGrocery(grocery) {
     const config = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(grade)
+      body: JSON.stringify(grocery)
     };
     try {
-      const response = await fetch('/api/grades', config);
-      this.getAllGrades();
+      const response = await fetch('/api/groceries', config);
+      this.getAllGroceries();
       return response.status;
     } catch {
-      this.getAllGrades();
+      this.getAllGroceries();
       return 503;
     }
   }
-  async updateGrade(grade) {
+  async updateGroceryItem(groceryItem) {
     const config = {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(grade)
+      body: JSON.stringify(groceryItem)
     };
     try {
-      const response = await fetch(`/api/grades/${grade.id}`, config);
-      this.getAllGrades();
+      const response = await fetch(`/api/groceries`, config);
       return response.status;
     } catch {
-      this.getAllGrades();
       return 503;
     }
   }
-  deleteGrade(gradeId) {
-    fetch(`/api/grades/${gradeId}`, { method: 'DELETE' })
+  deleteGroceryItem(groceryItemId) {
+    fetch(`/api/groceries/${groceryItemId}`, { method: 'DELETE' })
       .then(() => {
-        const grades = this.state.grades.filter(grade => !(grade.id === gradeId));
-        this.setState({ grades }, this.getAllGrades);
-      })
-      .catch(error => this.setState({ error }));
+        const groceries = this.state.groceries.filter(grocery => !(grocery.id === groceryItemId));
+        this.setState({ groceries }, this.getAllGroceries);
+      });
   }
-
-  getAverageGrade() {
-    const grades = this.state.grades;
-    if (grades.length === 0) { return 0; }
-    let total = 0;
-    for (let grade of grades) {
-      total += grade.grade;
-    }
-    return Math.round(total / grades.length);
-  }
-  handleSubmit(name, course, grade) {
-    const newGrade = { name, course, grade };
-    return this.addNewGrade(newGrade);
+  handleSubmit(name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes) {
+    const newGrocery = { name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes };
+    return this.addNewGrocery(newGrocery);
   }
   componentDidMount() {
-    this.getAllGrades();
+    this.getAllGroceries();
   }
   render() {
     return (
+      <>
+      <Header title='Cellar Door'/>
       <div className="sgt container mt-2">
-        <Header title='Student Grade Table' averageGrade={this.getAverageGrade()}/>
         <div className="row">
-          <GradeTable onDelete={this.deleteGrade} onUpdate={this.updateGrade} grades={this.state.grades}/>
-          <GradeForm onSubmit={this.handleSubmit}/>
+          <GroceryTable
+            onDelete={this.deleteGroceryItem}
+            onUpdate={this.updateGroceryItem}
+            groceries={this.state.groceries}
+          />
+          <GroceryForm
+            onSubmit={this.handleSubmit}
+            toggleForm={this.toggleForm}
+            formValues={this.state.formValues}
+            changeFormStatus={this.changeFormStatus}
+          />
         </div>
       </div>
+      </>
     );
   }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "sgt-react",
+  "name": "cellar-door",
   "version": "1.0.0",
-  "description": "The Student Grade Table: Written in React",
+  "description": "A React application for shoppers who want to keep track of their groceries.",
   "main": "server/index.js",
   "scripts": {
     "client": "webpack-dev-server",
@@ -48,15 +48,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Learning-Fuze/sgt-react.git"
+    "url": "git+https://github.com/Coding-Christian/student-grade-table.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Learning-Fuze/sgt-react/issues"
+    "url": "https://github.com/Coding-Christian/student-grade-table/issues"
   },
-  "homepage": "https://github.com/Learning-Fuze/sgt-react#readme",
+  "homepage": "https://github.com/Coding-Christian/student-grade-table#readme",
   "eslintIgnore": [
     "server/public/main.js"
   ],
