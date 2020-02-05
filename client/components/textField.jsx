@@ -1,14 +1,6 @@
 import React from 'react';
 
 function TextField(props) {
-  let validClass = '';
-  let errorClass = 'd-none';
-  if (props.field.value.length !== 0 && props.field.isValid) {
-    validClass = 'is-valid';
-  } else if (props.field.value.length !== 0 && !props.field.isValid) {
-    validClass = 'is-invalid';
-    errorClass = 'd-block';
-  }
   return (
     <div className='input-group mb-1'>
       <div className="input-group-prepend">
@@ -20,10 +12,9 @@ function TextField(props) {
         onChange={props.handleChange}
         placeholder={props.field.title}
         value={props.field.value}
-        className={`form-control ${validClass}`}
+        className={`form-control`}
         id={props.id}
       ></textarea>
-      <small className={`text-danger ${errorClass}`}>{props.field.error}</small>
     </div>
   );
 }

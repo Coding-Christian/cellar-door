@@ -35,6 +35,7 @@ class GroceryFormSimple extends React.Component {
     };
     this.toggleForm = props.toggleForm;
     this.onSubmit = props.onSubmit;
+    this.changeFormStatus = props.changeFormStatus;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
@@ -70,8 +71,10 @@ class GroceryFormSimple extends React.Component {
     let name = Object.assign(this.state.name);
     let amount = Object.assign(this.state.amount);
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
-    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
-    this.setState({ name, amount });
+    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) <= 0);
+    this.setState({ name, amount }, () => {
+      this.changeFormStatus(this.state.name.isValid && this.state.amount.isValid);
+    });
   }
   async handleSubmit(event) {
     event.preventDefault();

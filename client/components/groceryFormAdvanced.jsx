@@ -45,13 +45,12 @@ class GroceryFormAdvanced extends React.Component {
       },
       notes: {
         title: 'Notes',
-        value: props.formValues.notes,
-        isValid: true,
-        error: 'Notes must be limited to 256 alphanumeric characters'
+        value: props.formValues.notes
       }
     };
     this.toggleForm = props.toggleForm;
     this.onSubmit = props.onSubmit;
+    this.changeFormStatus = props.changeFormStatus;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
@@ -101,9 +100,10 @@ class GroceryFormAdvanced extends React.Component {
     let amount = Object.assign(this.state.amount);
     let notes = Object.assign(this.state.notes);
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
-    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
-    notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
-    this.setState({ name, amount, notes });
+    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) <= 0);
+    this.setState({ name, amount, notes }, () => {
+      this.changeFormStatus(this.state.name.isValid && this.state.amount.isValid);
+    });
   }
   async handleSubmit(event) {
     event.preventDefault();

@@ -16,16 +16,17 @@ class App extends React.Component {
         unit: 1,
         location: 1,
         category: 1,
-        purchaseDate: '',
-        expirationDate: '',
+        purchaseDate: '1900-01-01',
+        expirationDate: '1900-01-01',
         notes: ''
-
-      }
+      },
+      formIsValid: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
+    this.changeFormStatus = this.changeFormStatus.bind(this);
   }
   getAllGroceries() {
     fetch('/api/groceries')
@@ -77,6 +78,9 @@ class App extends React.Component {
       this.setState({ advancedForm: !this.state.advancedForm })
     );
   }
+  changeFormStatus(status) {
+    this.setState({ formIsValid: status });
+  }
   componentDidMount() {
     this.getAllGroceries();
   }
@@ -96,11 +100,13 @@ class App extends React.Component {
               onSubmit={this.handleSubmit}
               toggleForm={this.toggleForm}
               formValues={this.state.formValues}
+              changeFormStatus={this.changeFormStatus}
             />
             : <GroceryFormSimple
               onSubmit={this.handleSubmit}
               toggleForm={this.toggleForm}
               formValues={this.state.formValues}
+              changeFormStatus={this.changeFormStatus}
             />
           }
         </div>
