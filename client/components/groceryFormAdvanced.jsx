@@ -10,45 +10,45 @@ class GroceryFormAdvanced extends React.Component {
     this.state = {
       name: {
         title: 'Name',
-        value: props.formValues.name,
+        value: '',
         isValid: false,
         error: 'Name must be between 2 and 60 alphanumeric characters'
       },
       amount: {
         title: 'Amount',
-        value: props.formValues.amount,
+        value: '',
         isValid: false,
         error: 'Please enter a valid number for the amount'
       },
       unit: {
         title: 'Unit',
-        value: props.formValues.unit,
+        value: 1,
         options: []
       },
       location: {
         title: 'Location',
-        value: props.formValues.location,
+        value: 1,
         options: []
       },
       category: {
         title: 'Category',
-        value: props.formValues.category,
+        value: 1,
         options: []
       },
       purchaseDate: {
         title: 'Purchase Date',
-        value: (props.formValues.purchaseDate.length ? props.formValues.purchaseDate : this.getCurrentDate())
+        value: this.getCurrentDate()
       },
       expirationDate: {
         title: 'Expiration Date',
-        value: (props.formValues.expirationDate.length ? props.formValues.expirationDate : this.getCurrentDate())
+        value: this.getCurrentDate()
       },
       notes: {
         title: 'Notes',
         value: props.formValues.notes
-      }
+      },
+      advancedView: false
     };
-    this.toggleForm = props.toggleForm;
     this.onSubmit = props.onSubmit;
     this.changeFormStatus = props.changeFormStatus;
     this.handleChange = this.handleChange.bind(this);
@@ -135,7 +135,8 @@ class GroceryFormAdvanced extends React.Component {
       purchaseDate: Object.assign(this.state.purchaseDate),
       expirationDate: Object.assign(this.state.expirationDate),
       location: Object.assign(this.state.location),
-      notes: Object.assign(this.state.notes)
+      notes: Object.assign(this.state.notes),
+      advancedView: this.state.advancedView
     };
     for (const property in newState) {
       if (property === 'name' || property === 'amount' || property === 'notes') {
@@ -143,23 +144,18 @@ class GroceryFormAdvanced extends React.Component {
         newState[property].isValid = false;
       } else if (property === 'category' || property === 'unit' || property === 'location') {
         newState[property].value = '1';
-      } else {
-        newState[property].value = this.getCurrentDate();
+      } else if (property === 'pruchaseDate' || property === 'expirationDate') {
+        newState[property].value = '';
       }
     }
     this.setState(newState, () => {
-      this.getCurrentDate();
       this.getAllLocations();
       this.getAllUnits();
       this.getAllCategories();
     });
   }
   handleToggle() {
-    const formValues = {};
-    for (const field in this.state) {
-      formValues[field] = this.state[field].value;
-    }
-    this.toggleForm(formValues);
+    this.setState({ advancedView: !this.state.advancedView });
   }
   componentDidMount() {
     this.getAllLocations();
@@ -179,12 +175,17 @@ class GroceryFormAdvanced extends React.Component {
           <InputField handleChange={this.handleChange} id='amount' field={this.state.amount} faClass='fas fa-weight'/>
           <SelectField handleChange={this.handleChange} id='unit' field={this.state.unit} faClass='fas fa-ruler-combined'/>
           <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
-          <SelectField handleChange={this.handleChange} id='category' field={this.state.category} faClass='fas fa-list'/>
-          <DateField handleChange={this.handleChange} id='purchaseDate' field={this.state.purchaseDate} faClass='far fa-calendar-alt'/>
-          <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
-          <TextField handleChange={this.handleChange} id='notes' field = {this.state.notes} faClass='fas fa-sticky-note'/>
+          {this.state.advancedView
+            ? (<>
+              <SelectField handleChange={this.handleChange} id='category' field={this.state.category} faClass='fas fa-list'/>
+              <DateField handleChange={this.handleChange} id='purchaseDate' field={this.state.purchaseDate} faClass='far fa-calendar-alt'/>
+              <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
+              <TextField handleChange={this.handleChange} id='notes' field = {this.state.notes} faClass='fas fa-sticky-note'/>
+              </>)
+            : null
+          }
         </div>
-        <button type='button' onClick={this.handleToggle} className='btn btn-link align-self-end px-0 mb-1'>- Advanced Options</button>
+        <button type='button' onClick={this.handleToggle} className='btn btn-link align-self-end px-0 mb-1'>{this.state.advancedView ? '-' : '+'} Advanced Options</button>
         <div>
           <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
           <button type='button' onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'>Clear</button>
