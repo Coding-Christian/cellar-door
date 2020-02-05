@@ -9,7 +9,18 @@ class App extends React.Component {
     super(props);
     this.state = {
       advancedForm: false,
-      groceries: []
+      groceries: [],
+      formValues: {
+        name: '',
+        amount: '',
+        unit: 1,
+        location: 1,
+        category: 1,
+        purchaseDate: '',
+        expirationDate: '',
+        notes: ''
+
+      }
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
@@ -60,8 +71,11 @@ class App extends React.Component {
     const newGrocery = { name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes };
     return this.addNewGrocery(newGrocery);
   }
-  toggleForm() {
-    this.setState({ advancedForm: !this.state.advancedForm });
+  toggleForm(formValues) {
+    this.setState(
+      { formValues },
+      this.setState({ advancedForm: !this.state.advancedForm })
+    );
   }
   componentDidMount() {
     this.getAllGroceries();
@@ -78,8 +92,16 @@ class App extends React.Component {
             groceries={this.state.groceries}
           />
           {this.state.advancedForm
-            ? <GroceryFormAdvanced onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
-            : <GroceryFormSimple onSubmit={this.handleSubmit} toggleForm={this.toggleForm}/>
+            ? <GroceryFormAdvanced
+              onSubmit={this.handleSubmit}
+              toggleForm={this.toggleForm}
+              formValues={this.state.formValues}
+            />
+            : <GroceryFormSimple
+              onSubmit={this.handleSubmit}
+              toggleForm={this.toggleForm}
+              formValues={this.state.formValues}
+            />
           }
         </div>
       </div>
