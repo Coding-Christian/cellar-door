@@ -13,7 +13,7 @@ A Full-Stack, React/Node based web application for shoppers who want to keep tra
 - Webpack 4
 
 ## Live Demo Link
-- Try the application at: https://sgt.christian-haney.com
+- Try the application at: https://cellar.christian-haney.com
 
 ## Features
 - Shoppers can view a table with basic information of all grocery items
@@ -46,11 +46,11 @@ A Full-Stack, React/Node based web application for shoppers who want to keep tra
 #### Getting Started
 1. Clone this repository into the desired directory
 ```
-git clone https://github.com/Coding-Christian/student-grade-table
+git clone https://github.com/Coding-Christian/cellar-door
 ```
 2. Navigate to the root of the cloned repository
 ```
-cd student-grade-table
+cd cellar-door
 ```
 3. Install required dependencies with npm
 ```
