@@ -176,7 +176,7 @@ server.delete('/api/locations/:id', async (req, res) => {
 server.patch('/api/groceries', async (req, res) => {
   const reqProps = ['id', 'name', 'category', 'amount', 'amountRemaining', 'unit', 'purchaseDate', 'expirationDate', 'location', 'notes'];
   for (const prop in reqProps) {
-    if (!req.body[reqProps[prop]]) {
+    if (!req.body.hasOwnProperty(reqProps[prop])) {
       res.status(400).send(`Item ${reqProps[prop]} required.`);
       return;
     }
