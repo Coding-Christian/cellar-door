@@ -118,7 +118,7 @@ class GroceryForm extends React.Component {
       );
       if (status < 300) {
         this.handleClear();
-        this.handleToggle();
+        this.setState({ advancedView: false });
       } else {
         this.setState({ error: 'Could not reach server. Please try again.' });
       }
@@ -176,8 +176,14 @@ class GroceryForm extends React.Component {
           {this.state.advancedView
             ? (<>
               <SelectField handleChange={this.handleChange} id='category' field={this.state.category} faClass='fas fa-list'/>
-              <DateField handleChange={this.handleChange} id='purchaseDate' field={this.state.purchaseDate} faClass='far fa-calendar-alt'/>
-              <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
+              <div className="border p-1 mb-1">
+                <DateField handleChange={this.handleChange} id='purchaseDate' field={this.state.purchaseDate} faClass='far fa-calendar-alt'/>
+                <p className='text-muted m-0'><small>Purchase Date</small></p>
+              </div>
+              <div className="border p-1 mb-1">
+                <DateField handleChange={this.handleChange} id='expirationDate' field={this.state.expirationDate} faClass='far fa-calendar-alt'/>
+                <p className='text-muted m-0'><small>Expiration Date</small></p>
+              </div>
               <TextField handleChange={this.handleChange} id='notes' field = {this.state.notes} faClass='fas fa-sticky-note'/>
               </>)
             : null
