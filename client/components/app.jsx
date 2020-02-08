@@ -76,6 +76,13 @@ class App extends React.Component {
             changeFormStatus={this.changeFormStatus}
           />
         </div>
+        {this.state.groceries.length
+          ? null
+          : (<>
+              <h3 className='d-none d-md-inline-block text-center col-9'>No Groceries Here... Time to add some!</h3>
+              <h6 className='d-md-none text-center'>No Groceries Here... Time to add some!</h6>
+            </>)
+        }
       </div>
       </>
     );
