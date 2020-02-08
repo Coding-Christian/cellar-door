@@ -35,7 +35,7 @@ class GroceryItem extends React.Component {
     if (this.state.editing) {
       this.setState({ editing: false, details: this.state.prevDetails }, this.getAllGroceries);
     } else {
-      this.setState({ editing: true, details: true, prevDetails: this.state.details });
+      this.setState({ editing: true, deleting: false, details: true, prevDetails: this.state.details });
     }
   }
   handleDelete() {
@@ -82,9 +82,14 @@ class GroceryItem extends React.Component {
               </button>
             </div>
             <div className='col-12 col-xl-4 my-1'>
-              <button onClick={this.handleDelete} className={`btn btn-danger w-100 ${this.state.editing ? 'disabled' : ''}`}>
+              <button onClick={() => this.state.editing ? '' : this.setState({ deleting: true })} className={`btn btn-danger w-100 ${this.state.editing ? 'disabled' : ''}`}>
                 Delete
               </button>
+            </div>
+            <div className={`col-12 my-1 text-center ${this.state.deleting ? '' : 'd-none'}`}>
+              Are you sure?
+              <button onClick={this.handleDelete} className='btn btn-danger ml-1'><small>Yes</small></button>
+              <button onClick={() => this.setState({ deleting: false })} className='btn btn-info ml-1'><small>No</small></button>
             </div>
           </div>
         </td>

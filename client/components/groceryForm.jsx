@@ -118,7 +118,7 @@ class GroceryForm extends React.Component {
       );
       if (status < 300) {
         this.handleClear();
-        this.handleToggle();
+        this.setState({ advancedView: false });
       } else {
         this.setState({ error: 'Could not reach server. Please try again.' });
       }
