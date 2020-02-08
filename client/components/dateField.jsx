@@ -2,7 +2,7 @@ import React from 'react';
 
 function DateField(props) {
   return (
-    <div className='input-group mb-1'>
+    <div className='input-group'>
       <div className="input-group-prepend">
         <div className="input-group-text" title={props.field.title}>
           <i className={props.faClass}></i>
