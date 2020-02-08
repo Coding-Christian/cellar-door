@@ -223,7 +223,9 @@ class GroceryEdit extends React.Component {
               placeholder={this.state.remainingAmount.title}
               value={this.state.remainingAmount.value}
               className={`form-control ${this.state.remainingAmount.isValid ? 'is-valid' : 'is-invalid'}`}
-              type='text'
+              type='number'
+              min='0'
+              step="0.5"
               id='remainingAmount'
               required
             />
