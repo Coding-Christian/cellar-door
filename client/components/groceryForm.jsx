@@ -21,12 +21,12 @@ class GroceryForm extends React.Component {
         error: 'Please enter a valid number for the amount'
       },
       unit: {
-        title: 'Unit',
+        title: 'Unit of Measurement',
         value: 1,
         options: []
       },
       location: {
-        title: 'Location',
+        title: 'Storage Location',
         value: 1,
         options: []
       },
@@ -171,11 +171,20 @@ class GroceryForm extends React.Component {
         <div className="form-group mb-0">
           <InputField handleChange={this.handleChange} id='name' field={this.state.name} faClass='fas fa-pencil-alt'/>
           <InputField handleChange={this.handleChange} id='amount' field={this.state.amount} faClass='fas fa-weight'/>
-          <SelectField handleChange={this.handleChange} id='unit' field={this.state.unit} faClass='fas fa-ruler-combined'/>
-          <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
+          <div className="border p-1 mb-1">
+            <SelectField handleChange={this.handleChange} id='unit' field={this.state.unit} faClass='fas fa-ruler-combined'/>
+            <p className='text-muted m-0'><small>Unit of Measurement</small></p>
+          </div>
+          <div className="border p-1 mb-1">
+            <SelectField handleChange={this.handleChange} id='location' field={this.state.location} faClass='far fa-compass'/>
+            <p className='text-muted m-0'><small>Storage Location</small></p>
+          </div>
           {this.state.advancedView
             ? (<>
-              <SelectField handleChange={this.handleChange} id='category' field={this.state.category} faClass='fas fa-list'/>
+              <div className="border p-1 mb-1">
+                <SelectField handleChange={this.handleChange} id='category' field={this.state.category} faClass='fas fa-list'/>
+                <p className='text-muted m-0'><small>Category</small></p>
+              </div>
               <div className="border p-1 mb-1">
                 <DateField handleChange={this.handleChange} id='purchaseDate' field={this.state.purchaseDate} faClass='far fa-calendar-alt'/>
                 <p className='text-muted m-0'><small>Purchase Date</small></p>
