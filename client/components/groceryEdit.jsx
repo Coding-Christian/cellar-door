@@ -14,13 +14,13 @@ class GroceryEdit extends React.Component {
         title: 'Amount',
         value: '',
         isValid: false,
-        error: 'Please enter a valid number for the amount'
+        error: 'Please enter a number grater than zero for the amount'
       },
       remainingAmount: {
         title: 'Remaining Amount',
         value: '',
         isValid: false,
-        error: 'Please enter a valid number for the remaining amount'
+        error: 'Please enter a number greater than zero for the remaining amount'
       },
       unit: {
         title: 'Unit',

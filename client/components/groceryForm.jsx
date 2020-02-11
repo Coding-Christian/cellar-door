@@ -18,7 +18,7 @@ class GroceryForm extends React.Component {
         title: 'Amount',
         value: '',
         isValid: false,
-        error: 'Please enter a valid number for the amount'
+        error: 'Please enter a number greater than zero for the amount'
       },
       unit: {
         title: 'Unit of Measurement',
