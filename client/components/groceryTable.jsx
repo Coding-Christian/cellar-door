@@ -15,7 +15,7 @@ function GroceryTable(props) {
     />
   ));
   return (
-    <table className='table table-striped table-bordered order-2 order-md-1 col-12 col-md-9'>
+    <table style={{ 'minWidth': '510px' }} className='table table-striped table-bordered'>
       <colgroup>
         <col width='25%'/>
         <col width='20%'/>

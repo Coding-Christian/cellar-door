@@ -14,13 +14,13 @@ class GroceryEdit extends React.Component {
         title: 'Amount',
         value: '',
         isValid: false,
-        error: 'Please enter a valid number for the amount'
+        error: 'Please enter a number grater than zero for the amount'
       },
       remainingAmount: {
         title: 'Remaining Amount',
         value: '',
         isValid: false,
-        error: 'Please enter a valid number for the remaining amount'
+        error: 'Please enter a number greater than zero for the remaining amount'
       },
       unit: {
         title: 'Unit',
@@ -114,9 +114,17 @@ class GroceryEdit extends React.Component {
     this.setState(newState, this.validateForm);
   }
   handleChange(event) {
+    const numPatt = /^\d*(\.\d*)?$/g;
     let newFieldState = Object.assign(this.state[event.target.id]);
-    newFieldState.value = event.target.value;
-    this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+    if (event.target.id === 'amount' || event.target.id === 'remainingAmount') {
+      if (numPatt.test(event.target.value)) {
+        newFieldState.value = event.target.value;
+      }
+      this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+    } else {
+      newFieldState.value = event.target.value;
+      this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+    }
   }
   validateForm() {
     const wordPatt = /[^\w\s]/g;
@@ -126,8 +134,8 @@ class GroceryEdit extends React.Component {
     let remainingAmount = Object.assign(this.state.remainingAmount);
     let notes = Object.assign(this.state.notes);
     name.isValid = !(wordPatt.test(name.value) || name.value.length < 2 || name.value.length > 60);
-    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
-    remainingAmount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) < 0);
+    amount.isValid = !(numPatt.test(amount.value) || isNaN(Number(amount.value)) || Number(amount.value) <= 0 || amount.value.length === 0);
+    remainingAmount.isValid = !(numPatt.test(remainingAmount.value) || isNaN(Number(remainingAmount.value)) || Number(remainingAmount.value) <= 0 || remainingAmount.value.length === 0);
     notes.isValid = !(wordPatt.test(notes.value) || notes.value.length > 256);
     this.setState({ name, amount, remainingAmount, notes });
   }
@@ -223,9 +231,7 @@ class GroceryEdit extends React.Component {
               placeholder={this.state.remainingAmount.title}
               value={this.state.remainingAmount.value}
               className={`form-control ${this.state.remainingAmount.isValid ? 'is-valid' : 'is-invalid'}`}
-              type='number'
-              min='0'
-              step="0.5"
+              type='text'
               id='remainingAmount'
               required
             />

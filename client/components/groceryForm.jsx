@@ -18,7 +18,7 @@ class GroceryForm extends React.Component {
         title: 'Amount',
         value: '',
         isValid: false,
-        error: 'Please enter a valid number for the amount'
+        error: 'Please enter a number greater than zero for the amount'
       },
       unit: {
         title: 'Unit of Measurement',
@@ -88,9 +88,14 @@ class GroceryForm extends React.Component {
       });
   }
   handleChange(event) {
+    const numPatt = /^\d*(\.\d*)?$/g;
     let newFieldState = Object.assign(this.state[event.target.id]);
-    newFieldState.value = event.target.value;
-    this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+    if (event.target.id === 'amount' && !numPatt.test(event.target.value)) {
+      this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+    } else {
+      newFieldState.value = event.target.value;
+      this.setState({ [event.target.id]: newFieldState }, this.validateForm);
+    }
   }
   validateForm() {
     const wordPatt = /[^\w\s]/g;

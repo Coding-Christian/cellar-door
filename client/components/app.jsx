@@ -64,11 +64,13 @@ class App extends React.Component {
       <Header title='Cellar Door'/>
       <div className="sgt container mt-2">
         <div className="row">
-          <GroceryTable
-            onDelete={this.deleteGroceryItem}
-            onUpdate={this.updateGroceryItem}
-            groceries={this.state.groceries}
-          />
+          <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
+            <GroceryTable
+              onDelete={this.deleteGroceryItem}
+              onUpdate={this.updateGroceryItem}
+              groceries={this.state.groceries}
+            />
+          </div>
           <GroceryForm
             onSubmit={this.handleSubmit}
             toggleForm={this.toggleForm}
