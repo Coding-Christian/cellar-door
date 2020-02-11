@@ -169,6 +169,10 @@ class GroceryEdit extends React.Component {
     this.getGroceryItemDetails();
   }
   render() {
+    let disabledClass = '';
+    if (!this.state.name.isValid || !this.state.amount.isValid || !this.state.remainingAmount.isValid || !this.state.notes.isValid) {
+      disabledClass = 'disabled';
+    }
     const categoryOptions = this.state.category.options.map(option => (
       <option key={option.id} value={option.id}>{option.name}</option>
     ));
@@ -189,7 +193,7 @@ class GroceryEdit extends React.Component {
               value={this.state.name.value}
               className={`form-control ${this.state.name.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='name'
+              id='editName'
               required
             />
           </div>
@@ -199,7 +203,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.category.value}
               className={`form-control`}
-              id='category'
+              id='editCategory'
             >
               {categoryOptions}
             </select>
@@ -212,14 +216,14 @@ class GroceryEdit extends React.Component {
               value={this.state.amount.value}
               className={`form-control ${this.state.amount.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='amount'
+              id='editAmount'
               required
             />
             <select
               onChange={this.handleChange}
               value={this.state.unit.value}
               className={`form-control`}
-              id='unit'
+              id='editUnit'
             >
               {unitOptions}
             </select>
@@ -232,7 +236,7 @@ class GroceryEdit extends React.Component {
               value={this.state.remainingAmount.value}
               className={`form-control ${this.state.remainingAmount.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='remainingAmount'
+              id='editRemainingAmount'
               required
             />
           </div>
@@ -245,7 +249,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.purchaseDate.value}
               className={`form-control`}
-              id='purchaseDate'
+              id='editPurchaseDate'
             />
           </div>
           <div className="col-12 col-lg-6">
@@ -255,7 +259,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.expirationDate.value}
               className={`form-control`}
-              id='expirationDate'
+              id='editExpirationDate'
             />
           </div>
         </div>
@@ -268,7 +272,7 @@ class GroceryEdit extends React.Component {
               value={this.state.notes.value}
               rows='3'
               className={`form-control ${this.state.notes.isValid ? 'is-valid' : 'is-invalid'}`}
-              id='notes'
+              id='editNotes'
               required
             ></textarea>
           </div>
@@ -278,11 +282,11 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.location.value}
               className={`form-control`}
-              id='location'
+              id='editLocation'
             >
               {locationOptions}
             </select>
-            <button onClick={this.handleSubmit} className='btn btn-success w-100 my-1'>Update</button>
+            <button onClick={this.handleSubmit} className={`btn btn-success w-100 my-1 ${disabledClass}`}>Update</button>
           </div>
         </div>
       </td>
