@@ -14,6 +14,7 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
+    this.changeView = this.changeView.bind(this);
   }
   getAllGroceries() {
     fetch('/api/groceries')
@@ -59,13 +60,16 @@ class App extends React.Component {
     const newGrocery = { name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes };
     return this.addNewGrocery(newGrocery);
   }
+  changeView(view) {
+    this.setState({ view });
+  }
   componentDidMount() {
     this.getAllGroceries();
   }
   render() {
     return (
       <>
-      <Header title='Cellar Door'/>
+      <Header title='Cellar Door' changeView={this.changeView}/>
       <div className="sgt container mt-2">
         <div className="row">
           <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
@@ -79,7 +83,6 @@ class App extends React.Component {
             onSubmit={this.handleSubmit}
             toggleForm={this.toggleForm}
             formValues={this.state.formValues}
-            changeFormStatus={this.changeFormStatus}
           />
         </div>
       </div>

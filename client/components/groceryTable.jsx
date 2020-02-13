@@ -18,10 +18,12 @@ function GroceryTable(props) {
     ));
   } else {
     groceries = (
-      <td colSpan='4' className='text-center'>
-        <h3 className='d-none d-md-inline-block text-center col-9'>No Groceries Here... Time to add some!</h3>
-        <h6 className='d-md-none text-center'>No Groceries Here... Time to add some!</h6>
-      </td>
+      <tr>
+        <td colSpan='4' className='text-center'>
+          <h3 className='d-none d-md-inline-block text-center col-9'>No Groceries Here... Time to add some!</h3>
+          <h6 className='d-md-none text-center'>No Groceries Here... Time to add some!</h6>
+        </td>
+      </tr>
     );
   }
   return (
