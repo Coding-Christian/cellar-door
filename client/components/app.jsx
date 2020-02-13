@@ -13,6 +13,7 @@ class App extends React.Component {
       view: 'groceries'
     };
     this.addNewGrocery = this.addNewGrocery.bind(this);
+    this.addNewLocation = this.addNewLocation.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
     this.changeView = this.changeView.bind(this);
@@ -21,6 +22,11 @@ class App extends React.Component {
     fetch('/api/groceries')
       .then(response => response.json())
       .then(groceries => this.setState({ groceries }));
+  }
+  getAllLocations() {
+    fetch('/api/locations')
+      .then(response => response.json())
+      .then(locations => this.setState({ locations }));
   }
   async addNewGrocery(grocery) {
     const config = {
@@ -34,6 +40,21 @@ class App extends React.Component {
       return response.status;
     } catch {
       this.getAllGroceries();
+      return 503;
+    }
+  }
+  async addNewLocation(location) {
+    const config = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(location)
+    };
+    try {
+      const response = await fetch('/api/locations', config);
+      this.getAllLocations();
+      return response.status;
+    } catch {
+      this.getAllLocations();
       return 503;
     }
   }
@@ -58,7 +79,13 @@ class App extends React.Component {
       });
   }
   changeView(view) {
-    this.setState({ view });
+    this.setState({ view }, () => {
+      if (this.state.view === 'groceries') {
+        this.getAllGroceries();
+      } else {
+        this.getAllLocations();
+      }
+    });
   }
   componentDidMount() {
     this.getAllGroceries();
@@ -66,14 +93,9 @@ class App extends React.Component {
   render() {
     let form;
     if (this.state.view === 'groceries') {
-      form = (
-        <GroceryForm
-          onAdd={this.addNewGrocery}
-          toggleForm={this.toggleForm}
-          formValues={this.state.formValues}
-        />);
+      form = (<GroceryForm onAdd={this.addNewGrocery}/>);
     } else {
-      form = (<LocationForm/>);
+      form = (<LocationForm onAdd={this.addNewLocation}/>);
     }
     return (
       <>
