@@ -2,18 +2,28 @@ import React from 'react';
 import GroceryItem from './groceryItem';
 
 function GroceryTable(props) {
-  let groceries = props.groceries.map(grocery => (
-    <GroceryItem
-      key ={grocery.id}
-      id={grocery.id}
-      onDelete={props.onDelete}
-      onUpdate={props.onUpdate}
-      name={grocery.itemName}
-      location={grocery.locationName}
-      amount={grocery.remainingAmount}
-      unit={grocery.unitName}
-    />
-  ));
+  let groceries;
+  if (props.groceries.length) {
+    groceries = props.groceries.map(grocery => (
+      <GroceryItem
+        key ={grocery.id}
+        id={grocery.id}
+        onDelete={props.onDelete}
+        onUpdate={props.onUpdate}
+        name={grocery.itemName}
+        location={grocery.locationName}
+        amount={grocery.remainingAmount}
+        unit={grocery.unitName}
+      />
+    ));
+  } else {
+    groceries = (
+      <td colSpan='4' className='text-center'>
+        <h3 className='d-none d-md-inline-block text-center col-9'>No Groceries Here... Time to add some!</h3>
+        <h6 className='d-md-none text-center'>No Groceries Here... Time to add some!</h6>
+      </td>
+    );
+  }
   return (
     <table style={{ 'minWidth': '510px' }} className='table table-striped table-bordered'>
       <colgroup>
