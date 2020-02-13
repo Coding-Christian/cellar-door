@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import GroceryTable from './groceryTable';
 import GroceryForm from './groceryForm';
+import LocationForm from './locationForm';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class App extends React.Component {
       locations: [],
       view: 'groceries'
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.addNewGrocery = this.addNewGrocery.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
     this.changeView = this.changeView.bind(this);
@@ -56,10 +57,6 @@ class App extends React.Component {
         this.setState({ groceries }, this.getAllGroceries);
       });
   }
-  handleSubmit(name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes) {
-    const newGrocery = { name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes };
-    return this.addNewGrocery(newGrocery);
-  }
   changeView(view) {
     this.setState({ view });
   }
@@ -67,6 +64,17 @@ class App extends React.Component {
     this.getAllGroceries();
   }
   render() {
+    let form;
+    if (this.state.view === 'groceries') {
+      form = (
+        <GroceryForm
+          onAdd={this.addNewGrocery}
+          toggleForm={this.toggleForm}
+          formValues={this.state.formValues}
+        />);
+    } else {
+      form = (<LocationForm/>);
+    }
     return (
       <>
       <Header title='Cellar Door' changeView={this.changeView}/>
@@ -79,11 +87,7 @@ class App extends React.Component {
               groceries={this.state.groceries}
             />
           </div>
-          <GroceryForm
-            onSubmit={this.handleSubmit}
-            toggleForm={this.toggleForm}
-            formValues={this.state.formValues}
-          />
+          {form}
         </div>
       </div>
       </>
