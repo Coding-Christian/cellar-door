@@ -2,19 +2,31 @@ import React from 'react';
 import Header from './header';
 import GroceryTable from './groceryTable';
 import GroceryForm from './groceryForm';
+import LocationForm from './locationForm';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { groceries: [] };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      groceries: [],
+      locations: [],
+      view: 'groceries'
+    };
+    this.addNewGrocery = this.addNewGrocery.bind(this);
+    this.addNewLocation = this.addNewLocation.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
+    this.changeView = this.changeView.bind(this);
   }
   getAllGroceries() {
     fetch('/api/groceries')
       .then(response => response.json())
       .then(groceries => this.setState({ groceries }));
+  }
+  getAllLocations() {
+    fetch('/api/locations')
+      .then(response => response.json())
+      .then(locations => this.setState({ locations }));
   }
   async addNewGrocery(grocery) {
     const config = {
@@ -28,6 +40,21 @@ class App extends React.Component {
       return response.status;
     } catch {
       this.getAllGroceries();
+      return 503;
+    }
+  }
+  async addNewLocation(location) {
+    const config = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(location)
+    };
+    try {
+      const response = await fetch('/api/locations', config);
+      this.getAllLocations();
+      return response.status;
+    } catch {
+      this.getAllLocations();
       return 503;
     }
   }
@@ -51,17 +78,28 @@ class App extends React.Component {
         this.setState({ groceries }, this.getAllGroceries);
       });
   }
-  handleSubmit(name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes) {
-    const newGrocery = { name, category, amount, amountRemaining, unit, purchaseDate, expirationDate, location, notes };
-    return this.addNewGrocery(newGrocery);
+  changeView(view) {
+    this.setState({ view }, () => {
+      if (this.state.view === 'groceries') {
+        this.getAllGroceries();
+      } else {
+        this.getAllLocations();
+      }
+    });
   }
   componentDidMount() {
     this.getAllGroceries();
   }
   render() {
+    let form;
+    if (this.state.view === 'groceries') {
+      form = (<GroceryForm onAdd={this.addNewGrocery}/>);
+    } else {
+      form = (<LocationForm onAdd={this.addNewLocation}/>);
+    }
     return (
       <>
-      <Header title='Cellar Door'/>
+      <Header title='Cellar Door' changeView={this.changeView}/>
       <div className="sgt container mt-2">
         <div className="row">
           <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
@@ -71,20 +109,8 @@ class App extends React.Component {
               groceries={this.state.groceries}
             />
           </div>
-          <GroceryForm
-            onSubmit={this.handleSubmit}
-            toggleForm={this.toggleForm}
-            formValues={this.state.formValues}
-            changeFormStatus={this.changeFormStatus}
-          />
+          {form}
         </div>
-        {this.state.groceries.length
-          ? null
-          : (<>
-              <h3 className='d-none d-md-inline-block text-center col-9'>No Groceries Here... Time to add some!</h3>
-              <h6 className='d-md-none text-center'>No Groceries Here... Time to add some!</h6>
-            </>)
-        }
       </div>
       </>
     );
