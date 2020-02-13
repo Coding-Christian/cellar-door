@@ -1,4 +1,6 @@
 import React from 'react';
+import InputField from './inputField';
+import TextField from './textField';
 
 class LocationForm extends React.Component {
   constructor(props) {
@@ -16,8 +18,14 @@ class LocationForm extends React.Component {
       }
     };
     this.onAdd = props.onAdd;
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
+  }
+  handleChange(event) {
+    let newFieldState = Object.assign(this.state[event.target.id]);
+    newFieldState.value = event.target.value;
+    this.setState({ [event.target.id]: newFieldState }, this.validateForm);
   }
   validateForm() {
     const wordPatt = /[^\w\s]/g;
@@ -50,7 +58,23 @@ class LocationForm extends React.Component {
     this.setState(newState);
   }
   render() {
-    return null;
+    let disabledClass = '';
+    if (!this.state.name.isValid) {
+      disabledClass = 'disabled';
+    }
+    return (
+      <form onSubmit={this.handleSubmit} className='d-flex flex-column order-1 order-md-2 mb-4 col-12 col-md-3'>
+        <p className="mb-1">Add new Location:</p>
+        <div className="form-group mb-1">
+          <InputField handleChange={this.handleChange} id='name' field={this.state.name} faClass='fas fa-pencil-alt'/>
+          <TextField handleChange={this.handleChange} id='description' field={this.state.description} faClass='fas fa-sticky-note'/>
+        </div>
+        <div>
+          <button className={`btn btn-primary col-5 col-md-12 col-lg-4 offset-lg-3 mb-2 ${disabledClass}`} type='submit'>Submit</button>
+          <button type='button' onClick={this.handleClear} className='btn btn-secondary col-5 col-md-12 col-lg-4 offset-2 offset-md-0 offset-lg-1 mb-2'>Clear</button>
+        </div>
+      </form>
+    );
   }
 }
 
