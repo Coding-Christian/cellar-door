@@ -193,7 +193,7 @@ class GroceryEdit extends React.Component {
               value={this.state.name.value}
               className={`form-control ${this.state.name.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='editName'
+              id='name'
               required
             />
           </div>
@@ -203,7 +203,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.category.value}
               className={`form-control`}
-              id='editCategory'
+              id='category'
             >
               {categoryOptions}
             </select>
@@ -216,14 +216,14 @@ class GroceryEdit extends React.Component {
               value={this.state.amount.value}
               className={`form-control ${this.state.amount.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='editAmount'
+              id='amount'
               required
             />
             <select
               onChange={this.handleChange}
               value={this.state.unit.value}
               className={`form-control`}
-              id='editUnit'
+              id='unit'
             >
               {unitOptions}
             </select>
@@ -236,7 +236,7 @@ class GroceryEdit extends React.Component {
               value={this.state.remainingAmount.value}
               className={`form-control ${this.state.remainingAmount.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='editRemainingAmount'
+              id='remainingAmount'
               required
             />
           </div>
@@ -249,7 +249,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.purchaseDate.value}
               className={`form-control`}
-              id='editPurchaseDate'
+              id='purchaseDate'
             />
           </div>
           <div className="col-12 col-lg-6">
@@ -259,7 +259,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.expirationDate.value}
               className={`form-control`}
-              id='editExpirationDate'
+              id='expirationDate'
             />
           </div>
         </div>
@@ -272,7 +272,7 @@ class GroceryEdit extends React.Component {
               value={this.state.notes.value}
               rows='3'
               className={`form-control ${this.state.notes.isValid ? 'is-valid' : 'is-invalid'}`}
-              id='editNotes'
+              id='notes'
               required
             ></textarea>
           </div>
@@ -282,7 +282,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.location.value}
               className={`form-control`}
-              id='editLocation'
+              id='location'
             >
               {locationOptions}
             </select>
