@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const makeQuery = require('../makeQuery.js');
+const makeQuery = require('../makeQuery');
 
 const groceryAdd = async function (req, res) {
   const reqProps = ['name', 'category', 'amount', 'amountRemaining', 'unit', 'purchaseDate', 'expirationDate', 'location', 'notes'];

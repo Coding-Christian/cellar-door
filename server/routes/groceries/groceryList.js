@@ -1,4 +1,4 @@
-const makeQuery = require('../makeQuery.js');
+const makeQuery = require('../makeQuery');
 
 const groceryList = async function (req, res) {
   const sql =

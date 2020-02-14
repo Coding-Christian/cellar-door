@@ -1,7 +1,7 @@
 const mysql = require('mysql');
-const makeQuery = require('../makeQuery.js');
+const makeQuery = require('../makeQuery');
 
-const groceryUpdate = async function (res, req) {
+const groceryUpdate = async function (req, res) {
   const reqProps = ['id', 'name', 'category', 'amount', 'amountRemaining', 'unit', 'purchaseDate', 'expirationDate', 'location', 'notes'];
   for (const prop in reqProps) {
     if (!req.body.hasOwnProperty(reqProps[prop])) {

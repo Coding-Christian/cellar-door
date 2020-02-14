@@ -1,7 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const dbcredentials = require('./_config');
-const groceryRouter = require('./routes/groceries/index.js');
+const groceryRouter = require('./routes/groceries/');
 
 const server = express();
 server.use(express.json());

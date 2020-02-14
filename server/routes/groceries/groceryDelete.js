@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const makeQuery = require('../makeQuery.js');
+const makeQuery = require('../makeQuery');
 
 const groceryDelete = async function (req, res) {
   if (!req.params.id) {
