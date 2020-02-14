@@ -58,28 +58,6 @@ server.get('/api/units', async (req, res) => {
   res.status(200).send(results);
 });
 
-server.delete('/api/locations/:id', async (req, res) => {
-  if (!req.params.id) {
-    res.status(400).send('Student ID required');
-  } else {
-    const sql = `SELECT id FROM groceryItems WHERE locationId = ${mysql.escape(req.params.id)}`;
-    const results = await makeQuery(sql)
-      .catch(() => { res.status(500).send('An Error occurred while connecting to the database'); });
-    if (results.length) {
-      res.status(409).send(`Location with ID ${req.params.id} is not empty.`);
-    } else {
-      const sql = `DELETE FROM storageLocations WHERE id = ${mysql.escape(req.params.id)}`;
-      const results = await makeQuery(sql)
-        .catch(() => { res.status(500).send('An Error occurred while connecting to the database'); });
-      if (!results.affectedRows) {
-        res.status(404).send(`Location with ID ${req.params.id} not found`);
-      } else {
-        res.status(200).send({ 'id': Number(req.params.id) });
-      }
-    }
-  }
-});
-
 server.patch('/api/locations', async (req, res) => {
   const reqProps = ['id', 'name', 'description'];
   for (const prop in reqProps) {
@@ -99,23 +77,6 @@ server.patch('/api/locations', async (req, res) => {
   } else {
     res.status(200).send({ 'id': Number(req.body.id) });
   }
-});
-
-server.post('/api/locations', async (req, res) => {
-  const reqProps = ['name', 'description'];
-  for (const prop in reqProps) {
-    if (!req.body[reqProps[prop]]) {
-      res.status(400).send(`Location ${reqProps[prop]} required.`);
-      return;
-    }
-  }
-  const { name, description } = req.body;
-  let sql = 'INSERT INTO storageLocations (id, locationName, description) VALUES (NULL, ?, ?)';
-  const inserts = [name, description];
-  sql = mysql.format(sql, inserts);
-  const results = await makeQuery(sql)
-    .catch(() => { res.status(500).send('An Error occurred while connecting to the database'); });
-  res.status(200).send({ 'id': results.insertId });
 });
 
 server.listen(3001, () => {
