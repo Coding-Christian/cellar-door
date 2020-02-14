@@ -3,11 +3,13 @@ const mysql = require('mysql');
 const dbcredentials = require('./_config');
 const groceryRouter = require('./routes/groceries/');
 const locationRouter = require('./routes/locations/');
+const categoryRouter = require('./routes/categories/');
 
 const server = express();
 server.use(express.json());
 server.use('/api', groceryRouter);
 server.use('/api', locationRouter);
+server.use('/api', categoryRouter);
 
 function makeQuery(sql) {
   const connection = mysql.createConnection(dbcredentials.credentials);
@@ -21,33 +23,6 @@ function makeQuery(sql) {
   });
   return sqlPromise;
 }
-
-server.get('/api/categories', async (req, res) => {
-  const sql =
-    'SELECT id, categoryName AS name ' +
-    'FROM groceryCategories';
-  const results = await makeQuery(sql)
-    .catch(() => res.status(500).send('An error occurred while connecting to the database'));
-  res.status(200).send(results);
-});
-
-server.get('/api/categories/:id', async (req, res) => {
-  if (!req.params.id) {
-    res.status(400).send('Location ID required');
-  } else {
-    const sql =
-    'SELECT groceryItems.id AS id, itemName, remainingAmount, unitName, locationName ' +
-    'FROM groceryItems ' +
-    'JOIN amountUnits ' +
-      'ON amountUnitid = amountUnits.id ' +
-    'JOIN storageLocations ' +
-      'ON locationId = storageLocations.id ' +
-    `WHERE categoryId = ${mysql.escape(req.params.id)}`;
-    const results = await makeQuery(sql)
-      .catch(() => res.status(500).send('An error occurred while connecting to the database'));
-    res.status(200).send(results);
-  }
-});
 
 server.get('/api/units', async (req, res) => {
   const sql =
