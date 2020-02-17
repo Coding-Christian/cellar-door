@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import GroceryTable from './groceryTable';
 import GroceryForm from './groceryForm';
+import LocationTable from './locationTable';
 import LocationForm from './locationForm';
 
 class App extends React.Component {
@@ -91,11 +92,13 @@ class App extends React.Component {
     this.getAllGroceries();
   }
   render() {
-    let form;
+    let form, table;
     if (this.state.view === 'groceries') {
       form = (<GroceryForm onAdd={this.addNewGrocery}/>);
+      table = (<GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGroceryItem} groceries={this.state.groceries}/>);
     } else {
       form = (<LocationForm onAdd={this.addNewLocation}/>);
+      table = (<LocationTable/>);
     }
     return (
       <>
@@ -103,11 +106,7 @@ class App extends React.Component {
       <div className="sgt container mt-2">
         <div className="row">
           <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
-            <GroceryTable
-              onDelete={this.deleteGroceryItem}
-              onUpdate={this.updateGroceryItem}
-              groceries={this.state.groceries}
-            />
+            {table}
           </div>
           {form}
         </div>
