@@ -80,12 +80,18 @@ class App extends React.Component {
         this.setState({ groceries }, this.getAllGroceries);
       });
   }
-  deleteLocation(locationId) {
-    fetch(`/api/locations/${locationId}`, { method: 'DELETE' })
-      .then(() => {
+  async deleteLocation(locationId) {
+    try {
+      const response = await fetch(`/api/locations/${locationId}`, { method: 'DELETE' });
+      if (response.status < 300) {
         const locations = this.state.locations.filter(location => !(location.id === locationId));
         this.setState({ locations }, this.getAllLocations);
-      });
+      } else {
+        return response.status;
+      }
+    } catch {
+      return 503;
+    }
   }
   changeView(view) {
     this.setState({ view }, () => {
