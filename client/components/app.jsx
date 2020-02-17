@@ -98,7 +98,7 @@ class App extends React.Component {
       table = (<GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGroceryItem} groceries={this.state.groceries}/>);
     } else {
       form = (<LocationForm onAdd={this.addNewLocation}/>);
-      table = (<LocationTable/>);
+      table = (<LocationTable locations={this.state.locations}/>);
     }
     return (
       <>
