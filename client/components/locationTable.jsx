@@ -5,7 +5,13 @@ function LocationTable(props) {
   let locations;
   if (props.locations.length) {
     locations = props.locations.map(location => (
-      <LocationItem key={location.id} name={location.name} description={location.description}/>
+      <LocationItem
+        key={location.id}
+        locationId={location.id}
+        name={location.name}
+        description={location.description}
+        onDelete={props.onDelete}
+      />
     ));
   } else {
     locations = (
@@ -21,8 +27,8 @@ function LocationTable(props) {
     <table style={{ 'minWidth': '510px' }} className='table table-striped table-bordered'>
       <colgroup>
         <col width='25%'/>
-        <col width='50%'/>
-        <col width='25%'/>
+        <col width='40%'/>
+        <col width='35%'/>
       </colgroup>
       <thead className='thead-light'>
         <tr>

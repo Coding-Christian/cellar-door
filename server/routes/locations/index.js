@@ -11,6 +11,6 @@ locationRouter.get('/locations', locationList);
 locationRouter.post('/locations', locationAdd);
 locationRouter.get('/locations/:id', locationGroceries);
 locationRouter.patch('/locations/:id', locationUpdate);
-locationRouter.delete('/location/:id', locationDelete);
+locationRouter.delete('/locations/:id', locationDelete);
 
 module.exports = locationRouter;

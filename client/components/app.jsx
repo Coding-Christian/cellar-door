@@ -16,6 +16,7 @@ class App extends React.Component {
     this.addNewGrocery = this.addNewGrocery.bind(this);
     this.addNewLocation = this.addNewLocation.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
+    this.deleteLocation = this.deleteLocation.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
     this.changeView = this.changeView.bind(this);
   }
@@ -79,6 +80,13 @@ class App extends React.Component {
         this.setState({ groceries }, this.getAllGroceries);
       });
   }
+  deleteLocation(locationId) {
+    fetch(`/api/locations/${locationId}`, { method: 'DELETE' })
+      .then(() => {
+        const locations = this.state.locations.filter(location => !(location.id === locationId));
+        this.setState({ locations }, this.getAllLocations);
+      });
+  }
   changeView(view) {
     this.setState({ view }, () => {
       if (this.state.view === 'groceries') {
@@ -95,10 +103,21 @@ class App extends React.Component {
     let form, table;
     if (this.state.view === 'groceries') {
       form = (<GroceryForm onAdd={this.addNewGrocery}/>);
-      table = (<GroceryTable onDelete={this.deleteGroceryItem} onUpdate={this.updateGroceryItem} groceries={this.state.groceries}/>);
+      table = (
+        <GroceryTable
+          onDelete={this.deleteGroceryItem}
+          onUpdate={this.updateGroceryItem}
+          groceries={this.state.groceries}
+        />
+      );
     } else {
       form = (<LocationForm onAdd={this.addNewLocation}/>);
-      table = (<LocationTable locations={this.state.locations}/>);
+      table = (
+        <LocationTable
+          locations={this.state.locations}
+          onDelete={this.deleteLocation}
+        />
+      );
     }
     return (
       <>
