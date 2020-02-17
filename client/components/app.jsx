@@ -127,7 +127,7 @@ class App extends React.Component {
     }
     return (
       <>
-      <Header title='Cellar Door' changeView={this.changeView}/>
+      <Header title='Cellar Door' view={this.state.view} changeView={this.changeView}/>
       <div className="sgt container mt-2">
         <div className="row">
           <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
