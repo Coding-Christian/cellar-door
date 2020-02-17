@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import GroceryTable from './groceryTable';
 import GroceryForm from './groceryForm';
+import LocationTable from './locationTable';
 import LocationForm from './locationForm';
 
 class App extends React.Component {
@@ -15,6 +16,7 @@ class App extends React.Component {
     this.addNewGrocery = this.addNewGrocery.bind(this);
     this.addNewLocation = this.addNewLocation.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
+    this.deleteLocation = this.deleteLocation.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
     this.changeView = this.changeView.bind(this);
   }
@@ -78,6 +80,19 @@ class App extends React.Component {
         this.setState({ groceries }, this.getAllGroceries);
       });
   }
+  async deleteLocation(locationId) {
+    try {
+      const response = await fetch(`/api/locations/${locationId}`, { method: 'DELETE' });
+      if (response.status < 300) {
+        const locations = this.state.locations.filter(location => !(location.id === locationId));
+        this.setState({ locations }, this.getAllLocations);
+      } else {
+        return response.status;
+      }
+    } catch {
+      return 503;
+    }
+  }
   changeView(view) {
     this.setState({ view }, () => {
       if (this.state.view === 'groceries') {
@@ -91,23 +106,32 @@ class App extends React.Component {
     this.getAllGroceries();
   }
   render() {
-    let form;
+    let form, table;
     if (this.state.view === 'groceries') {
       form = (<GroceryForm onAdd={this.addNewGrocery}/>);
+      table = (
+        <GroceryTable
+          onDelete={this.deleteGroceryItem}
+          onUpdate={this.updateGroceryItem}
+          groceries={this.state.groceries}
+        />
+      );
     } else {
       form = (<LocationForm onAdd={this.addNewLocation}/>);
+      table = (
+        <LocationTable
+          locations={this.state.locations}
+          onDelete={this.deleteLocation}
+        />
+      );
     }
     return (
       <>
-      <Header title='Cellar Door' changeView={this.changeView}/>
+      <Header title='Cellar Door' view={this.state.view} changeView={this.changeView}/>
       <div className="sgt container mt-2">
         <div className="row">
           <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
-            <GroceryTable
-              onDelete={this.deleteGroceryItem}
-              onUpdate={this.updateGroceryItem}
-              groceries={this.state.groceries}
-            />
+            {table}
           </div>
           {form}
         </div>
