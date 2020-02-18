@@ -9,8 +9,8 @@ const locationRouter = express.Router();
 
 locationRouter.get('/locations', locationList);
 locationRouter.post('/locations', locationAdd);
+locationRouter.patch('/locations', locationUpdate);
 locationRouter.get('/locations/:id', locationGroceries);
-locationRouter.patch('/locations/:id', locationUpdate);
 locationRouter.delete('/locations/:id', locationDelete);
 
 module.exports = locationRouter;

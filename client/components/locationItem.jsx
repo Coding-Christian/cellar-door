@@ -12,7 +12,10 @@ class LocationItem extends React.Component {
     };
     this.id = props.locationId;
     this.onDelete = props.onDelete;
+    this.onUpdate = props.onUpdate;
     this.handleDelete = this.handleDelete.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.updateInfo = this.updateInfo.bind(this);
   }
   async handleDelete() {
     const status = await this.onDelete(this.id);
@@ -21,6 +24,12 @@ class LocationItem extends React.Component {
         setTimeout(() => this.setState({ error: null }), 3000)
       );
     }
+  }
+  updateInfo(name, description) {
+    this.setState({ name, description }, this.toggleEdit);
+  }
+  toggleEdit() {
+    this.setState({ editing: !this.state.editing });
   }
   render() {
     let error = '';
@@ -39,7 +48,15 @@ class LocationItem extends React.Component {
       );
     }
     if (this.state.editing) {
-      infoElems = (<LocationEdit id={this.id} name={this.state.name} description={this.state.description}/>);
+      infoElems = (
+        <LocationEdit
+          id={this.id}
+          name={this.state.name}
+          description={this.state.description}
+          onUpdate={this.onUpdate}
+          updateInfo={this.updateInfo}
+        />
+      );
     } else {
       infoElems = [
         <td key='name'>{this.state.name}</td>,
@@ -52,7 +69,7 @@ class LocationItem extends React.Component {
         <td key='operations'>
           <div className="row">
             <div className='col-12 col-xl-4 my-1'>
-              <button onClick={() => this.setState({ editing: !this.state.editing })} className='btn btn-outline-info w-100'>
+              <button onClick={this.toggleEdit} className='btn btn-outline-info w-100'>
                 {this.state.editing ? 'Cancel' : 'Edit'}
               </button>
             </div>

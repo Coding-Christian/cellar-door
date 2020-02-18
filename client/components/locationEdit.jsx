@@ -15,9 +15,12 @@ class LocationEdit extends React.Component {
         value: props.description,
         isValid: true,
         error: 'Notes must be limited to 256 alphanumeric characters'
-      }
+      },
+      error: null
     };
     this.id = props.id;
+    this.onUpdate = props.onUpdate;
+    this.updateInfo = props.updateInfo;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -34,8 +37,20 @@ class LocationEdit extends React.Component {
     newFieldState.value = event.target.value;
     this.setState({ [event.target.id]: newFieldState }, this.validateForm);
   }
-  handleSubmit() {
-    return null;
+  async handleSubmit() {
+    if (this.state.name.isValid && this.state.description.isValid) {
+      const location = {
+        id: this.id,
+        name: this.state.name.value,
+        description: this.state.description.value
+      };
+      const status = await this.onUpdate(location);
+      if (status < 300) {
+        this.updateInfo(this.state.name.value, this.state.description.value);
+      } else {
+        this.setState({ error: 'Could not reach server. Please try again.' });
+      }
+    }
   }
   componentDidMount() {
     this.validateForm();
