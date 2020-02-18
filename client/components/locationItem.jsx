@@ -39,7 +39,7 @@ class LocationItem extends React.Component {
       );
     }
     if (this.state.editing) {
-      infoElems = (<LocationEdit id={this.id} name={this.name} description={this.description}/>);
+      infoElems = (<LocationEdit id={this.id} name={this.state.name} description={this.state.description}/>);
     } else {
       infoElems = [
         <td key='name'>{this.state.name}</td>,
