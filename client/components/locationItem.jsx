@@ -6,7 +6,8 @@ class LocationItem extends React.Component {
     this.state = {
       name: props.name,
       description: props.description,
-      error: null
+      error: null,
+      editing: false
     };
     this.id = props.locationId;
     this.onDelete = props.onDelete;
@@ -41,6 +42,11 @@ class LocationItem extends React.Component {
         <td key='description'>{this.state.description}</td>
         <td key='operations'>
           <div className="row">
+            <div className='col-12 col-xl-4 my-1'>
+              <button onClick={() => this.setState({ editing: !this.state.editing })} className='btn btn-outline-info w-100'>
+                {this.state.editing ? 'Cancel' : 'Edit'}
+              </button>
+            </div>
             <div className='col-12 col-xl-4 my-1'>
               <button onClick={this.handleDelete} className={`btn btn-danger w-100`}>
                 Delete
