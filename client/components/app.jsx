@@ -18,6 +18,7 @@ class App extends React.Component {
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.deleteLocation = this.deleteLocation.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
+    this.updateLocation = this.updateLocation.bind(this);
     this.changeView = this.changeView.bind(this);
   }
   getAllGroceries() {
@@ -73,6 +74,19 @@ class App extends React.Component {
       return 503;
     }
   }
+  async updateLocation(location) {
+    const config = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(location)
+    };
+    try {
+      const response = await fetch(`/api/locations`, config);
+      return response.status;
+    } catch {
+      return 503;
+    }
+  }
   deleteGroceryItem(groceryItemId) {
     fetch(`/api/groceries/${groceryItemId}`, { method: 'DELETE' })
       .then(() => {
@@ -122,6 +136,7 @@ class App extends React.Component {
         <LocationTable
           locations={this.state.locations}
           onDelete={this.deleteLocation}
+          onUpdate={this.updateLocation}
         />
       );
     }

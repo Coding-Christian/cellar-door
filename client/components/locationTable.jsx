@@ -11,6 +11,7 @@ function LocationTable(props) {
         name={location.name}
         description={location.description}
         onDelete={props.onDelete}
+        onUpdate={props.onUpdate}
       />
     ));
   } else {

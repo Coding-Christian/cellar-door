@@ -4,7 +4,7 @@ const makeQuery = require('../makeQuery');
 const locationUpdate = async function (req, res) {
   const reqProps = ['id', 'name', 'description'];
   for (const prop in reqProps) {
-    if (!req.body[reqProps[prop]]) {
+    if (!req.body.hasOwnProperty(reqProps[prop])) {
       res.status(400).send(`Location ${reqProps[prop]} required.`);
       return;
     }
