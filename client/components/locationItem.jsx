@@ -18,11 +18,13 @@ class LocationItem extends React.Component {
     this.updateInfo = this.updateInfo.bind(this);
   }
   async handleDelete() {
-    const status = await this.onDelete(this.id);
-    if (status >= 300) {
-      this.setState({ error: status }, () =>
-        setTimeout(() => this.setState({ error: null }), 3000)
-      );
+    if (!this.state.editing) {
+      const status = await this.onDelete(this.id);
+      if (status >= 300) {
+        this.setState({ error: status }, () =>
+          setTimeout(() => this.setState({ error: null }), 3000)
+        );
+      }
     }
   }
   updateInfo(name, description) {
@@ -74,7 +76,7 @@ class LocationItem extends React.Component {
               </button>
             </div>
             <div className='col-12 col-xl-4 my-1'>
-              <button onClick={this.handleDelete} className={`btn btn-danger w-100`}>
+              <button onClick={this.handleDelete} className={`btn btn-danger w-100 ${this.state.editing ? 'disabled' : ''}`}>
                 Delete
               </button>
             </div>
