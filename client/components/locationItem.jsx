@@ -1,4 +1,5 @@
 import React from 'react';
+import LocationEdit from './locationEdit';
 
 class LocationItem extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class LocationItem extends React.Component {
   }
   render() {
     let error = '';
+    let infoElems;
     if (this.state.error === 409) {
       error = (
         <div className="col-12 my-1">
@@ -36,10 +38,17 @@ class LocationItem extends React.Component {
         </div>
       );
     }
+    if (this.state.editing) {
+      infoElems = (<LocationEdit/>);
+    } else {
+      infoElems = [
+        <td key='name'>{this.state.name}</td>,
+        <td key='description'>{this.state.description}</td>
+      ];
+    }
     return (
       <tr>
-        <td key='name'>{this.state.name}</td>
-        <td key='description'>{this.state.description}</td>
+        {infoElems}
         <td key='operations'>
           <div className="row">
             <div className='col-12 col-xl-4 my-1'>
