@@ -182,7 +182,7 @@ class GroceryEdit extends React.Component {
         <option key={option.id} value={option.id}>{option.name}</option>
       ));
     } else {
-      locationOptions = (<option value='0'>-- No Locations --</option>);
+      locationOptions = (<option value='0'>-- No locations --</option>);
     }
     const unitOptions = this.state.unit.options.map(option => (
       <option key={option.id} value={option.id}>{option.name}</option>

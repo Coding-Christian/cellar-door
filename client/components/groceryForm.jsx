@@ -27,7 +27,7 @@ class GroceryForm extends React.Component {
       },
       location: {
         title: 'Storage Location',
-        value: 1,
+        value: 0,
         options: []
       },
       category: {
@@ -118,7 +118,7 @@ class GroceryForm extends React.Component {
         unit: this.state.unit.value,
         purchaseDate: this.state.purchaseDate.value,
         expirationDate: this.state.expirationDate.value,
-        location: this.state.location.value,
+        location: this.state.location.value ? this.state.location.value : null,
         notes: this.state.notes.value
       });
       if (status < 300) {

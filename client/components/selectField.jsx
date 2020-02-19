@@ -1,9 +1,14 @@
 import React from 'react';
 
 function selectField(props) {
-  const options = props.field.options.map(option => (
-    <option key={option.id} value={option.id}>{option.name}</option>
-  ));
+  let options;
+  if (props.field.options.length) {
+    options = props.field.options.map(option => (
+      <option key={option.id} value={option.id}>{option.name}</option>
+    ));
+  } else {
+    options = (<option value='0'>{`-- No ${props.id}s --`}</option>);
+  }
   return (
     <div className='input-group mb-1'>
       <div className="input-group-prepend">
