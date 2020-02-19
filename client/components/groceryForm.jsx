@@ -27,7 +27,7 @@ class GroceryForm extends React.Component {
       },
       location: {
         title: 'Storage Location',
-        value: 1,
+        value: 0,
         options: []
       },
       category: {
@@ -49,7 +49,7 @@ class GroceryForm extends React.Component {
       },
       advancedView: false
     };
-    this.onSubmit = props.onSubmit;
+    this.onAdd = props.onAdd;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClear = this.handleClear.bind(this);
@@ -110,17 +110,17 @@ class GroceryForm extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     if (this.state.name.isValid && this.state.amount.isValid) {
-      const status = await this.onSubmit(
-        this.state.name.value,
-        this.state.category.value,
-        this.state.amount.value,
-        this.state.amount.value,
-        this.state.unit.value,
-        this.state.purchaseDate.value,
-        this.state.expirationDate.value,
-        this.state.location.value,
-        this.state.notes.value
-      );
+      const status = await this.onAdd({
+        name: this.state.name.value,
+        category: this.state.category.value,
+        amount: this.state.amount.value,
+        amountRemaining: this.state.amount.value,
+        unit: this.state.unit.value,
+        purchaseDate: this.state.purchaseDate.value,
+        expirationDate: this.state.expirationDate.value,
+        location: this.state.location.value ? this.state.location.value : null,
+        notes: this.state.notes.value
+      });
       if (status < 300) {
         this.handleClear();
         this.setState({ advancedView: false });
@@ -173,6 +173,7 @@ class GroceryForm extends React.Component {
     }
     return (
       <form onSubmit={this.handleSubmit} className='d-flex flex-column order-1 order-md-2 mb-4 col-12 col-md-3'>
+        <p className='mb-1'>Add new Grocery:</p>
         <div className="form-group mb-0">
           <InputField handleChange={this.handleChange} id='name' field={this.state.name} faClass='fas fa-pencil-alt'/>
           <InputField handleChange={this.handleChange} id='amount' field={this.state.amount} faClass='fas fa-weight'/>

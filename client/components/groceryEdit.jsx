@@ -29,7 +29,7 @@ class GroceryEdit extends React.Component {
       },
       location: {
         title: 'Location',
-        value: '1',
+        value: null,
         options: []
       },
       category: {
@@ -150,13 +150,13 @@ class GroceryEdit extends React.Component {
         unit: this.state.unit.value,
         purchaseDate: this.state.purchaseDate.value,
         expirationDate: this.state.expirationDate.value,
-        location: this.state.location.value,
+        location: this.state.location.value ? this.state.location.value : null,
         notes: this.state.notes.value
       };
       const status = await this.onUpdate(groceryItem);
       if (status < 300) {
         const location = this.state.location.options.find(option => option.id === Number(this.state.location.value));
-        this.updateInfo(this.state.name.value, this.state.remainingAmount.value, location.name);
+        this.updateInfo(this.state.name.value, this.state.remainingAmount.value, location ? location.name : '');
       } else {
         this.setState({ error: 'Could not reach server. Please try again.' });
       }
@@ -170,15 +170,20 @@ class GroceryEdit extends React.Component {
   }
   render() {
     let disabledClass = '';
+    let locationOptions;
     if (!this.state.name.isValid || !this.state.amount.isValid || !this.state.remainingAmount.isValid || !this.state.notes.isValid) {
       disabledClass = 'disabled';
     }
     const categoryOptions = this.state.category.options.map(option => (
       <option key={option.id} value={option.id}>{option.name}</option>
     ));
-    const locationOptions = this.state.location.options.map(option => (
-      <option key={option.id} value={option.id}>{option.name}</option>
-    ));
+    if (this.state.location.options.length) {
+      locationOptions = this.state.location.options.map(option => (
+        <option key={option.id} value={option.id}>{option.name}</option>
+      ));
+    } else {
+      locationOptions = (<option value='0'>-- No locations --</option>);
+    }
     const unitOptions = this.state.unit.options.map(option => (
       <option key={option.id} value={option.id}>{option.name}</option>
     ));
@@ -193,7 +198,7 @@ class GroceryEdit extends React.Component {
               value={this.state.name.value}
               className={`form-control ${this.state.name.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='editName'
+              id='name'
               required
             />
           </div>
@@ -203,7 +208,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.category.value}
               className={`form-control`}
-              id='editCategory'
+              id='category'
             >
               {categoryOptions}
             </select>
@@ -216,14 +221,14 @@ class GroceryEdit extends React.Component {
               value={this.state.amount.value}
               className={`form-control ${this.state.amount.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='editAmount'
+              id='amount'
               required
             />
             <select
               onChange={this.handleChange}
               value={this.state.unit.value}
               className={`form-control`}
-              id='editUnit'
+              id='unit'
             >
               {unitOptions}
             </select>
@@ -236,7 +241,7 @@ class GroceryEdit extends React.Component {
               value={this.state.remainingAmount.value}
               className={`form-control ${this.state.remainingAmount.isValid ? 'is-valid' : 'is-invalid'}`}
               type='text'
-              id='editRemainingAmount'
+              id='remainingAmount'
               required
             />
           </div>
@@ -249,7 +254,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.purchaseDate.value}
               className={`form-control`}
-              id='editPurchaseDate'
+              id='purchaseDate'
             />
           </div>
           <div className="col-12 col-lg-6">
@@ -259,7 +264,7 @@ class GroceryEdit extends React.Component {
               onChange={this.handleChange}
               value={this.state.expirationDate.value}
               className={`form-control`}
-              id='editExpirationDate'
+              id='expirationDate'
             />
           </div>
         </div>
@@ -272,7 +277,7 @@ class GroceryEdit extends React.Component {
               value={this.state.notes.value}
               rows='3'
               className={`form-control ${this.state.notes.isValid ? 'is-valid' : 'is-invalid'}`}
-              id='editNotes'
+              id='notes'
               required
             ></textarea>
           </div>
@@ -280,9 +285,9 @@ class GroceryEdit extends React.Component {
             <h6>Location:</h6>
             <select
               onChange={this.handleChange}
-              value={this.state.location.value}
+              value={this.state.location.value ? this.state.location.value : '0' }
               className={`form-control`}
-              id='editLocation'
+              id='location'
             >
               {locationOptions}
             </select>
