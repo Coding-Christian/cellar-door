@@ -87,9 +87,9 @@ class GroceryItem extends React.Component {
               </button>
             </div>
             <div className={`col-12 my-1 text-center ${this.state.deleting ? '' : 'd-none'}`}>
-              Are you sure?
-              <button onClick={this.handleDelete} className='btn btn-danger ml-1'><small>Yes</small></button>
-              <button onClick={() => this.setState({ deleting: false })} className='btn btn-info ml-1'><small>No</small></button>
+              <div className="col-12 col-lg-6 p-0 d-inline-block">Are you sure?</div>
+              <button onClick={this.handleDelete} className='btn btn-link ml-1'>Yes</button>
+              <button onClick={() => this.setState({ deleting: false })} className='btn btn-link ml-1'>No</button>
             </div>
           </div>
         </td>
