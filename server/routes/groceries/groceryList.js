@@ -6,7 +6,7 @@ const groceryList = async function (req, res) {
     'FROM groceryItems ' +
     'JOIN amountUnits ' +
       'ON amountUnitid = amountUnits.id ' +
-    'JOIN storageLocations ' +
+    'LEFT JOIN storageLocations ' +
       'ON locationId = storageLocations.id';
   const results = await makeQuery(sql)
     .catch(() => res.status(500).send('An error occurred while connecting to the database'));

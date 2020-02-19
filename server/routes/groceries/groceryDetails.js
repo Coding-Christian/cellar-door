@@ -12,7 +12,7 @@ const groceryDetails = async function (req, res) {
         'ON categoryId = groceryCategories.id ' +
       'JOIN amountUnits ' +
         'ON amountUnitid = amountUnits.id ' +
-      'JOIN storageLocations ' +
+      'LEFT JOIN storageLocations ' +
         'ON locationId = storageLocations.id ' +
       `WHERE groceryItems.id = ${mysql.escape(req.params.id)}`;
     const results = await makeQuery(sql)
@@ -21,7 +21,7 @@ const groceryDetails = async function (req, res) {
       res.status(404).send(`Item with ID ${req.params.id} not found`);
     } else {
       res.status(200).send({
-        'id': results[0].id,
+        'id': req.params.id,
         'name': results[0].itemName,
         'category': {
           'id': results[0].categoryId,
