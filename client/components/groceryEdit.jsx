@@ -69,7 +69,13 @@ class GroceryEdit extends React.Component {
       .then(locations => {
         const location = Object.assign(this.state.location);
         location.options = locations;
-        this.setState({ location });
+        this.setState({ location }, () => {
+          if (!this.state.location.value && this.state.location.options.length) {
+            const location = Object.assign(this.state.location);
+            location.value = location.options[0].id;
+            this.setState({ location });
+          }
+        });
       });
   }
   getAllUnits() {
@@ -109,7 +115,7 @@ class GroceryEdit extends React.Component {
     newState.unit.value = groceryItem.amount.unitId;
     newState.purchaseDate.value = groceryItem.purchaseDate;
     newState.expirationDate.value = groceryItem.expirationDate;
-    newState.location.value = groceryItem.location.id;
+    newState.location.value = groceryItem.location.id ? groceryItem.location.id : newState.location.value;
     newState.notes.value = groceryItem.notes;
     this.setState(newState, this.validateForm);
   }
