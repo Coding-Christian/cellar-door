@@ -140,19 +140,20 @@ class App extends React.Component {
         />
       );
     }
-    return (
-      <>
-      <Header title='Cellar Door' view={this.state.view} changeView={this.changeView}/>
-      <div className="sgt container mt-2">
-        <div className="row">
-          <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
-            {table}
+    return (<>
+      <div>
+        <Header title='Cellar Door' view={this.state.view} changeView={this.changeView}/>
+        <div className="sgt container mt-2">
+          <div className="row">
+            <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
+              {table}
+            </div>
+            {form}
           </div>
-          {form}
         </div>
       </div>
-      </>
-    );
+      <p className='text-center text-muted'>* This app is currently a demo. All data will be deleted every 60 minutes.</p>
+    </>);
   }
 }
 
