@@ -70,12 +70,12 @@ class LocationItem extends React.Component {
         {infoElems}
         <td key='operations'>
           <div className="row">
-            <div className='col-12 col-xl-4 my-1'>
+            <div className='col-12 col-xl-6 my-1'>
               <button onClick={this.toggleEdit} className='btn btn-outline-info w-100'>
                 {this.state.editing ? 'Cancel' : 'Edit'}
               </button>
             </div>
-            <div className='col-12 col-xl-4 my-1'>
+            <div className='col-12 col-xl-6 my-1'>
               <button onClick={this.handleDelete} className={`btn btn-danger w-100 ${this.state.editing ? 'disabled' : ''}`}>
                 Delete
               </button>
