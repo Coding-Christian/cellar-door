@@ -145,7 +145,7 @@ class App extends React.Component {
         <Header title='Cellar Door' view={this.state.view} changeView={this.changeView}/>
         <div className="sgt container mt-2">
           <div className="row">
-            <div className="table-responsive order-2 order-md-1 col-12 col-md-9">
+            <div className="table-responsive order-2 order-lg-1 col-12 col-lg-9">
               {table}
             </div>
             {form}
