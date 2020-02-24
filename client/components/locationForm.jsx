@@ -63,7 +63,7 @@ class LocationForm extends React.Component {
       disabledClass = 'disabled';
     }
     return (
-      <form onSubmit={this.handleSubmit} className='d-flex flex-column order-1 order-md-2 mb-4 col-12 col-md-3'>
+      <form onSubmit={this.handleSubmit} className='d-flex flex-column order-1 order-lg-2 mb-4 col-12 col-lg-3'>
         <p className="mb-1">Add new Location:</p>
         <div className="form-group mb-1">
           <InputField handleChange={this.handleChange} id='name' field={this.state.name} faClass='fas fa-pencil-alt'/>
