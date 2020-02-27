@@ -19,7 +19,7 @@ class LocationItem extends React.Component {
   }
   async handleDelete() {
     if (!this.state.editing) {
-      const status = await this.onDelete(this.id);
+      const status = await this.onDelete('locations', this.id);
       if (status >= 300) {
         this.setState({ error: status }, () =>
           setTimeout(() => this.setState({ error: null }), 3000)

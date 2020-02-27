@@ -9,6 +9,7 @@ class GroceryItem extends React.Component {
       editing: false,
       details: false,
       prevDetails: false,
+      error: null,
       name: props.name,
       amount: `${props.amount} ${props.unit}`,
       location: props.location
@@ -38,9 +39,14 @@ class GroceryItem extends React.Component {
       this.setState({ editing: true, deleting: false, details: true, prevDetails: this.state.details });
     }
   }
-  handleDelete() {
+  async handleDelete() {
     if (!this.state.editing) {
-      this.onDelete(this.id);
+      const status = await this.onDelete('groceries', this.id);
+      if (status >= 300) {
+        this.setState({ error: status }, () =>
+          setTimeout(() => this.setState({ error: null }), 3000)
+        );
+      }
     }
   }
   render() {
