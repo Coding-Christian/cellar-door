@@ -8,11 +8,7 @@ import LocationForm from './locationForm';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      groceries: [],
-      locations: [],
-      view: 'groceries'
-    };
+    this.state = { groceries: [], locations: [], view: 'groceries' };
     this.addNewItem = this.addNewItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
@@ -52,8 +48,9 @@ class App extends React.Component {
     }
   }
   async deleteItem(endpoint, itemId) {
+    const config = { method: 'DELETE' };
     try {
-      const response = await fetch(`/api/${endpoint}/${itemId}`, { method: 'DELETE' });
+      const response = await fetch(`/api/${endpoint}/${itemId}`, config);
       if (response.status < 300) {
         const newList = this.state[endpoint].filter(item => !(item.id === itemId));
         this.setState({ [endpoint]: newList }, () => this.getAllItems(endpoint));
@@ -71,9 +68,9 @@ class App extends React.Component {
     this.getAllItems('groceries');
   }
   render() {
-    let form, table;
+    let Form, table;
     if (this.state.view === 'groceries') {
-      form = (<GroceryForm onAdd={this.addNewItem}/>);
+      Form = GroceryForm;
       table = (
         <GroceryTable
           onDelete={this.deleteItem}
@@ -82,7 +79,7 @@ class App extends React.Component {
         />
       );
     } else {
-      form = (<LocationForm onAdd={this.addNewItem}/>);
+      Form = LocationForm;
       table = (
         <LocationTable
           locations={this.state.locations}
@@ -99,7 +96,7 @@ class App extends React.Component {
             <div className="table-responsive order-2 order-lg-1 col-12 col-lg-9">
               {table}
             </div>
-            {form}
+            <Form onAdd={this.addNewItem}/>
           </div>
         </div>
       </div>
