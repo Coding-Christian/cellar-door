@@ -13,51 +13,30 @@ class App extends React.Component {
       locations: [],
       view: 'groceries'
     };
-    this.addNewGrocery = this.addNewGrocery.bind(this);
-    this.addNewLocation = this.addNewLocation.bind(this);
+    this.addNewItem = this.addNewItem.bind(this);
     this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
     this.deleteLocation = this.deleteLocation.bind(this);
     this.updateGroceryItem = this.updateGroceryItem.bind(this);
     this.updateLocation = this.updateLocation.bind(this);
     this.changeView = this.changeView.bind(this);
   }
-  getAllGroceries() {
-    fetch('/api/groceries')
+  getAllItems(endpoint) {
+    fetch(`/api/${endpoint}`)
       .then(response => response.json())
-      .then(groceries => this.setState({ groceries }));
+      .then(data => this.setState({ [endpoint]: data }));
   }
-  getAllLocations() {
-    fetch('/api/locations')
-      .then(response => response.json())
-      .then(locations => this.setState({ locations }));
-  }
-  async addNewGrocery(grocery) {
+  async addNewItem(endpoint, item) {
     const config = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(grocery)
+      body: JSON.stringify(item)
     };
     try {
-      const response = await fetch('/api/groceries', config);
-      this.getAllGroceries();
+      const response = await fetch(`/api/${endpoint}`, config);
+      this.getAllItems(endpoint);
       return response.status;
     } catch {
-      this.getAllGroceries();
-      return 503;
-    }
-  }
-  async addNewLocation(location) {
-    const config = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(location)
-    };
-    try {
-      const response = await fetch('/api/locations', config);
-      this.getAllLocations();
-      return response.status;
-    } catch {
-      this.getAllLocations();
+      this.getAllItems(endpoint);
       return 503;
     }
   }
@@ -91,7 +70,7 @@ class App extends React.Component {
     fetch(`/api/groceries/${groceryItemId}`, { method: 'DELETE' })
       .then(() => {
         const groceries = this.state.groceries.filter(grocery => !(grocery.id === groceryItemId));
-        this.setState({ groceries }, this.getAllGroceries);
+        this.setState({ groceries }, () => this.getAllItems('groceries'));
       });
   }
   async deleteLocation(locationId) {
@@ -99,7 +78,7 @@ class App extends React.Component {
       const response = await fetch(`/api/locations/${locationId}`, { method: 'DELETE' });
       if (response.status < 300) {
         const locations = this.state.locations.filter(location => !(location.id === locationId));
-        this.setState({ locations }, this.getAllLocations);
+        this.setState({ locations }, () => this.getAllItems('locations'));
       } else {
         return response.status;
       }
@@ -108,21 +87,15 @@ class App extends React.Component {
     }
   }
   changeView(view) {
-    this.setState({ view }, () => {
-      if (this.state.view === 'groceries') {
-        this.getAllGroceries();
-      } else {
-        this.getAllLocations();
-      }
-    });
+    this.setState({ view }, () => this.getAllItems(this.state.view));
   }
   componentDidMount() {
-    this.getAllGroceries();
+    this.getAllItems('groceries');
   }
   render() {
     let form, table;
     if (this.state.view === 'groceries') {
-      form = (<GroceryForm onAdd={this.addNewGrocery}/>);
+      form = (<GroceryForm onAdd={this.addNewItem}/>);
       table = (
         <GroceryTable
           onDelete={this.deleteGroceryItem}
@@ -131,7 +104,7 @@ class App extends React.Component {
         />
       );
     } else {
-      form = (<LocationForm onAdd={this.addNewLocation}/>);
+      form = (<LocationForm onAdd={this.addNewItem}/>);
       table = (
         <LocationTable
           locations={this.state.locations}

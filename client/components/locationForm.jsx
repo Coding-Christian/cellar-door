@@ -36,7 +36,7 @@ class LocationForm extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     if (this.state.name.isValid) {
-      const status = await this.onAdd({
+      const status = await this.onAdd('locations', {
         name: this.state.name.value,
         description: this.state.description.value
       });
