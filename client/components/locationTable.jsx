@@ -3,8 +3,8 @@ import LocationItem from './locationItem';
 
 function LocationTable(props) {
   let locations;
-  if (props.locations.length) {
-    locations = props.locations.map(location => (
+  if (props.data.length) {
+    locations = props.data.map(location => (
       <LocationItem
         key={location.id}
         locationId={location.id}

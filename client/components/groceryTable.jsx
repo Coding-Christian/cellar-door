@@ -3,8 +3,8 @@ import GroceryItem from './groceryItem';
 
 function GroceryTable(props) {
   let groceries;
-  if (props.groceries.length) {
-    groceries = props.groceries.map(grocery => (
+  if (props.data.length) {
+    groceries = props.data.map(grocery => (
       <GroceryItem
         key ={grocery.id}
         id={grocery.id}

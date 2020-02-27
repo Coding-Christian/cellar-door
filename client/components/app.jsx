@@ -68,25 +68,13 @@ class App extends React.Component {
     this.getAllItems('groceries');
   }
   render() {
-    let Form, table;
+    let Form, Table;
     if (this.state.view === 'groceries') {
       Form = GroceryForm;
-      table = (
-        <GroceryTable
-          onDelete={this.deleteItem}
-          onUpdate={this.updateItem}
-          groceries={this.state.groceries}
-        />
-      );
+      Table = GroceryTable;
     } else {
       Form = LocationForm;
-      table = (
-        <LocationTable
-          locations={this.state.locations}
-          onDelete={this.deleteItem}
-          onUpdate={this.updateItem}
-        />
-      );
+      Table = LocationTable;
     }
     return (<>
       <div>
@@ -94,7 +82,7 @@ class App extends React.Component {
         <div className="sgt container mt-2">
           <div className="row">
             <div className="table-responsive order-2 order-lg-1 col-12 col-lg-9">
-              {table}
+              <Table data={this.state[this.state.view]} onDelete={this.deleteItem} onUpdate={this.updateItem}/>
             </div>
             <Form onAdd={this.addNewItem}/>
           </div>
