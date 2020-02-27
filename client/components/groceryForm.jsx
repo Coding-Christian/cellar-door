@@ -66,6 +66,9 @@ class GroceryForm extends React.Component {
       .then(locations => {
         const location = Object.assign(this.state.location);
         location.options = locations;
+        if (location.options[0].id) {
+          location.value = location.options[0].id;
+        }
         this.setState({ location });
       });
   }
@@ -110,7 +113,7 @@ class GroceryForm extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     if (this.state.name.isValid && this.state.amount.isValid) {
-      const status = await this.onAdd({
+      const status = await this.onAdd('groceries', {
         name: this.state.name.value,
         category: this.state.category.value,
         amount: this.state.amount.value,
