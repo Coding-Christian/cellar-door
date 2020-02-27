@@ -44,7 +44,7 @@ class LocationEdit extends React.Component {
         name: this.state.name.value,
         description: this.state.description.value
       };
-      const status = await this.onUpdate(location);
+      const status = await this.onUpdate('locations', location);
       if (status < 300) {
         this.updateInfo(this.state.name.value, this.state.description.value);
       } else {

@@ -8,16 +8,10 @@ import LocationForm from './locationForm';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      groceries: [],
-      locations: [],
-      view: 'groceries'
-    };
+    this.state = { groceries: [], locations: [], view: 'groceries' };
     this.addNewItem = this.addNewItem.bind(this);
-    this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
-    this.deleteLocation = this.deleteLocation.bind(this);
-    this.updateGroceryItem = this.updateGroceryItem.bind(this);
-    this.updateLocation = this.updateLocation.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.updateItem = this.updateItem.bind(this);
     this.changeView = this.changeView.bind(this);
   }
   getAllItems(endpoint) {
@@ -40,45 +34,26 @@ class App extends React.Component {
       return 503;
     }
   }
-  async updateGroceryItem(groceryItem) {
+  async updateItem(endpoint, item) {
     const config = {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(groceryItem)
+      body: JSON.stringify(item)
     };
     try {
-      const response = await fetch(`/api/groceries`, config);
+      const response = await fetch(`/api/${endpoint}`, config);
       return response.status;
     } catch {
       return 503;
     }
   }
-  async updateLocation(location) {
-    const config = {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(location)
-    };
+  async deleteItem(endpoint, itemId) {
+    const config = { method: 'DELETE' };
     try {
-      const response = await fetch(`/api/locations`, config);
-      return response.status;
-    } catch {
-      return 503;
-    }
-  }
-  deleteGroceryItem(groceryItemId) {
-    fetch(`/api/groceries/${groceryItemId}`, { method: 'DELETE' })
-      .then(() => {
-        const groceries = this.state.groceries.filter(grocery => !(grocery.id === groceryItemId));
-        this.setState({ groceries }, () => this.getAllItems('groceries'));
-      });
-  }
-  async deleteLocation(locationId) {
-    try {
-      const response = await fetch(`/api/locations/${locationId}`, { method: 'DELETE' });
+      const response = await fetch(`/api/${endpoint}/${itemId}`, config);
       if (response.status < 300) {
-        const locations = this.state.locations.filter(location => !(location.id === locationId));
-        this.setState({ locations }, () => this.getAllItems('locations'));
+        const newList = this.state[endpoint].filter(item => !(item.id === itemId));
+        this.setState({ [endpoint]: newList }, () => this.getAllItems(endpoint));
       } else {
         return response.status;
       }
@@ -93,25 +68,13 @@ class App extends React.Component {
     this.getAllItems('groceries');
   }
   render() {
-    let form, table;
+    let Form, Table;
     if (this.state.view === 'groceries') {
-      form = (<GroceryForm onAdd={this.addNewItem}/>);
-      table = (
-        <GroceryTable
-          onDelete={this.deleteGroceryItem}
-          onUpdate={this.updateGroceryItem}
-          groceries={this.state.groceries}
-        />
-      );
+      Form = GroceryForm;
+      Table = GroceryTable;
     } else {
-      form = (<LocationForm onAdd={this.addNewItem}/>);
-      table = (
-        <LocationTable
-          locations={this.state.locations}
-          onDelete={this.deleteLocation}
-          onUpdate={this.updateLocation}
-        />
-      );
+      Form = LocationForm;
+      Table = LocationTable;
     }
     return (<>
       <div>
@@ -119,9 +82,9 @@ class App extends React.Component {
         <div className="sgt container mt-2">
           <div className="row">
             <div className="table-responsive order-2 order-lg-1 col-12 col-lg-9">
-              {table}
+              <Table data={this.state[this.state.view]} onDelete={this.deleteItem} onUpdate={this.updateItem}/>
             </div>
-            {form}
+            <Form onAdd={this.addNewItem}/>
           </div>
         </div>
       </div>

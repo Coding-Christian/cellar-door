@@ -159,7 +159,7 @@ class GroceryEdit extends React.Component {
         location: this.state.location.value ? this.state.location.value : null,
         notes: this.state.notes.value
       };
-      const status = await this.onUpdate(groceryItem);
+      const status = await this.onUpdate('groceries', groceryItem);
       if (status < 300) {
         const location = this.state.location.options.find(option => option.id === Number(this.state.location.value));
         this.updateInfo(this.state.name.value, this.state.remainingAmount.value, location ? location.name : '');
