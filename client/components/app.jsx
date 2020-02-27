@@ -14,8 +14,7 @@ class App extends React.Component {
       view: 'groceries'
     };
     this.addNewItem = this.addNewItem.bind(this);
-    this.deleteGroceryItem = this.deleteGroceryItem.bind(this);
-    this.deleteLocation = this.deleteLocation.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
     this.changeView = this.changeView.bind(this);
   }
@@ -52,19 +51,12 @@ class App extends React.Component {
       return 503;
     }
   }
-  deleteGroceryItem(groceryItemId) {
-    fetch(`/api/groceries/${groceryItemId}`, { method: 'DELETE' })
-      .then(() => {
-        const groceries = this.state.groceries.filter(grocery => !(grocery.id === groceryItemId));
-        this.setState({ groceries }, () => this.getAllItems('groceries'));
-      });
-  }
-  async deleteLocation(locationId) {
+  async deleteItem(endpoint, itemId) {
     try {
-      const response = await fetch(`/api/locations/${locationId}`, { method: 'DELETE' });
+      const response = await fetch(`/api/${endpoint}/${itemId}`, { method: 'DELETE' });
       if (response.status < 300) {
-        const locations = this.state.locations.filter(location => !(location.id === locationId));
-        this.setState({ locations }, () => this.getAllItems('locations'));
+        const newList = this.state[endpoint].filter(item => !(item.id === itemId));
+        this.setState({ [endpoint]: newList }, () => this.getAllItems(endpoint));
       } else {
         return response.status;
       }
@@ -84,7 +76,7 @@ class App extends React.Component {
       form = (<GroceryForm onAdd={this.addNewItem}/>);
       table = (
         <GroceryTable
-          onDelete={this.deleteGroceryItem}
+          onDelete={this.deleteItem}
           onUpdate={this.updateItem}
           groceries={this.state.groceries}
         />
@@ -94,7 +86,7 @@ class App extends React.Component {
       table = (
         <LocationTable
           locations={this.state.locations}
-          onDelete={this.deleteLocation}
+          onDelete={this.deleteItem}
           onUpdate={this.updateItem}
         />
       );
