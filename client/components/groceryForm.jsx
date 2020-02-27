@@ -66,6 +66,9 @@ class GroceryForm extends React.Component {
       .then(locations => {
         const location = Object.assign(this.state.location);
         location.options = locations;
+        if (location.options[0].id) {
+          location.value = location.options[0].id;
+        }
         this.setState({ location });
       });
   }

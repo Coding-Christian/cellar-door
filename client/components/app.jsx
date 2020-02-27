@@ -21,15 +21,10 @@ class App extends React.Component {
     this.updateLocation = this.updateLocation.bind(this);
     this.changeView = this.changeView.bind(this);
   }
-  getAllGroceries() {
-    fetch('/api/groceries')
+  getAllItems(endpoint) {
+    fetch(`/api/${endpoint}`)
       .then(response => response.json())
-      .then(groceries => this.setState({ groceries }));
-  }
-  getAllLocations() {
-    fetch('/api/locations')
-      .then(response => response.json())
-      .then(locations => this.setState({ locations }));
+      .then(data => this.setState({ [endpoint]: data }));
   }
   async addNewGrocery(grocery) {
     const config = {
@@ -39,10 +34,10 @@ class App extends React.Component {
     };
     try {
       const response = await fetch('/api/groceries', config);
-      this.getAllGroceries();
+      this.getAllItems('groceries');
       return response.status;
     } catch {
-      this.getAllGroceries();
+      this.getAllItems('groceries');
       return 503;
     }
   }
@@ -54,10 +49,10 @@ class App extends React.Component {
     };
     try {
       const response = await fetch('/api/locations', config);
-      this.getAllLocations();
+      this.getAllItems('locations');
       return response.status;
     } catch {
-      this.getAllLocations();
+      this.getAllItems('locations');
       return 503;
     }
   }
@@ -91,7 +86,7 @@ class App extends React.Component {
     fetch(`/api/groceries/${groceryItemId}`, { method: 'DELETE' })
       .then(() => {
         const groceries = this.state.groceries.filter(grocery => !(grocery.id === groceryItemId));
-        this.setState({ groceries }, this.getAllGroceries);
+        this.setState({ groceries }, () => this.getAllItems('groceries'));
       });
   }
   async deleteLocation(locationId) {
@@ -99,7 +94,7 @@ class App extends React.Component {
       const response = await fetch(`/api/locations/${locationId}`, { method: 'DELETE' });
       if (response.status < 300) {
         const locations = this.state.locations.filter(location => !(location.id === locationId));
-        this.setState({ locations }, this.getAllLocations);
+        this.setState({ locations }, () => this.getAllItems('locations'));
       } else {
         return response.status;
       }
@@ -110,14 +105,14 @@ class App extends React.Component {
   changeView(view) {
     this.setState({ view }, () => {
       if (this.state.view === 'groceries') {
-        this.getAllGroceries();
+        this.getAllItems('groceries');
       } else {
-        this.getAllLocations();
+        this.getAllItems('locations');
       }
     });
   }
   componentDidMount() {
-    this.getAllGroceries();
+    this.getAllItems('groceries');
   }
   render() {
     let form, table;
